@@ -1,0 +1,12 @@
+###
+# general
+
+.private/
+.venv/
+.cache/
+.temp/
+.ansible/
+*.ignored.*
+
+# talos
+talsecret.yaml
