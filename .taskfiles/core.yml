@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  :init:*:
+    desc: Initialize dependencies ([ansible, krew])
+    vars:
+      DEP: "{{index .MATCH 0}}"
+    cmds:
+      - echo "Initializing dependencies for {{.DEP}}"
+      - task: init_{{.DEP}}
+
+  :update:
+    desc: Update all dependencies
+    cmds:
+      - mise upgrade
+      - kubectl krew update
+
+  :template:
+    desc: Template Jinja2 file
+    cmd: "echo minijinja-cli {{.IN_FILE}}"
+    vars:
+      IN_FILE: "{{index .CLI_ARGS_LIST 0}}"
+      OUT_FILE: "{{index .CLI_ARGS_LIST 1}}"
+    preconditions:
+      - test -f "{{.IN_FILE}}"
+
+  init_ansible:
+    internal: true
+    desc: Initialize Ansible dependencies
+    dir: "{{.ANSIBLE_DIR}}"
+    cmds:
+      - ansible-galaxy collection install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/collections" --force
+      - ansible-galaxy role install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/roles" --force
+
+  init_krew:
+    internal: true
+    desc: Initialize kubectl krew plugins
+    cmds:
+      - kubectl krew update
+      - kubectl krew index add netshoot https://github.com/nilic/kubectl-netshoot.git || true
+      - kubectl krew install netshoot/netshoot
+      - kubectl krew install get-all
+      - kubectl krew install tree

@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  K8S_DIR: "{{.ROOT_DIR}}/k8s"
+  TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
+  ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
+  PRIVATE_DIR: "{{.ROOT_DIR}}/.private"
+  TEMP_DIR: "{{.ROOT_DIR}}/.temp"
+  ANSIBLE_PLAYBOOK_DIR: "{{.ANSIBLE_DIR}}/playbooks"
+  TALOS_DIR: "{{.K8S_DIR}}/talos"
+
+includes:
+  core: .taskfiles/core.yml
+  secrets: .private/taskfiles/
+
+tasks:
+  default:
+    desc: List tasks
+    cmds:
+      - task --list-all

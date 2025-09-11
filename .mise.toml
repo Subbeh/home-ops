@@ -1,3 +1,17 @@
+[settings]
+experimental = true
+
+[hooks]
+enter = [
+  "mise install --quiet && mise upgrade --quiet",
+  "mkdir -p .cache"
+]
+
+# remove annoying ansible dir created by ansible-lint
+[[watch_files]]
+patterns = ["**/.ansible/*"]
+run = "find -name '.ansible' -type d -exec rm -r {} +"
+
 [env]
 _.python.venv = { path = ".venv", create = true }
 MISE_ENV = true
@@ -5,7 +19,13 @@ HISTFILE = "{{config_root}}/.cache/zsh_history"
 MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 
 # vault
-_.file = { path = ".private/vault.env", redact = true }
+_.file = [
+  { path = ".private/env.d/aws.env", redact = true },
+  { path = ".private/env.d/opnsense.env", redact = true },
+  { path = ".private/env.d/pve.env", redact = true },
+  { path = ".private/env.d/tf.env", redact = true },
+  { path = ".private/env.d/vault.env", redact = true }
+]
 
 # ansible
 ANSIBLE_VAULT_PASSWORD_FILE = "{{config_root}}/.secret/ansible_vault_key"
@@ -19,25 +39,18 @@ ANSIBLE_GALAXY_TOKEN_PATH = "{{config_root}}/.cache/galaxy_token"
 
 # kubernetes
 KUBECONFIG = "{{config_root}}/.private/kubeconfig"
-TALOSCONFIG = "{{config_root}}/talosconfig"
-
-[settings]
-experimental = true
-
-[hooks]
-enter = [
-  "mise install --quiet && mise upgrade --quiet",
-  "mkdir -p .cache"
-]
+TALOSCONFIG = "{{config_root}}/kubernetes/talos/clusterconfig/talosconfig"
 
 [tools]
 "python" = "3.13"
 "pipx:makejinja" = "2.8.1"
+"asdf:MetricMike/asdf-awscli" = "2.29.0"
 "aqua:cli/cli" = "2.78.0" # GitHub CLI
 "aqua:jqlang/jq" = "1.8.1"
 "aqua:mikefarah/yq" = "4.47.1"
 "aqua:evilmartians/lefthook" = "1.12.4"
-"aqua:casey/just" = "1.42.4"
+"aqua:go-task/task" = "3.44.1"
+"aqua:hashicorp/vault" = "1.20.3"
 
 # ansible
 "pipx:ansible-core" = "2.18.1"
@@ -53,3 +66,5 @@ enter = [
 "aqua:kubernetes/kubectl" = "1.34.0"
 "aqua:siderolabs/talos" = "1.11.0"
 "aqua:yannh/kubeconform" = "0.7.0"
+"asdf:bjw-s/asdf-talhelper" = "3.0.34"
+"aqua:kubernetes-sigs/krew" = "0.4.5"
