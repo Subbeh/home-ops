@@ -19,7 +19,7 @@ tasks:
 
   :template:
     desc: Template Jinja2 file
-    cmd: "echo minijinja-cli {{.IN_FILE}}"
+    cmd: "minijinja-cli {{.IN_FILE}}"
     vars:
       IN_FILE: "{{index .CLI_ARGS_LIST 0}}"
       OUT_FILE: "{{index .CLI_ARGS_LIST 1}}"

@@ -3,17 +3,18 @@
 version: "3"
 
 vars:
-  K8S_DIR: "{{.ROOT_DIR}}/k8s"
-  TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
   ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
+  TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
+  K8S_DIR: "{{.ROOT_DIR}}/kubernetes"
   PRIVATE_DIR: "{{.ROOT_DIR}}/.private"
   TEMP_DIR: "{{.ROOT_DIR}}/.temp"
-  ANSIBLE_PLAYBOOK_DIR: "{{.ANSIBLE_DIR}}/playbooks"
-  TALOS_DIR: "{{.K8S_DIR}}/talos"
 
 includes:
   core: .taskfiles/core.yml
-  secrets: .private/taskfiles/
+  secrets: .private/taskfiles
+  talos:
+    taskfile: kubernetes/talos
+    dir: kubernetes/talos
 
 tasks:
   default:

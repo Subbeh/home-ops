@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  init:talsecret:
+    desc: Create talsecret.yaml file
+    cmds:
+      - mkdir -p {{.PRIVATE_DIR}}/talos
+      - talhelper gensecret > {{.PRIVATE_DIR}}/talos/talsecret.yaml
+    generates:
+      - "{{.PRIVATE_DIR}}/talos/talsecret.yaml"
+    status:
+      - test -f {{.PRIVATE_DIR}}/talos/talsecret.yaml
+
+  init:genconfig:
+    desc: Initialize Talos configs
+    cmds:
+      - talhelper genconfig --env-file talenv.yaml --secret-file {{.PRIVATE_DIR}}/talos/talsecret.yaml --out-dir {{.PRIVATE_DIR}}/talos/clusterconfig --no-gitignore
+    generates:
+      - "{{.PRIVATE_DIR}}/talos/clusterconfig/*.yaml"
+      - "{{.PRIVATE_DIR}}/talos/clusterconfig/talosconfig"
+    sources:
+      - talconfig.yaml
+      - talenv.yaml
+      - patches/**/*.yaml
+      - "{{.PRIVATE_DIR}}/talos/talsecret.yaml"
+
+  init:bootstrap:
+    desc: Apply the Talos configuration and bootstrap the cluster
+    cmd: |
+      pushd "{{.PRIVATE_DIR}}/talos"
+      talhelper gencommand apply --config-file "{{.TASK_DIR}}/talconfig.yaml" --env-file "{{.TASK_DIR}}/talenv.yaml" --extra-flags="--insecure"
+      until talhelper gencommand bootstrap | \
+        bash; do sleep 10; done
+    preconditions:
+      - "ls {{.PRIVATE_DIR}}/talos/clusterconfig/*.yaml"
+      - test -f "{{.TASK_DIR}}/talconfig.yaml"
+      - test -f "{{.TASK_DIR}}/talenv.yaml"
+
+  init:kubeconfig:
+    desc: Get kubeconfig file
+    cmd: talosctl kubeconfig "{{.PRIVATE_DIR}}/talos" --force --nodes={{.NODE}};
+    vars:
+      NODE:
+        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
+    preconditions:
+      - talosctl --nodes {{.NODE}} get machineconfig
