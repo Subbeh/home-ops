@@ -31,6 +31,7 @@ tasks:
     desc: Initialize Ansible dependencies
     dir: "{{.ANSIBLE_DIR}}"
     cmds:
+      - uv pip install -r requirements.txt
       - ansible-galaxy collection install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/collections" --force
       - ansible-galaxy role install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/roles" --force
 

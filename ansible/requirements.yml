@@ -1,12 +1,13 @@
 ---
 collections:
-  - name: git+https://github.com/O-X-L/ansible_opnsense.git
   - name: ansible.posix
+  - name: ansible.utils
   - name: community.general
   - name: community.proxmox
-  - name: adhawkins.borgbase
   - name: community.hashi_vault
+  - name: adhawkins.borgbase
   - name: prometheus.prometheus
+  - name: git+https://github.com/O-X-L/ansible_opnsense.git
 roles:
   - name: geerlingguy.docker
   - name: geerlingguy.pip

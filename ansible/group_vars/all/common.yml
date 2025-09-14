@@ -16,7 +16,7 @@ ansible_uid: 1000
 ansible_gid: 1000
 ansible_root: "{{ playbook_dir }}/.."
 common_root_dir: "{{ ansible_root }}/.."
-common_private_dir: "{{ common_root_dir }}/.secret"
+common_private_dir: "{{ common_root_dir }}/.private"
 
 common_pub_key_file: "{{ common_private_dir }}/homelab.key.pub"
 common_pub_key: "{{ lookup('file', common_pub_key_file) }}"

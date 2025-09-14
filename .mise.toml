@@ -28,7 +28,7 @@ _.file = [
 ]
 
 # ansible
-ANSIBLE_VAULT_PASSWORD_FILE = "{{config_root}}/.secret/ansible_vault_key"
+ANSIBLE_VAULT_PASSWORD_FILE = "{{config_root}}/.private/core/ansible_vault_key"
 ANSIBLE_CONFIG = "{{config_root}}/ansible/ansible.cfg"
 ANSIBLE_PLAYBOOK_DIR = "{{config_root}}/ansible/playbooks"
 ANSIBLE_COLLECTIONS_PATH = "{{config_root}}/.cache/ansible/collections"
@@ -42,7 +42,7 @@ KUBECONFIG = "{{config_root}}/.private/talos/kubeconfig"
 TALOSCONFIG = "{{config_root}}/.private/talos/clusterconfig/talosconfig"
 
 [tools]
-"python" = "3.13"
+"python" = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"
 "pipx:makejinja" = "2.8.1"
 "asdf:MetricMike/asdf-awscli" = "2.29.0"
 "aqua:cli/cli" = "2.78.0" # GitHub CLI
@@ -51,9 +51,6 @@ TALOSCONFIG = "{{config_root}}/.private/talos/clusterconfig/talosconfig"
 "aqua:evilmartians/lefthook" = "1.12.4"
 "aqua:go-task/task" = "3.44.1"
 "aqua:hashicorp/vault" = "1.20.3"
-
-# ansible
-"pipx:ansible-core" = "2.18.1"
 
 # kubernetes
 "aqua:budimanjojo/talhelper" = "3.0.34"

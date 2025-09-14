@@ -34,9 +34,20 @@ k8s:
     k8s-nuc:
       ip_addr: 10.11.80.11/24
       mac_addr: 00:00:22:50:36:46
+      cluster_network:
+        ip_addr: 192.168.80.11/24
+        mac_addr: 48:21:0b:55:89:ab
     k8s-opti-01:
       ip_addr: 10.11.80.12/24
       mac_addr: 54:bf:64:a1:1c:00
+      cluster_network:
+        ip_addr: 192.168.80.12/24
+        mac_addr: 02:26:25:02:06:43
     k8s-opti-02:
       ip_addr: 10.11.80.13/24
       mac_addr: d8:9e:f3:82:d6:59
+      cluster_network:
+        ip_addr: 192.168.80.13/24
+        mac_addr: 02:26:25:02:06:51
+  vars:
+    vip_addr: 10.11.80.80/24
