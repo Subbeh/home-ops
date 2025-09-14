@@ -3,7 +3,7 @@
 version: "3"
 
 tasks:
-  init:talsecret:
+  init:gensecret:
     desc: Create talsecret.yaml file
     cmds:
       - mkdir -p {{.PRIVATE_DIR}}/talos
@@ -20,18 +20,17 @@ tasks:
     generates:
       - "{{.PRIVATE_DIR}}/talos/clusterconfig/*.yaml"
       - "{{.PRIVATE_DIR}}/talos/clusterconfig/talosconfig"
-    sources:
-      - talconfig.yaml
-      - talenv.yaml
-      - patches/**/*.yaml
-      - "{{.PRIVATE_DIR}}/talos/talsecret.yaml"
+    preconditions:
+      - test -f talconfig.yaml
+      - test -f talenv.yaml
+      - test -f "{{.PRIVATE_DIR}}/talos/talsecret.yaml"
 
   init:bootstrap:
     desc: Apply the Talos configuration and bootstrap the cluster
     cmd: |
       pushd "{{.PRIVATE_DIR}}/talos"
-      talhelper gencommand apply --config-file "{{.TASK_DIR}}/talconfig.yaml" --env-file "{{.TASK_DIR}}/talenv.yaml" --extra-flags="--insecure"
-      until talhelper gencommand bootstrap | \
+      talhelper gencommand apply --config-file "{{.TASK_DIR}}/talconfig.yaml" --env-file "{{.TASK_DIR}}/talenv.yaml" --extra-flags="{{- if ne .INSECURE "false" }}--insecure{{ end }}" | bash
+      until talhelper gencommand bootstrap --config-file "{{.TASK_DIR}}/talconfig.yaml" --env-file "{{.TASK_DIR}}/talenv.yaml" | \
         bash; do sleep 10; done
     preconditions:
       - "ls {{.PRIVATE_DIR}}/talos/clusterconfig/*.yaml"
@@ -46,3 +45,30 @@ tasks:
         sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
     preconditions:
       - talosctl --nodes {{.NODE}} get machineconfig
+
+  reboot:*:
+    desc: Reboot a node [MODE=powercycle]
+    prompt: "Reboot node {{.MATCH}}?"
+    cmd: talosctl -n {{.NODE}} reboot -m {{.MODE}}
+    vars:
+      NODE: "{{index .MATCH 0}}"
+      MODE: '{{.MODE | default "powercycle"}}'
+
+  reset:*:
+    desc: Reset a node
+    prompt: "Reset node {{.MATCH}}?"
+    cmd: talosctl -n {{.NODE}} reset --graceful=false
+    vars:
+      NODE: "{{index .MATCH 0}}"
+    preconditions:
+      - talosctl --nodes {{.NODE}} get machineconfig
+
+  reset:all:
+    desc: Reset Talos across the whole cluster
+    prompt: Reset the Talos cluster?
+    cmd: talosctl -n {{.NODES}} reset --graceful=false --reboot
+    vars:
+      NODES:
+        sh: talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+    preconditions:
+      - talosctl --nodes {{.NODES}} get machineconfig
