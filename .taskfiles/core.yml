@@ -4,12 +4,19 @@ version: "3"
 
 tasks:
   :init:*:
-    desc: Initialize dependencies ([ansible, krew])
+    desc: Initialize dependencies ([pip, ansible, krew])
     vars:
       DEP: "{{index .MATCH 0}}"
     cmds:
       - echo "Initializing dependencies for {{.DEP}}"
-      - task: init_{{.DEP}}
+      - task: init-{{.DEP}}
+
+  :init:all:
+    desc: Initialize all dependencies
+    cmd: |
+      yq '.tasks | keys | .[] | select(. == "init-*")' {{.TASKFILE}} | while read task; do
+        task init:${task#init-}
+      done
 
   :update:
     desc: Update all dependencies
@@ -19,23 +26,30 @@ tasks:
 
   :template:
     desc: Template Jinja2 file
-    cmd: "minijinja-cli {{.IN_FILE}}"
-    vars:
-      IN_FILE: "{{index .CLI_ARGS_LIST 0}}"
-      OUT_FILE: "{{index .CLI_ARGS_LIST 1}}"
+    cmd: ansible localhost -m template -a "src={{.ROOT_DIR}}/{{.IN}} dest={{.ROOT_DIR}}/{{.OUT}}"
     preconditions:
-      - test -f "{{.IN_FILE}}"
+      - test -f "{{.IN}}"
+    requires:
+      vars: [IN, OUT]
 
-  init_ansible:
+  init-python:
+    internal: true
+    desc: Initialize Python modules
+    cmds:
+      - uv pip install -r {{.ROOT_DIR}}/requirements.txt
+    preconditions:
+      - test -f {{.ROOT_DIR}}/requirements.txt
+      - command -v uv >/dev/null
+
+  init-ansible:
     internal: true
     desc: Initialize Ansible dependencies
     dir: "{{.ANSIBLE_DIR}}"
     cmds:
-      - uv pip install -r requirements.txt
       - ansible-galaxy collection install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/collections" --force
       - ansible-galaxy role install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/roles" --force
 
-  init_krew:
+  init-krew:
     internal: true
     desc: Initialize kubectl krew plugins
     cmds:

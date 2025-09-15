@@ -18,7 +18,7 @@ ansible_root: "{{ playbook_dir }}/.."
 common_root_dir: "{{ ansible_root }}/.."
 common_private_dir: "{{ common_root_dir }}/.private"
 
-common_pub_key_file: "{{ common_private_dir }}/homelab.key.pub"
+common_pub_key_file: "{{ common_private_dir }}/core/home-ops.key.pub"
 common_pub_key: "{{ lookup('file', common_pub_key_file) }}"
 common_timezone: "Australia/Melbourne"
 common_data_dir: "/opt/data"

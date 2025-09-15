@@ -21,6 +21,8 @@ pve:
     pve-nas:
       ansible_user: root
       ip_addr: 10.11.10.101/24
+      cluster_network:
+        ip_addr: 192.168.80.100/24
 vm:
   hosts:
     opnsense:
@@ -51,3 +53,7 @@ k8s:
         mac_addr: 02:26:25:02:06:51
   vars:
     vip_addr: 10.11.80.80/24
+    gateway_int: 10.11.80.100/24
+    gateway_root: 10.11.80.101/24
+    gateway_ext: 10.11.80.200/24
+    gateway_dns: 10.11.80.10/24

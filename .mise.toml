@@ -16,7 +16,6 @@ run = "find -name '.ansible' -type d -exec rm -r {} +"
 _.python.venv = { path = ".venv", create = true }
 MISE_ENV = true
 HISTFILE = "{{config_root}}/.cache/zsh_history"
-MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 
 # vault
 _.file = [
@@ -43,7 +42,6 @@ TALOSCONFIG = "{{config_root}}/.private/talos/clusterconfig/talosconfig"
 
 [tools]
 "python" = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"
-"pipx:makejinja" = "2.8.1"
 "asdf:MetricMike/asdf-awscli" = "2.29.0"
 "aqua:cli/cli" = "2.78.0" # GitHub CLI
 "aqua:jqlang/jq" = "1.8.1"

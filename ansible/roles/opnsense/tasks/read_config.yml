@@ -11,7 +11,7 @@
 
 - name: Parse XML config into variable
   ansible.builtin.set_fact:
-    opnsense_config: "{{ config_file_content['content'] | b64decode | ansible.utils.from_xml | from_json | community.general.json_query('opnsense') }}"
+    opnsense_config: "{{ (config_file_content['content'] | b64decode | ansible.utils.from_xml | from_yaml)['opnsense'] }}"
   no_log: true
 
 - name: Create interface name to device mapping
