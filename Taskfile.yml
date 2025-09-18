@@ -6,8 +6,10 @@ vars:
   ANSIBLE_DIR: "{{.ROOT_DIR}}/ansible"
   TERRAFORM_DIR: "{{.ROOT_DIR}}/terraform"
   K8S_DIR: "{{.ROOT_DIR}}/kubernetes"
+  TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/talos"
   PRIVATE_DIR: "{{.ROOT_DIR}}/.private"
   TEMP_DIR: "{{.ROOT_DIR}}/.temp"
+  CACHE_DIR: "{{.ROOT_DIR}}/.cache"
 
 includes:
   core: .taskfiles/core.yml

@@ -4,71 +4,105 @@ version: "3"
 
 tasks:
   init:gensecret:
-    desc: Create talsecret.yaml file
+    desc: Create Talos secret file
     cmds:
       - mkdir -p {{.PRIVATE_DIR}}/talos
-      - talhelper gensecret > {{.PRIVATE_DIR}}/talos/talsecret.yaml
+      - talosctl gen secrets -o {{.PRIVATE_DIR}}/talos/talsecret.yaml
     generates:
       - "{{.PRIVATE_DIR}}/talos/talsecret.yaml"
     status:
       - test -f {{.PRIVATE_DIR}}/talos/talsecret.yaml
 
   init:genconfig:
-    desc: Initialize Talos configs
+    desc: Generate Talos config
     cmds:
-      - talhelper genconfig --env-file talenv.yaml --secret-file {{.PRIVATE_DIR}}/talos/talsecret.yaml --out-dir {{.PRIVATE_DIR}}/talos/clusterconfig --no-gitignore
-    generates:
-      - "{{.PRIVATE_DIR}}/talos/clusterconfig/*.yaml"
-      - "{{.PRIVATE_DIR}}/talos/clusterconfig/talosconfig"
+      - mkdir -p {{.PRIVATE_DIR}}/talos/nodes
+      - |
+        ansible localhost -m template \
+          -a "src={{.TALOS_DIR}}/machineconfig.yaml.j2 dest={{.PRIVATE_DIR}}/talos/machineconfig.yaml" \
+          -e "schematic={{.SCHEMATIC}}" \
+          -e @"{{.PRIVATE_DIR}}/talos/talsecret.yaml"
+      - |
+        for file in "{{.TALOS_DIR}}/nodes/"*.yaml.j2; do
+          node="$(basename $file .yaml.j2)"
+          ansible localhost -m template -a "src=$file dest={{.PRIVATE_DIR}}/talos/nodes/$node.yaml"
+        done
+      - |
+        talosctl gen config home-ops https://{{.CLUSTER_ENDPOINT}}:6443 \
+          --with-secrets "{{.PRIVATE_DIR}}/talos/talsecret.yaml" \
+          --output "{{.PRIVATE_DIR}}/talos/talosconfig.yaml" \
+          --output-types talosconfig \
+          --force
+    vars:
+      SCHEMATIC:
+        sh: curl -sX POST --data-binary @schematic.yaml "https://factory.talos.dev/schematics" | jq -r '.id'
+      CLUSTER_ENDPOINT:
+        sh: yq '.k8s.vars.cluster_endpoint' < "{{.ANSIBLE_DIR}}/inventory.yml"
     preconditions:
-      - test -f talconfig.yaml
-      - test -f talenv.yaml
+      - test -f schematic.yaml
+      - test -f machineconfig.yaml.j2
       - test -f "{{.PRIVATE_DIR}}/talos/talsecret.yaml"
+      - test -f "{{.ANSIBLE_DIR}}/inventory.yml"
+
+  init:apply:*:
+    desc: Apply Talos config to node [vars INSECURE=true]
+    cmds:
+      - echo {{.NODE}}
+      - |
+        talosctl apply-config \
+          -f "{{.PRIVATE_DIR}}/talos/machineconfig.yaml" \
+          --nodes {{.NODE}} \
+          --config-patch "@{{.PRIVATE_DIR}}/talos/nodes/{{.NODE}}.yaml" {{if .INSECURE}}--insecure{{end}}
+      - talosctl config endpoint {{.NODE}}
+      - talosctl config node {{.NODE}}
+    vars:
+      NODE: "{{index .MATCH 0}}"
+      INSECURE:
+        sh: talosctl --nodes {{.NODE}} get machineconfig &> /dev/null || echo true
+    preconditions:
+      - test -f "{{.PRIVATE_DIR}}/talos/machineconfig.yaml"
+      - test -f "{{.PRIVATE_DIR}}/talos/nodes/{{.NODE}}.yaml"
 
   init:bootstrap:
-    desc: Apply the Talos configuration and bootstrap the cluster
-    cmd: |
-      pushd "{{.PRIVATE_DIR}}/talos"
-      talhelper gencommand apply --config-file "{{.TASK_DIR}}/talconfig.yaml" --env-file "{{.TASK_DIR}}/talenv.yaml" --extra-flags="{{- if ne .INSECURE "false" }}--insecure{{ end }}" | bash
-      until talhelper gencommand bootstrap --config-file "{{.TASK_DIR}}/talconfig.yaml" --env-file "{{.TASK_DIR}}/talenv.yaml" | \
-        bash; do sleep 10; done
-    preconditions:
-      - "ls {{.PRIVATE_DIR}}/talos/clusterconfig/*.yaml"
-      - test -f "{{.TASK_DIR}}/talconfig.yaml"
-      - test -f "{{.TASK_DIR}}/talenv.yaml"
+    desc: Bootstrap Talos cluster [vars NODE]
+    cmd: talosctl --nodes {{.NODE | default .DEFAULT_NODE}} bootstrap
+    vars:
+      DEFAULT_NODE:
+        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
 
   init:kubeconfig:
-    desc: Get kubeconfig file
-    cmd: talosctl kubeconfig "{{.PRIVATE_DIR}}/talos" --force --nodes={{.NODE}};
+    desc: Fetch kubeconfig for Talos cluster [vars NODE]
+    cmd: talosctl --nodes {{.NODE | default .DEFAULT_NODE}} --endpoints {{.NODE | default .DEFAULT_NODE}} kubeconfig -f --force-context-name main {{.PRIVATE_DIR}}/talos/
     vars:
-      NODE:
+      DEFAULT_NODE:
         sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
-    preconditions:
-      - talosctl --nodes {{.NODE}} get machineconfig
 
   reboot:*:
-    desc: Reboot a node [MODE=powercycle]
-    prompt: "Reboot node {{.MATCH}}?"
-    cmd: talosctl -n {{.NODE}} reboot -m {{.MODE}}
+    desc: Reboot a Talos node
+    prompt: Reboot node {{.NODE}}?
+    cmd: echo talosctl --nodes {{.NODE}} reboot -m powercycle
     vars:
-      NODE: "{{index .MATCH 0}}"
-      MODE: '{{.MODE | default "powercycle"}}'
-
-  reset:*:
-    desc: Reset a node
-    prompt: "Reset node {{.MATCH}}?"
-    cmd: talosctl -n {{.NODE}} reset --graceful=false
-    vars:
-      NODE: "{{index .MATCH 0}}"
+      NODE:
+        sh: |
+          if [[ "{{index .MATCH 0}}" == "all" ]]; then
+            talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+          else
+            echo {{index .MATCH 0}}
+          fi
     preconditions:
       - talosctl --nodes {{.NODE}} get machineconfig
 
-  reset:all:
-    desc: Reset Talos across the whole cluster
-    prompt: Reset the Talos cluster?
-    cmd: talosctl -n {{.NODES}} reset --graceful=false --reboot
+  reset:*:
+    desc: Reset a Talos node ["all" for all nodes]
+    prompt: Reset node {{.NODE}}?
+    cmd: echo talosctl --nodes {{.NODE}} reset --graceful=false
     vars:
-      NODES:
-        sh: talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+      NODE:
+        sh: |
+          if [[ "{{index .MATCH 0}}" == "all" ]]; then
+            talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+          else
+            echo {{index .MATCH 0}}
+          fi
     preconditions:
-      - talosctl --nodes {{.NODES}} get machineconfig
+      - talosctl --nodes {{.NODE}} get machineconfig

@@ -38,7 +38,7 @@ ANSIBLE_GALAXY_TOKEN_PATH = "{{config_root}}/.cache/galaxy_token"
 
 # kubernetes
 KUBECONFIG = "{{config_root}}/.private/talos/kubeconfig"
-TALOSCONFIG = "{{config_root}}/.private/talos/clusterconfig/talosconfig"
+TALOSCONFIG = "{{config_root}}/.private/talos/talosconfig.yaml"
 
 [tools]
 "python" = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"

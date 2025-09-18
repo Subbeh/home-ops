@@ -2,7 +2,7 @@
 syncthing:
   host: vps
   container:
-    image: ghcr.io/syncthing/syncthing:2.0.0-rc.24
+    image: ghcr.io/syncthing/syncthing:2.0.9
     network_mode: host
     networks: []
     userns_mode: host

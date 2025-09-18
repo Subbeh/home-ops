@@ -76,13 +76,13 @@
       host_nas: { desc: NAS address, type: host, content: "{{ hostvars['pve-nas'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_mgmt: { desc: Management VM address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_services: { desc: Services LXC address, type: host, content: "{{ hostvars['services'].ip_addr | ansible.utils.ipaddr('address') }}" }
-      host_k8s_api: { desc: Kubernetes API server, type: host, content: "{{ hostvars[groups['k8s'][0]].vip_addr | ansible.utils.ipaddr('address') }}" }
+      host_k8s_vip: { desc: Kubernetes VIP endpoint, type: host, content: "{{ hostvars[groups['k8s'][0]].vip_addr }}" }
       host_k8s_int_gw: { desc: Kubernetes Internal Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
       host_k8s_root_gw: { desc: Kubernetes Internal Root Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
       host_k8s_ext_gw: { desc: Kubernetes External Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_root | ansible.utils.ipaddr('address') }}" }
       host_k8s_dns_gw: { desc: Kubernetes DNS Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_dns | ansible.utils.ipaddr('address') }}" }
       host_nas_k8s: { desc: NAS Kubernetes address, type: host, content: "{{ hostvars['pve-nas'].cluster_network.ip_addr | ansible.utils.ipaddr('address') }}" }
-      host_opnsense_k8s: { desc: OPNsense K8S VLAN Interface, type: host, content: "{{ hostvars[groups['k8s'][0]].vip_addr | ansible.utils.nthhost(1) }}" }
+      host_opnsense_k8s: { desc: OPNsense K8S VLAN Interface, type: host, content: "{{ hostvars[groups['k8s'][0]].cluster_cidr | ansible.utils.nthhost(1) }}" }
       host_unifi: { desc: Unifi Controller address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_pve_fw: { desc: Proxmox VE Firewall Host, type: host, content: "{{ hostvars['pve-fw'].ip_addr | ansible.utils.ipaddr('address') }}" }
       ports_web: { desc: HTTP(S) ports, type: port, content: ["80", "443"] }
@@ -120,7 +120,7 @@
         allow_k8s_vps: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_vps.content }}", description: Allow all traffic from K8S to vps }
         allow_k8s_services: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_services.content }}", description: Allow all traffic from K8S to services }
         allow_k8s_mgmt: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_mgmt.content }}", description: Allow all traffic from K8S to mgmt }
-        allow_mgmt_k8s_api: { interface: INFRAGroup, protocol: TCP, source: "{{ aliases.host_mgmt.content }}", destination: "{{ aliases.host_k8s_api.content }}", destination_port: ports_k8s_api, description: Allow K8S API access to mgmt }
+        allow_mgmt_k8s_api: { interface: INFRAGroup, protocol: TCP, source: "{{ aliases.host_mgmt.content }}", destination: "{{ aliases.host_k8s_vip.content }}", destination_port: ports_k8s_api, description: Allow K8S API access to mgmt }
         allow_wan_k8s_external_web: { interface: WANGroup, protocol: TCP, destination: "{{ aliases.host_k8s_ext_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) to K8S External Gateway }
         block_wan_k8s_internal_web: { interface: WANGroup, protocol: TCP, destination: "{{ aliases.host_k8s_int_gw.content }}", destination_port: ports_web, action: block, description: Block HTTP(S) to K8S Internal Gateway }
         allow_infra_k8s_web: { interface: INFRAGroup, protocol: TCP, destination: "{{ aliases.host_k8s_int_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) from INFRA to K8S Internal Gateway }
@@ -161,6 +161,11 @@
           domain: "{{ net_domain_loc }}"
           ip: "{{ aliases.host_unifi.content }}"
           description: "Unifi Controller endpoint"
+        - hostname: k8s
+          domain: "{{ net_domain_loc }}"
+          ip: "{{ aliases.host_k8s_vip.content }}"
+          description: "Kubernetes VIP endpoint"
+
       query_forwarding:
         - domain: sbbh.cloud
           target: "{{ aliases.host_k8s_dns_gw.content }}"

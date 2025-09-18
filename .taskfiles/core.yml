@@ -26,7 +26,7 @@ tasks:
 
   :template:
     desc: Template Jinja2 file
-    cmd: ansible localhost -m template -a "src={{.ROOT_DIR}}/{{.IN}} dest={{.ROOT_DIR}}/{{.OUT}}"
+    cmd: ansible localhost -m template -a "src={{.ROOT_DIR}}/{{.IN}} dest={{.ROOT_DIR}}/{{.OUT}}" {{.ARGS}}
     preconditions:
       - test -f "{{.IN}}"
     requires:
