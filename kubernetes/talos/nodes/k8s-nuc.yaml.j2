@@ -1,0 +1,28 @@
+machine:
+  nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
+  install:
+    disk: /dev/nvme0n1
+  network:
+    hostname: k8s-nuc
+    interfaces:
+      - deviceSelector:
+          hardwareAddr: "{{ hostvars['k8s-nuc'].mac_addr }}"
+        addresses:
+          - {{ hostvars['k8s-nuc'].ip_addr }}
+        routes:
+          - network: 0.0.0.0/0
+            gateway: {{ hostvars['k8s-nuc'].ip_addr | ansible.utils.nthhost(1) }}
+        mtu: 1500
+        dhcp: false
+        vip:
+          ip: {{ hostvars['k8s-nuc'].vip_addr }}
+      - deviceSelector:
+          hardwareAddr: "{{ hostvars['k8s-nuc'].internal.mac_addr }}"
+        addresses:
+          -  {{ hostvars['k8s-nuc'].internal.ip_addr }}
+        routes:
+          - network: {{ hostvars['k8s-nuc'].internal.ip_addr | ansible.utils.nthhost(0) }}/24
+            gateway: ""
+        mtu: 9000
+        dhcp: false
