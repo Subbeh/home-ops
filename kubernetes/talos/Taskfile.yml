@@ -21,18 +21,21 @@ tasks:
         ansible localhost -m template \
           -a "src={{.TALOS_DIR}}/machineconfig.yaml.j2 dest={{.PRIVATE_DIR}}/talos/machineconfig.yaml" \
           -e "schematic={{.SCHEMATIC}}" \
-          -e @"{{.PRIVATE_DIR}}/talos/talsecret.yaml"
-      - |
-        for file in "{{.TALOS_DIR}}/nodes/"*.yaml.j2; do
-          node="$(basename $file .yaml.j2)"
-          ansible localhost -m template -a "src=$file dest={{.PRIVATE_DIR}}/talos/nodes/$node.yaml"
-        done
+          -e @"{{.PRIVATE_DIR}}/talos/talsecret.yaml" \
+          --become=false
       - |
         talosctl gen config home-ops https://{{.CLUSTER_ENDPOINT}}:6443 \
           --with-secrets "{{.PRIVATE_DIR}}/talos/talsecret.yaml" \
           --output "{{.PRIVATE_DIR}}/talos/talosconfig.yaml" \
           --output-types talosconfig \
           --force
+      - |
+        for file in "{{.TALOS_DIR}}/nodes/"*.yaml.j2; do
+          node="$(basename $file .yaml.j2)"
+          ansible localhost -m template -a "src=$file dest={{.PRIVATE_DIR}}/talos/nodes/$node.yaml" --become=false
+          talosctl config endpoint $node
+          talosctl config node $node
+        done
     vars:
       SCHEMATIC:
         sh: curl -sX POST --data-binary @schematic.yaml "https://factory.talos.dev/schematics" | jq -r '.id'
@@ -53,8 +56,6 @@ tasks:
           -f "{{.PRIVATE_DIR}}/talos/machineconfig.yaml" \
           --nodes {{.NODE}} \
           --config-patch "@{{.PRIVATE_DIR}}/talos/nodes/{{.NODE}}.yaml" {{if .INSECURE}}--insecure{{end}}
-      - talosctl config endpoint {{.NODE}}
-      - talosctl config node {{.NODE}}
     vars:
       NODE: "{{index .MATCH 0}}"
       INSECURE:
@@ -78,14 +79,14 @@ tasks:
         sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
 
   reboot:*:
-    desc: Reboot a Talos node
+    desc: Reboot a Talos node ["all" for all nodes]
     prompt: Reboot node {{.NODE}}?
-    cmd: echo talosctl --nodes {{.NODE}} reboot -m powercycle
+    cmd: talosctl --nodes {{.NODE}} reboot -m powercycle
     vars:
       NODE:
         sh: |
           if [[ "{{index .MATCH 0}}" == "all" ]]; then
-            talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+            talosctl config info --output json 2>/dev/null | jq --exit-status --join-output '[.nodes[] // empty] | join(",")' || echo "no-nodes-configured"
           else
             echo {{index .MATCH 0}}
           fi
@@ -95,14 +96,50 @@ tasks:
   reset:*:
     desc: Reset a Talos node ["all" for all nodes]
     prompt: Reset node {{.NODE}}?
-    cmd: echo talosctl --nodes {{.NODE}} reset --graceful=false
+    cmd: talosctl --nodes {{.NODE}} reset --graceful=false
     vars:
       NODE:
         sh: |
           if [[ "{{index .MATCH 0}}" == "all" ]]; then
-            talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
+            talosctl config info --output json 2>/dev/null | jq --exit-status --join-output '[.nodes[] // empty] | join(",")' || echo "no-nodes-configured"
           else
             echo {{index .MATCH 0}}
           fi
     preconditions:
       - talosctl --nodes {{.NODE}} get machineconfig
+
+  shutdown:*:
+    desc: Shutdown a Talos node ["all" for all nodes]
+    prompt: Shutdown node {{.NODE}}?
+    cmd: talosctl --nodes {{.NODES}} shutdown --force
+    vars:
+      NODE:
+        sh: |
+          if [[ "{{index .MATCH 0}}" == "all" ]]; then
+            talosctl config info --output json 2>/dev/null | jq --exit-status --join-output '[.nodes[] // empty] | join(",")' || echo "no-nodes-configured"
+          else
+            echo {{index .MATCH 0}}
+          fi
+    preconditions:
+      - talosctl --nodes {{.NODES}} get machineconfig
+
+  upgrade:kubernetes:
+    desc: Upgrade Kubernetes version on the cluster [vars VERSION]
+    prompt: Upgrade Kubernetes to version {{.VERSION}}?
+    cmd: talosctl --nodes {{.NODE | default .DEFAULT_NODE}} upgrade-k8s --to {{.VERSION}}
+    requires:
+      vars: [VERSION]
+    vars:
+      DEFAULT_NODE:
+        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
+
+  upgrade:talos:*:
+    desc: Upgrade Talos version on a node [vars VERSION NODE]
+    prompt: Upgrade Talos to version {{.VERSION}} on node {{.NODE}}?
+    cmd: talosctl -n {{.NODE}} upgrade -i {{.MACHINE_IMAGE}} -m powercycle --timeout=10m
+    requires:
+      vars: [VERSION, NODE]
+    vars:
+      NODE: "{{index .MATCH 0}}"
+      MACHINE_IMAGE:
+        sh: talosctl --nodes {{.NODE}} get machineconfig --output=jsonpath='{.spec}' | yq -e 'select(.machine) | .machine.install.image'
