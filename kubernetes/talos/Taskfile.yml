@@ -22,7 +22,7 @@ tasks:
           -a "src={{.TALOS_DIR}}/machineconfig.yaml.j2 dest={{.PRIVATE_DIR}}/talos/machineconfig.yaml" \
           -e "schematic={{.SCHEMATIC}}" \
           -e @"{{.PRIVATE_DIR}}/talos/talsecret.yaml" \
-          --become=false
+          --become-user $USER
       - |
         talosctl gen config home-ops https://{{.CLUSTER_ENDPOINT}}:6443 \
           --with-secrets "{{.PRIVATE_DIR}}/talos/talsecret.yaml" \
@@ -32,7 +32,7 @@ tasks:
       - |
         for file in "{{.TALOS_DIR}}/nodes/"*.yaml.j2; do
           node="$(basename $file .yaml.j2)"
-          ansible localhost -m template -a "src=$file dest={{.PRIVATE_DIR}}/talos/nodes/$node.yaml" --become=false
+          ansible localhost -m template -a "src=$file dest={{.PRIVATE_DIR}}/talos/nodes/$node.yaml" --become-user $USER
           talosctl config endpoint $node
           talosctl config node $node
         done

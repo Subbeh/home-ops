@@ -1,0 +1,23 @@
+---
+- name: Pulling existing config
+  ansibleguy.opnsense.list:
+    target: "frr_bgp_general"
+
+- name: Enable FRR routing
+  ansibleguy.opnsense.frr_general:
+    enabled: true
+
+- name: Configure BGP
+  ansibleguy.opnsense.frr_bgp_general:
+    as_number: "{{ bgp.as_number }}"
+    enabled: true
+
+- name: Configure BGP neighbors
+  ansibleguy.opnsense.frr_bgp_neighbor:
+    as_number: "{{ bgp.as_number }}"
+    ip: "{{ hostvars[item].ip_addr | ansible.utils.ipaddr('address') }}"
+    source_int: "{{ bgp.source_int }}"
+    next_hop_self: true
+    description: "{{ item }}"
+    match_fields: ["ip", "description"]
+  loop: "{{ bgp.neighbors }}"

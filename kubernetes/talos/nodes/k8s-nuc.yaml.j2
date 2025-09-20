@@ -6,17 +6,20 @@ machine:
   network:
     hostname: k8s-nuc
     interfaces:
-      - deviceSelector:
-          hardwareAddr: "{{ hostvars['k8s-nuc'].mac_addr }}"
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: "{{ hostvars['k8s-nuc'].mac_addr }}"
+          mode: active-backup
         addresses:
           - {{ hostvars['k8s-nuc'].ip_addr }}
         routes:
           - network: 0.0.0.0/0
             gateway: {{ hostvars['k8s-nuc'].ip_addr | ansible.utils.nthhost(1) }}
-        mtu: 1500
-        dhcp: false
         vip:
           ip: {{ hostvars['k8s-nuc'].vip_addr }}
+        mtu: 1500
+        dhcp: true
       - deviceSelector:
           hardwareAddr: "{{ hostvars['k8s-nuc'].internal.mac_addr }}"
         addresses:

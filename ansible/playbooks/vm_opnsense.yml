@@ -165,10 +165,14 @@
           domain: "{{ net_domain_loc }}"
           ip: "{{ aliases.host_k8s_vip.content }}"
           description: "Kubernetes VIP endpoint"
-
       query_forwarding:
         - domain: sbbh.cloud
           target: "{{ aliases.host_k8s_dns_gw.content }}"
+
+    bgp:
+      as_number: 64500
+      neighbors: "{{ groups['k8s'] }}"
+      source_int: "{{ interface_mapping['K8S'] }}"
 
     plugins:
       - os-debug
@@ -177,6 +181,7 @@
       - os-node_exporter
       - os-postfix
       - os-qemu-guest-agent
+      - os-frr
 
     acme_email: "cert@{{ net_domain }}"
 
@@ -212,6 +217,10 @@
     - name: Create firewall rules
       tags: firewall
       ansible.builtin.import_tasks: ../roles/opnsense/tasks/firewall.yml
+
+    - name: Setup BGP routing
+      tags: bgp
+      ansible.builtin.import_tasks: ../roles/opnsense/tasks/bgp.yml
 
     - name: Set up Postfix
       tags: postfix
