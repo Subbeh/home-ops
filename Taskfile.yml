@@ -14,9 +14,9 @@ vars:
 includes:
   core: .taskfiles/core.yml
   secrets: .taskfiles/secrets
-  talos:
-    taskfile: kubernetes/talos
-    dir: kubernetes/talos
+  k8s:
+    taskfile: kubernetes/
+    dir: kubernetes/
 
 tasks:
   default:

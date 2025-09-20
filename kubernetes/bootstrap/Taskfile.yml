@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  BOOTSTRAP_DIR: "{{.K8S_DIR}}/bootstrap"
+
+tasks:
+  ns:
+    desc: Create Kubernetes namespaces
+    silent: true
+    cmd: |
+      find "{{.K8S_DIR}}/apps" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | while IFS= read -r ns; do
+        if ! kubectl create namespace "$ns" --dry-run=client -o yaml | kubectl apply --server-side -f -; then
+          echo "ERROR: Failed to apply namespace $ns"
+        fi
+      done
+
+  crds:
+    desc: Apply Helmfile CRDs
+    silent: true
+    cmd: |
+      if ! helmfile -f "{{.BOOTSTRAP_DIR}}/helmfile.d/00-crds.yaml" template -q | kubectl apply --server-side -f -; then
+        echo "ERROR: Failed to apply CRDs"
+      fi
+
+  apps:
+    desc: Apply Helmfile apps
+    silent: true
+    cmd: |
+      if ! helmfile -f "{{.BOOTSTRAP_DIR}}/helmfile.d/00-apps.yaml" template -q | kubectl apply --server-side -f -; then
+        echo "ERROR: Failed to sync helmfile"
+      fi
