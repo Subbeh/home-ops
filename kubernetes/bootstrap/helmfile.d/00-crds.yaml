@@ -13,13 +13,18 @@ helmDefaults:
     - yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -
 
 releases:
+  # - name: external-secrets
+  #   namespace: external-secrets
+  #   chart: oci://ghcr.io/external-secrets/charts/external-secrets
+  #   version: 0.19.2
+
   - name: external-dns
     namespace: network
     chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
     version: 1.19.0
 
   - name: envoy-gateway
-    namespace: networking
+    namespace: network
     chart: oci://docker.io/envoyproxy/gateway-helm
     version: 1.5.1
 
@@ -32,8 +37,3 @@ releases:
     namespace: observability
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
     version: 77.9.1
-
-  - name: external-secrets
-    namespace: external-secrets
-    chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 0.19.2

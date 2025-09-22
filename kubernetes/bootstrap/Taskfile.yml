@@ -31,3 +31,50 @@ tasks:
       if ! helmfile -f "{{.BOOTSTRAP_DIR}}/helmfile.d/01-apps.yaml" sync --hide-notes; then
         echo "ERROR: Failed to sync helmfile"
       fi
+
+  vault:
+    desc: Setup Kubernetes Vault authentication
+    cmds:
+      - task: vault:auth
+      - task: vault:role
+      - task: vault:resources
+      - task: vault:token
+    vars:
+      K8S_HOST:
+        sh: kubectl config view -o jsonpath='{.clusters[0].cluster.server}'
+    preconditions:
+      - vault status &>/dev/null
+
+  vault:auth:
+    desc: Enable kubernetes auth
+    internal: true
+    cmds:
+      - vault auth list | grep -q "home-ops/" || vault auth enable -path=home-ops kubernetes
+      - |
+        vault write auth/home-ops/config \
+          kubernetes_host="$(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')" \
+          kubernetes_ca_cert="$(kubectl config view --raw -o jsonpath='{.clusters[0].cluster.certificate-authority-data}' | base64 -d)"
+
+  vault:role:
+    desc: Create authentication role
+    internal: true
+    cmd: |
+      vault write auth/home-ops/role/external-secrets \
+        bound_service_account_names="external-secrets" \
+        bound_service_account_namespaces="*" \
+        policies="ops" \
+        ttl=24h || echo "Role may already exist, continuing..."
+
+  vault:resources:
+    desc: Create Kubernetes resources
+    internal: true
+    cmd: kubectl apply -f {{.TASKFILE_DIR}}/../apps/external-secrets/external-secrets/app/vault/clustersecretstore.yaml
+    preconditions:
+      - test -f {{.TASKFILE_DIR}}/../apps/external-secrets/external-secrets/app/vault/clustersecretstore.yaml
+
+  vault:token:
+    desc: Configure serviceaccount token
+    internal: true
+    cmd: |
+      until JWT_TOKEN=$(kubectl get secret external-secrets-token -n external-secrets -o jsonpath='{.data.token}' | base64 -d); do sleep 5; done
+      vault write auth/home-ops/login role=external-secrets jwt="$JWT_TOKEN"
