@@ -24,14 +24,6 @@ tasks:
       - mise upgrade
       - kubectl krew update
 
-  :template:
-    desc: Template Jinja2 file
-    cmd: ansible localhost -m template -a "src={{.ROOT_DIR}}/{{.IN}} dest={{.ROOT_DIR}}/{{.OUT}}" {{.ARGS}}
-    preconditions:
-      - test -f "{{.IN}}"
-    requires:
-      vars: [IN, OUT]
-
   init-python:
     internal: true
     desc: Initialize Python modules
