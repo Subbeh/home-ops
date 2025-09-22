@@ -12,6 +12,7 @@ machine:
 
   certSANs:
     - 127.0.0.1
+    - {{ hostvars[groups['k8s'][0]].cluster_endpoint_addr }}
     - {{ hostvars[groups['k8s'][0]].cluster_endpoint }}
 
   kubelet:
@@ -27,13 +28,6 @@ machine:
       validSubnets:
         - {{ hostvars[groups['k8s'][0]].cluster_cidr }}
 
-  network:
-    disableSearchDomain: true
-    extraHostEntries:
-      - ip: {{ hostvars[groups['k8s'][0]].vip_addr }}
-        aliases:
-          - {{ hostvars[groups['k8s'][0]].cluster_endpoint }}
-
   install:
     image: factory.talos.dev/metal-installer/{{ schematic }}:v1.11.1
 
@@ -47,7 +41,7 @@ machine:
       port: 7445
     hostDNS:
       enabled: true
-      forwardKubeDNSToHost: true
+      forwardKubeDNSToHost: false
       resolveMemberNames: true
     kubernetesTalosAPIAccess:
       allowedKubernetesNamespaces:
@@ -108,12 +102,12 @@ cluster:
   id: {{ cluster.id }}
   secret: {{ cluster.secret }}
   controlPlane:
-    endpoint: https://{{ hostvars[groups['k8s'][0]].cluster_endpoint }}:6443
+    endpoint: https://{{ hostvars[groups['k8s'][0]].cluster_endpoint_addr }}:6443
   clusterName: home-ops
   network:
     dnsDomain: cluster.local
     podSubnets:
-      - 10.244.0.0/16
+      - 10.42.0.0/16
     serviceSubnets:
       - 10.96.0.0/12
     cni:
@@ -132,6 +126,7 @@ cluster:
     image: registry.k8s.io/kube-apiserver:v1.34.0
     certSANs:
       - 127.0.0.1
+      - {{ hostvars[groups['k8s'][0]].cluster_endpoint_addr }}
       - {{ hostvars[groups['k8s'][0]].cluster_endpoint }}
     disablePodSecurityPolicy: true
     auditPolicy:
@@ -197,20 +192,3 @@ cluster:
         disabled: false
 
   allowSchedulingOnControlPlanes: true
----
-apiVersion: v1alpha1
-kind: VolumeConfig
-name: EPHEMERAL
-provisioning:
-  diskSelector:
-    match: system_disk
-  maxSize: 512GiB
----
-apiVersion: v1alpha1
-kind: UserVolumeConfig
-name: local-hostpath
-provisioning:
-  diskSelector:
-    match: system_disk
-  maxSize: 256GiB
-

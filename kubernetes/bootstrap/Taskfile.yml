@@ -28,6 +28,6 @@ tasks:
     desc: Apply Helmfile apps
     silent: true
     cmd: |
-      if ! helmfile -f "{{.BOOTSTRAP_DIR}}/helmfile.d/00-apps.yaml" template -q | kubectl apply --server-side -f -; then
+      if ! helmfile -f "{{.BOOTSTRAP_DIR}}/helmfile.d/01-apps.yaml" sync --hide-notes; then
         echo "ERROR: Failed to sync helmfile"
       fi

@@ -16,10 +16,8 @@ machine:
         routes:
           - network: 0.0.0.0/0
             gateway: {{ hostvars['k8s-nuc'].ip_addr | ansible.utils.nthhost(1) }}
-        vip:
-          ip: {{ hostvars['k8s-nuc'].vip_addr }}
+        dhcp: false
         mtu: 1500
-        dhcp: true
       - deviceSelector:
           hardwareAddr: "{{ hostvars['k8s-nuc'].internal.mac_addr }}"
         addresses:

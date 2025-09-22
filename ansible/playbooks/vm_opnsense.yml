@@ -65,32 +65,36 @@
     lan: { subnet: "10.11.254.0/24" }
     vlans:
       - { name: INFRA, interface: trunk, id: 10, subnet: "10.11.10.0/24", desc: "Infra", restricted: false }
-      - { name: K8S, interface: trunk, id: 80, subnet: "10.11.80.0/24", desc: "Kubernetes Cluster", restricted: false }
+      # - { name: K8S, interface: trunk, id: 80, subnet: "10.11.80.0/24", desc: "Kubernetes Cluster", restricted: false }
       - { name: CLIENTS, interface: trunk, id: 100, subnet: "10.11.100.0/24", desc: "Clients", restricted: false }
       - { name: RESTRICTED, interface: trunk, id: 200, subnet: "10.11.200.0/24", desc: "Restricted", restricted: true }
 
     aliases:
+      # networks
       net_tailscale: { desc: Tailscale CIDR, type: network, content: "100.64.0.0/10" }
       net_local_all: { desc: Local Networks, type: network, content: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"] }
+      # hosts
       host_vps: { desc: VPS via Tailscale, type: host, content: "{{ lookup('pipe', 'tailscale status --json | jq -r \".Peer[] | select(.HostName == \\\"vps\\\") | .TailscaleIPs[0]\"') }}" }
       host_nas: { desc: NAS address, type: host, content: "{{ hostvars['pve-nas'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_mgmt: { desc: Management VM address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_services: { desc: Services LXC address, type: host, content: "{{ hostvars['services'].ip_addr | ansible.utils.ipaddr('address') }}" }
-      host_k8s_vip: { desc: Kubernetes VIP endpoint, type: host, content: "{{ hostvars[groups['k8s'][0]].vip_addr }}" }
-      host_k8s_int_gw: { desc: Kubernetes Internal Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
-      host_k8s_root_gw: { desc: Kubernetes Internal Root Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
-      host_k8s_ext_gw: { desc: Kubernetes External Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_root | ansible.utils.ipaddr('address') }}" }
-      host_k8s_dns_gw: { desc: Kubernetes DNS Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_dns | ansible.utils.ipaddr('address') }}" }
+      host_k8s_api_server: { desc: Kubernetes cluster api-server address, type: host, content: "{{ hostvars[groups['k8s'][0]].cluster_endpoint_addr  }}" }
+      # host_k8s_vip: { desc: Kubernetes VIP endpoint, type: host, content: "{{ hostvars[groups['k8s'][0]].vip_addr }}" }
+      # host_k8s_int_gw: { desc: Kubernetes Internal Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
+      # host_k8s_root_gw: { desc: Kubernetes Internal Root Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
+      # host_k8s_ext_gw: { desc: Kubernetes External Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_root | ansible.utils.ipaddr('address') }}" }
+      # host_k8s_dns_gw: { desc: Kubernetes DNS Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_dns | ansible.utils.ipaddr('address') }}" }
       host_nas_k8s: { desc: NAS Kubernetes address, type: host, content: "{{ hostvars['pve-nas'].cluster_network.ip_addr | ansible.utils.ipaddr('address') }}" }
-      host_opnsense_k8s: { desc: OPNsense K8S VLAN Interface, type: host, content: "{{ hostvars[groups['k8s'][0]].cluster_cidr | ansible.utils.nthhost(1) }}" }
+      # host_opnsense_k8s: { desc: OPNsense K8S VLAN Interface, type: host, content: "{{ hostvars[groups['k8s'][0]].cluster_cidr | ansible.utils.nthhost(1) }}" }
       host_unifi: { desc: Unifi Controller address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_pve_fw: { desc: Proxmox VE Firewall Host, type: host, content: "{{ hostvars['pve-fw'].ip_addr | ansible.utils.ipaddr('address') }}" }
+      # ports
       ports_web: { desc: HTTP(S) ports, type: port, content: ["80", "443"] }
       ports_unifi: { desc: Unifi Network Server Ports, type: port, content: ["8080", "10001", "3478"] }
       ports_vault: { desc: Vault Server Ports, type: port, content: ["8200"] }
       ports_nfs: { desc: NFS Ports, type: port, content: ["111", "2049", "20048"] }
       ports_pve_api: { desc: Proxmox VE API Ports, type: port, content: ["8006"] }
-      ports_k8s_api: { desc: Kubernetes API port, type: port, content: ["6443"] }
+      # ports_k8s_api: { desc: Kubernetes API port, type: port, content: ["6443"] }
 
     firewall:
       groups:
@@ -99,11 +103,12 @@
         - { name: VLANGroup, desc: all unrestricted VLAN interfaces, members: "{{ vlans | selectattr('restricted', 'equalto', false) | map(attribute='name') | list }}" }
         - { name: VLANGroupAll, desc: all VLAN interfaces, members: "{{ vlans | map(attribute='name') | list }}" }
         - { name: INFRAGroup, desc: INFRA interface, members: ["INFRA"] }
-        - { name: K8SGroup, desc: K8S interface, members: ["K8S"] }
+        # - { name: K8SGroup, desc: K8S interface, members: ["K8S"] }
         - { name: CLIENTSGroup, desc: CLIENTS interface, members: ["CLIENTS"] }
       rules:
         allow_icmp: { interface: VLANGroup, protocol: ICMP, description: Allow ICMPv4 }
         allow_lan_icmp: { interface: LANGroup, protocol: ICMP, description: Allow LAN ICMPv4 }
+        allow_bgp: { interface: VLANGroup, protocol: TCP, source: __VLANGroupAll_network, destination_port: 179, description: Allow BGP traffic }
         allow_dns_tcp: { interface: VLANGroupAll, protocol: TCP, source: __VLANGroupAll_network, destination_port: 53, description: Allow DNS TCP }
         allow_dns_udp: { interface: VLANGroupAll, protocol: UDP, source: __VLANGroupAll_network, destination_port: 53, description: Allow DNS UDP }
         allow_internet_tcp: { interface: VLANGroupAll, protocol: TCP, source: __VLANGroupAll_network, destination: net_local_all, destination_invert: true, description: Allow all internet TCP }
@@ -114,17 +119,17 @@
         allow_nfs_nas_udp: { interface: VLANGroup, protocol: UDP, destination: "{{ aliases.host_nas.content }}", destination_port: ports_nfs, description: Allow UDP NFS and RPC to NAS from all networks }
         allow_tftp: { interface: VLANGroup, protocol: UDP, source: __VLANGroup_network, destination: "{{ aliases.host_services.content }}", destination_port: 69, description: Allow TFTP to NAS } # TODO
         allow_tftp_out: { interface: INFRAGroup, protocol: UDP, source: "{{ aliases.host_services.content }}", destination_port: 1024-65535, description: Allow TFTP UDP replies } # TODO
-        allow_k8s_opnsense: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_opnsense_k8s.content }}", destination_port: 4443, description: Allow K8S to OPNsense Web UI }
-        allow_k8s_node_exporter: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_opnsense_k8s.content }}", destination_port: 9100, description: Allow K8S to OPNsense Node Exporter }
-        allow_k8s_pve_api: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_pve_fw.content }}", destination_port: ports_pve_api, description: Allow K8S to Proxmox VE API }
-        allow_k8s_vps: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_vps.content }}", description: Allow all traffic from K8S to vps }
-        allow_k8s_services: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_services.content }}", description: Allow all traffic from K8S to services }
-        allow_k8s_mgmt: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_mgmt.content }}", description: Allow all traffic from K8S to mgmt }
-        allow_mgmt_k8s_api: { interface: INFRAGroup, protocol: TCP, source: "{{ aliases.host_mgmt.content }}", destination: "{{ aliases.host_k8s_vip.content }}", destination_port: ports_k8s_api, description: Allow K8S API access to mgmt }
-        allow_wan_k8s_external_web: { interface: WANGroup, protocol: TCP, destination: "{{ aliases.host_k8s_ext_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) to K8S External Gateway }
-        block_wan_k8s_internal_web: { interface: WANGroup, protocol: TCP, destination: "{{ aliases.host_k8s_int_gw.content }}", destination_port: ports_web, action: block, description: Block HTTP(S) to K8S Internal Gateway }
-        allow_infra_k8s_web: { interface: INFRAGroup, protocol: TCP, destination: "{{ aliases.host_k8s_int_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) from INFRA to K8S Internal Gateway }
-        allow_infra_k8s_web_root: { interface: INFRAGroup, protocol: TCP, destination: "{{ aliases.host_k8s_root_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) from INFRA to K8S Internal Root Gateway }
+        # allow_k8s_opnsense: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_opnsense_k8s.content }}", destination_port: 4443, description: Allow K8S to OPNsense Web UI }
+        # allow_k8s_node_exporter: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_opnsense_k8s.content }}", destination_port: 9100, description: Allow K8S to OPNsense Node Exporter }
+        # allow_k8s_pve_api: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_pve_fw.content }}", destination_port: ports_pve_api, description: Allow K8S to Proxmox VE API }
+        # allow_k8s_vps: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_vps.content }}", description: Allow all traffic from K8S to vps }
+        # allow_k8s_services: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_services.content }}", description: Allow all traffic from K8S to services }
+        # allow_k8s_mgmt: { interface: K8SGroup, protocol: TCP, source: __K8SGroup_network, destination: "{{ aliases.host_mgmt.content }}", description: Allow all traffic from K8S to mgmt }
+        # allow_mgmt_k8s_api: { interface: INFRAGroup, protocol: TCP, source: "{{ aliases.host_mgmt.content }}", destination: "{{ aliases.host_k8s_vip.content }}", destination_port: ports_k8s_api, description: Allow K8S API access to mgmt }
+        # allow_wan_k8s_external_web: { interface: WANGroup, protocol: TCP, destination: "{{ aliases.host_k8s_ext_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) to K8S External Gateway }
+        # block_wan_k8s_internal_web: { interface: WANGroup, protocol: TCP, destination: "{{ aliases.host_k8s_int_gw.content }}", destination_port: ports_web, action: block, description: Block HTTP(S) to K8S Internal Gateway }
+        # allow_infra_k8s_web: { interface: INFRAGroup, protocol: TCP, destination: "{{ aliases.host_k8s_int_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) from INFRA to K8S Internal Gateway }
+        # allow_infra_k8s_web_root: { interface: INFRAGroup, protocol: TCP, destination: "{{ aliases.host_k8s_root_gw.content }}", destination_port: ports_web, description: Allow HTTP(S) from INFRA to K8S Internal Root Gateway }
 
     dns:
       unbound:
@@ -163,16 +168,18 @@
           description: "Unifi Controller endpoint"
         - hostname: k8s
           domain: "{{ net_domain_loc }}"
-          ip: "{{ aliases.host_k8s_vip.content }}"
-          description: "Kubernetes VIP endpoint"
-      query_forwarding:
-        - domain: sbbh.cloud
-          target: "{{ aliases.host_k8s_dns_gw.content }}"
+          ip: "{{ aliases.host_k8s_api_server.content }}"
+          description: "Kubernetes api-server endpoint"
+      # query_forwarding:
+      #   - domain: sbbh.cloud
+      #     target: "{{ aliases.host_k8s_dns_gw.content }}"
 
     bgp:
       as_number: 64500
+      remote_as_number: 64508
       neighbors: "{{ groups['k8s'] }}"
-      source_int: "{{ interface_mapping['K8S'] }}"
+      source_int: "{{ interface_mapping['INFRA'] }}"
+      router_id: "{{ hostvars[groups['k8s'][0]].ip_addr | ansible.utils.nthhost(1) }}"
 
     plugins:
       - os-debug
@@ -202,6 +209,10 @@
       tags: [always, config]
       ansible.builtin.import_tasks: ../roles/opnsense/tasks/read_config.yml
 
+    - name: Create aliases
+      tags: aliases
+      ansible.builtin.import_tasks: ../roles/opnsense/tasks/aliases.yml
+
     - name: Setup DHCP
       tags: dhcp
       ansible.builtin.import_tasks: ../roles/opnsense/tasks/dhcp.yml
@@ -209,10 +220,6 @@
     - name: Setup Unbound DNS
       tags: dns
       ansible.builtin.import_tasks: ../roles/opnsense/tasks/dns.yml
-
-    - name: Create aliases
-      tags: aliases
-      ansible.builtin.import_tasks: ../roles/opnsense/tasks/aliases.yml
 
     - name: Create firewall rules
       tags: firewall
