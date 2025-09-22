@@ -61,14 +61,14 @@ releases:
           - vault
         showlogs: true
 
-  # - name: cert-manager
-  #   namespace: cert-manager
-  #   chart: oci://quay.io/jetstack/charts/cert-manager
-  #   version: v1.18.2
-  #   values:
-  #     - templates/values.yaml.gotmpl
-  #   needs:
-  #     - kube-system/external-secrets
+  - name: cert-manager
+    namespace: cert-manager
+    chart: oci://quay.io/jetstack/charts/cert-manager
+    version: v1.18.2
+    values:
+      - templates/values.yaml.gotmpl
+    needs:
+      - kube-system/external-secrets
 
   # - name: flux-operator
   #   namespace: flux-system
