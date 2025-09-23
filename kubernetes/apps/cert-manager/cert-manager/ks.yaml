@@ -48,8 +48,6 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
-    - name: vault-store
-      namespace: external-secrets
   interval: 30m
   path: "./kubernetes/apps/cert-manager/cert-manager/issuers"
   prune: true
