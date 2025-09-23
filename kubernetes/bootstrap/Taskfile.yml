@@ -88,7 +88,7 @@ tasks:
       - task: github:secrets
 
   github:postproc:
-    desc: Post processing after Flux provisioning
+    desc: Post processing after Flux deployment
     cmds:
       - task: github:webhook
 
@@ -132,8 +132,8 @@ tasks:
     internal: true
     dir: "{{.ROOT_DIR}}"
     cmds:
-      - task secrets:create:github-deploy-key
-      - task secrets:create:github-status-token
+      - task secrets:create:github-deploy-key --yes
+      - task secrets:create:github-status-token --yes
 
   github:webhook:
     desc: Add Flux receiver webhook to GitHub repository
@@ -141,7 +141,7 @@ tasks:
     cmd: |
       echo "Waiting for GitHub webhook receiver and webhook path to be ready..."
       while true; do
-        FLUX_WEBHOOK=$(kubectl -n flux-system get receiver github-webhook -o jsonpath='{.status.webhookPath}' 2>/dev/null)
+        FLUX_WEBHOOK=$(kubectl -n flux-system get receiver github-webhook -o jsonpath='{.status.webhookPath}' 2>/dev/null || true)
         if [[ -n "$FLUX_WEBHOOK" ]]; then
           break
         fi
