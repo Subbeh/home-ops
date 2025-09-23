@@ -30,7 +30,8 @@ spec:
         - notification-controller
       sync:
         kind: GitRepository
-        url: https://github.com/subbeh/home-ops.git
+        url: ssh://git@github.com/Subbeh/homelab.git
+        pullSecret: github-deploy-key
         ref: refs/heads/main
         path: kubernetes/flux/cluster
         interval: 1h
