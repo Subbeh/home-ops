@@ -175,6 +175,17 @@ tasks:
       echo "Webhook path: $FLUX_WEBHOOK"
       echo "Token: $(<{{.WEBHOOK_TOKEN}})"
       repo="$(git remote get-url origin | sed 's/.*:\([^\.]*\)\..*/\1/')"
+      # Delete existing webhooks if they exist
+      existing_hooks=$(gh api /repos/$repo/hooks --jq '.[] | select(.config.url | startswith("https://flux-webhook.sbbh.cloud")) | .id' 2>/dev/null || true)
+      if [[ -n "$existing_hooks" ]]; then
+        echo "Deleting existing webhooks..."
+        while IFS= read -r hook_id; do
+          if [[ -n "$hook_id" ]]; then
+            echo "Deleting webhook ID: $hook_id"
+            gh api -X DELETE /repos/$repo/hooks/$hook_id
+          fi
+        done <<< "$existing_hooks"
+      fi
       gh api \
         -X POST \
         -H "Accept: application/vnd.github+json" \
