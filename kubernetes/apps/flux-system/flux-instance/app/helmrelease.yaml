@@ -32,7 +32,7 @@ spec:
         kind: GitRepository
         url: ssh://git@github.com/Subbeh/home-ops.git
         pullSecret: github-deploy-key
-        ref: refs/heads/main
+        ref: main
         path: kubernetes/flux/cluster
         interval: 1h
       commonMetadata:
