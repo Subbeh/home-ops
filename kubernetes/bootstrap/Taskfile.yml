@@ -79,6 +79,29 @@ tasks:
       until JWT_TOKEN=$(kubectl get secret external-secrets-token -n external-secrets -o jsonpath='{.data.token}' | base64 -d); do sleep 5; done
       vault write auth/home-ops/login role=external-secrets jwt="$JWT_TOKEN"
 
+  cloudflare:
+    desc: Set up Cloudflare DNS
+    cmds:
+      - task: cloudflare:tunnel
+      - task: cloudflare:secrets
+
+  cloudflare:tunnel:
+    desc: Create Cloudflare tunnel
+    internal: true
+    cmd: cloudflared tunnel create --credentials-file "{{.TUNNEL_FILE}}" kubernetes
+    vars:
+      TUNNEL_FILE: "{{.PRIVATE_DIR}}/kubernetes/cloudflare-tunnel.json"
+    status:
+      - test -f {{.TUNNEL_FILE}}
+
+  cloudflare:secrets:
+    desc: Create Cloudflare secrets
+    internal: true
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - task secrets:create:cloudflare-api --yes
+      - task secrets:create:cloudflare-tunnel --yes
+
   github:preproc:
     desc: Prepare Github deploy key and webhook token
     cmds:
@@ -134,6 +157,7 @@ tasks:
     cmds:
       - task secrets:create:github-deploy-key --yes
       - task secrets:create:github-status-token --yes
+      - task secrets:create:github-webhook-token --yes
 
   github:webhook:
     desc: Add Flux receiver webhook to GitHub repository
