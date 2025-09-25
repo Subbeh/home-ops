@@ -2,13 +2,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  BOOTSTRAP_DIR: "{{.K8S_DIR}}/bootstrap"
-
 tasks:
   annotate:*:*:*:
-    desc: Annotate Flux resource
-    internal: true
+    desc: Annotate Flux resource [RESOURCE:NAME:NS]
     cmd: |
       kubectl annotate gitrepository flux-system -n flux-system \
         reconcile.fluxcd.io/requestedAt="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
