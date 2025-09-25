@@ -9,3 +9,6 @@ includes:
   bootstrap:
     taskfile: bootstrap
     dir: bootstrap
+  flux:
+    taskfile: flux
+    dir: flux

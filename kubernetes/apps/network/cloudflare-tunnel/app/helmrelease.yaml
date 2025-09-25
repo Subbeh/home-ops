@@ -81,7 +81,7 @@ spec:
         data:
           config.yaml: |-
             ingress:
-              - hostname: turbo.ac
+              - hostname: sbbh.cloud
                 originRequest:
                   originServerName: sbbh.cloud
                 service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
