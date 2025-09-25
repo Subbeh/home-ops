@@ -12,3 +12,13 @@ includes:
   flux:
     taskfile: flux
     dir: flux
+
+tasks:
+  debug:node:*:
+    desc: Open shell on a node [NODE] [vars NS]
+    cmd: |
+      kubectl debug node/{{.NODE}} -n {{.NAMESPACE}} -it --image="ghcr.io/nicolaka/netshoot:latest" --profile sysadmin
+      kubectl delete pod -n {{.NAMESPACE}} -l app.kubernetes.io/managed-by=kubectl-debug
+    vars:
+      NODE: "{{index .MATCH 0}}"
+      NAMESPACE: '{{.NS | default "default" }}'

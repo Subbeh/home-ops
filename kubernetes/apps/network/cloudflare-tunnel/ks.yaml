@@ -9,9 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: envoy-gateway
-      namespace: network
   healthChecks:
     - apiVersion: v1
       kind: Secret
