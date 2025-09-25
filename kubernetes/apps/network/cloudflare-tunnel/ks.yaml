@@ -23,6 +23,7 @@ spec:
     substituteFrom:
       - kind: Secret
         name: cloudflare-tunnel-secret
+        optional: true
   prune: true
   retryInterval: 2m
   sourceRef:
