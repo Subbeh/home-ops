@@ -67,7 +67,7 @@ spec:
         endpoints:
           - port: http
     route:
-      app-external:
+      app:
         hostnames:
           - "{{ .Release.Name }}.sbbh.cloud"
         parentRefs:
