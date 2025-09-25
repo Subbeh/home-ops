@@ -4,7 +4,7 @@ version: "3"
 
 tasks:
   :init:*:
-    desc: Initialize dependencies ([pip, ansible, krew])
+    desc: Initialize dependencies [pip, ansible, krew]
     vars:
       DEP: "{{index .MATCH 0}}"
     cmds:

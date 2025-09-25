@@ -79,7 +79,7 @@
       host_mgmt: { desc: Management VM address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_services: { desc: Services LXC address, type: host, content: "{{ hostvars['services'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_k8s_api_server: { desc: Kubernetes cluster api-server address, type: host, content: "{{ hostvars[groups['k8s'][0]].cluster_endpoint_addr  }}" }
-      host_k8s_ext_gw: { desc: Kubernetes External Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_root | ansible.utils.ipaddr('address') }}" }
+      host_k8s_ext_gw: { desc: Kubernetes External Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_ext | ansible.utils.ipaddr('address') }}" }
       host_k8s_int_gw: { desc: Kubernetes Internal Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
       # host_k8s_root_gw: { desc: Kubernetes Internal Root Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
       host_k8s_dns_gw: { desc: Kubernetes DNS Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_dns | ansible.utils.ipaddr('address') }}" }

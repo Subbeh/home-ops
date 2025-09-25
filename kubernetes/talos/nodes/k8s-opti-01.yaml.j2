@@ -1,6 +1,7 @@
 machine:
   nodeLabels:
     intel.feature.node.kubernetes.io/gpu: "true"
+    topology.kubernetes.io/zone: main
   install:
     disk: /dev/nvme0n1
   network:
