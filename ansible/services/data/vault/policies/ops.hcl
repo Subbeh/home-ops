@@ -1,8 +1,8 @@
 # Homelab operations - KV v2 secrets engine
 path "ops/data/*" {
-  capabilities = ["read"]
+  capabilities = ["read", "create", "update"]
 }
 
 path "ops/metadata/*" {
-  capabilities = ["read", "list"]
+  capabilities = ["read", "list", "create", "update"]
 }

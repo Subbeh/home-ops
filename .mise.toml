@@ -4,7 +4,7 @@ experimental = true
 [hooks]
 enter = [
   "mise install --quiet && mise upgrade --quiet",
-  "mkdir -p .cache"
+  "mkdir -p .cache/{ansible,terraform/plugins}"
 ]
 
 # remove annoying ansible dir created by ansible-lint
@@ -39,6 +39,10 @@ ANSIBLE_GALAXY_TOKEN_PATH = "{{config_root}}/.cache/galaxy_token"
 # kubernetes
 KUBECONFIG = "{{config_root}}/.private/talos/kubeconfig"
 TALOSCONFIG = "{{config_root}}/.private/talos/talosconfig.yaml"
+
+# terraform
+TF_LOG_PATH = "{{config_root}}/.cache/terraform/terraform.log"
+TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 
 [tools]
 "python" = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"
