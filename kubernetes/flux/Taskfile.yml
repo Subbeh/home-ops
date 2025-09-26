@@ -22,6 +22,11 @@ tasks:
     vars:
       RESOURCE: "{{index .MATCH 0}}"
 
+  annotate:apps:
+    desc: Sync cluster-apps
+    internal: true
+    cmd: task annotate:ks:cluster-apps:flux-system REQUESTED_AT=true
+
   annotate:repo:
     desc: Sync GitRepositories
     internal: true
