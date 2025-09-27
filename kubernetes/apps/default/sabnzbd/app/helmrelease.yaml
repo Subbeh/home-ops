@@ -73,11 +73,7 @@ spec:
             port: *port
     persistence:
       config:
-        existingClaim: sabnzbd-config
-        advancedMounts:
-          sabnzbd:
-            app:
-              - path: /config
+        existingClaim: sabnzbd
       downloads:
         type: nfs
         server: nas-k8s.int.sbbh.cloud
