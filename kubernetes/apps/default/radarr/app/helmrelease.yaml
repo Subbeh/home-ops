@@ -93,7 +93,7 @@ spec:
         server: nas-k8s.int.sbbh.cloud
         path: /data/hdd1/media/movies
         globalMounts:
-          - path: /media
+          - path: /media/movies
       downloads:
         type: nfs
         server: nas-k8s.int.sbbh.cloud
