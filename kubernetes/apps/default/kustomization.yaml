@@ -9,7 +9,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
-  # - ./radarr/ks.yaml # TODO
+  - ./radarr/ks.yaml
   # - ./sonarr/ks.yaml # TODO
   # - ./sabnzbd/ks.yaml # TODO
   # - ./plex/ks.yaml # TODO
