@@ -236,3 +236,31 @@ spec:
               - path: /config
       config-file:
         type: configMap
+        name: *app
+        advancedMounts:
+          *app : # in qbit config, set "on torrent add" to "/config/qbrr --hash "%I" && qbt tag delete "cross-seed""
+            app:
+              - path: /config/.qbt.toml
+                subPath: .qbt.toml
+                readOnly: true
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          *app :
+            port-forward:
+              - path: /config
+                subPath: config
+      gluetun-auth:
+        type: secret
+        name: "{{ .Release.Name }}-gluetun"
+        advancedMounts:
+          *app :
+            gluetun:
+              - path: *gluetunAuthPath
+                subPath: auth.toml
+      media:
+        type: nfs
+        server: nas-k8s.int.sbbh.cloud
+        path: /data/nvme/downloads
+        globalMounts:
+          - path: /media/downloads
