@@ -11,7 +11,7 @@ resources:
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   # - ./sonarr/ks.yaml # TODO
-  # - ./sabnzbd/ks.yaml # TODO
+  - ./sabnzbd/ks.yaml
   # - ./plex/ks.yaml # TODO
   # - ./home-assistant/ks.yaml # TODO
   # - ./it-tools/ks.yaml # TODO
