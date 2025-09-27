@@ -16,4 +16,3 @@ resources:
   - ./loki/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./kube-state-metrics/ks.yaml
