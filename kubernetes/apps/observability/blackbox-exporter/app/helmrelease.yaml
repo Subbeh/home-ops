@@ -18,6 +18,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: blackbox-exporter
+    hostNetwork: true
     securityContext:
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
