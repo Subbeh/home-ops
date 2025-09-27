@@ -9,3 +9,15 @@ resources:
   - ./bazarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
+  # - ./radarr/ks.yaml # TODO
+  # - ./sonarr/ks.yaml # TODO
+  # - ./sabnzbd/ks.yaml # TODO
+  # - ./plex/ks.yaml # TODO
+  # - ./home-assistant/ks.yaml # TODO
+  # - ./it-tools/ks.yaml # TODO
+  # - ./karakeep/ks.yaml # TODO
+  # - ./audiobookshelf/ks.yaml # TODO
+  # - ./calibre/ks.yaml # TODO
+  # - ./homepage/ks.yaml # TODO
+  # - ./iperf3/ks.yaml # TODO
+  # - ./speedtest/ks.yaml # TODO
