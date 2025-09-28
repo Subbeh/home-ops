@@ -28,3 +28,19 @@ machine:
             gateway: ""
         mtu: 9000
         dhcp: false
+---
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+provisioning:
+  diskSelector:
+    match: system_disk
+  maxSize: 64GiB
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: local-hostpath
+provisioning:
+  diskSelector:
+    match: system_disk
+  maxSize: 64GiB

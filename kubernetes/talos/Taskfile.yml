@@ -96,7 +96,7 @@ tasks:
   reset:*:
     desc: Reset a Talos node ["all" for all nodes]
     prompt: Reset node {{.NODE}}?
-    cmd: talosctl --nodes {{.NODE}} reset --graceful=false
+    cmd: talosctl --nodes {{.NODE}} reset --graceful=false --reboot
     vars:
       NODE:
         sh: |
