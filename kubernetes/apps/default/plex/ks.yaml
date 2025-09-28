@@ -54,7 +54,7 @@ spec:
       namespace: *namespace
   interval: 1h
   retryInterval: 2m
-  path: ./k8s/apps/default/plex/kometa
+  path: ./kubernetes/apps/default/plex/kometa
   postBuild:
     substitute:
       APP: *app
