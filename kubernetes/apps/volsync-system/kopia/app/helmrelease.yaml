@@ -38,6 +38,7 @@ spec:
               - server
               - start
               - --without-password
+              - --insecure
             probes:
               liveness: &probes
                 enabled: true
