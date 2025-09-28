@@ -21,3 +21,12 @@ resources:
   # - ./homepage/ks.yaml # TODO
   # - ./iperf3/ks.yaml # TODO
   # - ./speedtest/ks.yaml # TODO
+  # - ./jellyfin/ks.yaml # TODO
+  # - ./watchstate/ks.yaml # TODO
+  # - ./freshrss/ks.yaml # TODO
+  # - ./changedetection/ks.yaml # TODO
+  # - ./linx/ks.yaml # TODO
+  # - ./mealie/ks.yaml # TODO
+  # - ./morphos/ks.yaml # TODO
+  # - ./tdarr/ks.yaml # TODO
+  # - ./wizarr/ks.yaml # TODO

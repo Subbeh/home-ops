@@ -23,7 +23,7 @@ spec:
       fsGroup: ${VOLSYNC_PGID:=1000}
     parallelism: 2
     repository: ${APP}-volsync-secret
-    retain:
+    retain: # TODO
       hourly: 24
       daily: 7
     storageClassName: ${VOLSYNC_STORAGECLASS:=ceph-block}

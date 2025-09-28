@@ -26,7 +26,7 @@ spec:
           reloader.stakater.com/auto: "true"
         cronjob:
           schedule: "@daily"
-          timeZone: &timeZone Australia/Melbourne
+          timeZone: Australia/Melbourne
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
@@ -42,8 +42,6 @@ spec:
               - |
                 python3 kometa.py --run --read-only-config --run-libraries "Movies";
                 python3 kometa.py --run --read-only-config --run-libraries "TV Shows";
-            env:
-              TZ: *timeZone
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
