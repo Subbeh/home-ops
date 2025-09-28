@@ -32,7 +32,11 @@ spec:
             envFrom:
               - secretRef:
                   name: kopia-secret
+            command:
+              - /usr/local/bin/kopia
             args:
+              - server
+              - start
               - --without-password
             probes:
               liveness: &probes
