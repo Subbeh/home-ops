@@ -19,7 +19,7 @@ metrics: true
 ui:
   title: Status | Gatus
   header: Status
-  logo: https://avatars.githubusercontent.com/u/213795 # TODO
+  logo: https://avatars.githubusercontent.com/u/1278086
   link: https://github.com/Subbeh
   buttons:
     - name: Github

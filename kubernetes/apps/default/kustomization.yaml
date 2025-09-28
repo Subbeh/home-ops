@@ -10,7 +10,7 @@ resources:
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
-  # - ./sonarr/ks.yaml # TODO
+  - ./sonarr/ks.yaml
   - ./sabnzbd/ks.yaml
   # - ./plex/ks.yaml # TODO
   # - ./home-assistant/ks.yaml # TODO
