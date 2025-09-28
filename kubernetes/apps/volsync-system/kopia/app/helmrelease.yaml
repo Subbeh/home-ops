@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: kopia
 spec:
-  interval: 1h
+  interval: 30m
   chartRef:
     kind: OCIRepository
     name: kopia
@@ -32,13 +32,8 @@ spec:
             envFrom:
               - secretRef:
                   name: kopia-secret
-            command:
-              - /usr/local/bin/kopia
             args:
-              - server
-              - start
               - --without-password
-              - --insecure
             probes:
               liveness: &probes
                 enabled: true
@@ -58,9 +53,9 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 10m
+                cpu: 15m
               limits:
-                memory: 1Gi
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -106,8 +101,8 @@ spec:
             subPath: repository.config
       repository:
         type: nfs
-        server: "nas-k8s.int.sbbh.cloud"
-        path: "/data/nvme/k8s/volsync.kopia"
+        server: nas-k8s.int.sbbh.cloud
+        path: /data/nvme/k8s/volsync.kopia
         globalMounts:
           - path: /repository
       tmpfs:
@@ -119,5 +114,3 @@ spec:
                 subPath: cache
               - path: /config/logs
                 subPath: logs
-              - path: /tmp
-                subPath: tmp
