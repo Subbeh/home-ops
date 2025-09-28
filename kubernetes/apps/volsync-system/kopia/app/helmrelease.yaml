@@ -34,6 +34,7 @@ spec:
                   name: kopia-secret
             args:
               - --without-password
+              - --no-persistent-logs
             probes:
               liveness: &probes
                 enabled: true
