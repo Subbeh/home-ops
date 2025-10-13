@@ -6,27 +6,25 @@ namespace: default
 components:
   - ../../components/common
 resources:
-  - ./bazarr/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
-  - ./radarr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./sabnzbd/ks.yaml
-  - ./plex/ks.yaml
-  # - ./home-assistant/ks.yaml # TODO
-  # - ./it-tools/ks.yaml # TODO
-  # - ./karakeep/ks.yaml # TODO
   # - ./audiobookshelf/ks.yaml # TODO
+  - ./bazarr/ks.yaml
   # - ./calibre/ks.yaml # TODO
-  # - ./homepage/ks.yaml # TODO
-  # - ./iperf3/ks.yaml # TODO
-  # - ./speedtest/ks.yaml # TODO
-  # - ./jellyfin/ks.yaml # TODO
-  # - ./watchstate/ks.yaml # TODO
-  # - ./freshrss/ks.yaml # TODO
   # - ./changedetection/ks.yaml # TODO
+  # - ./freshrss/ks.yaml # TODO
+  # - ./home-assistant/ks.yaml # TODO
+  # - ./homepage/ks.yaml # TODO
+  # - ./it-tools/ks.yaml # TODO
+  # - ./jellyfin/ks.yaml # TODO
+  # - ./karakeep/ks.yaml # TODO
   # - ./linx/ks.yaml # TODO
   # - ./mealie/ks.yaml # TODO
   # - ./morphos/ks.yaml # TODO
+  - ./plex/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./qbittorrent/ks.yaml
+  - ./radarr/ks.yaml
+  - ./sabnzbd/ks.yaml
+  - ./sonarr/ks.yaml
   # - ./tdarr/ks.yaml # TODO
+  # - ./watchstate/ks.yaml # TODO
   # - ./wizarr/ks.yaml # TODO
