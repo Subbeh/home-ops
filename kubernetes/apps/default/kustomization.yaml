@@ -8,7 +8,7 @@ components:
 resources:
   - ./audiobookshelf/ks.yaml
   - ./bazarr/ks.yaml
-  # - ./calibre/ks.yaml # TODO
+  - ./calibre/ks.yaml
   # - ./changedetection/ks.yaml # TODO
   # - ./freshrss/ks.yaml # TODO
   # - ./home-assistant/ks.yaml # TODO

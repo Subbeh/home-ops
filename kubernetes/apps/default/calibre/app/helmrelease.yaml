@@ -3,12 +3,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: audiobookshelf
+  name: calibre
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: audiobookshelf
+    name: calibre
   install:
     remediation:
       retries: -1
@@ -18,14 +18,17 @@ spec:
       retries: 3
   values:
     controllers:
-      audiobookshelf:
+      calibre:
         containers:
           app:
             image:
-              repository: ghcr.io/advplyr/audiobookshelf
-              tag: 2.30.0@sha256:6fbd7dc95d53c6e168ce69e760b87c334e3b9ba88bf7b8531ed5a116d5d6da03
+              repository: ghcr.io/crocodilestick/calibre-web-automated
+              tag: V3.1.4@sha256:577e846f104fd21453ef306eefb4a95dd95b3b9ddd2463a150944494284da0fd
             env:
-              PORT: &port 80
+              CACHE_DIR: /cache
+              NETWORK_SHARE_MODE: true
+              PUID: 1000
+              PGID: 1000
             probes:
               liveness:
                 enabled: true
@@ -38,25 +41,17 @@ spec:
                   periodSeconds: 5
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
+                cpu: 5m
+                memory: 128Mi
               limits:
-                memory: 1Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
+                memory: 512Mi
     service:
       app:
         ports:
           http:
-            port: *port
+            port: 8083
     route:
       app:
         hostnames:
@@ -68,24 +63,13 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      metadata:
-        existingClaim: audiobookshelf-metadata
+      data-cache:
+        existingClaim: calibre-cache
         globalMounts:
-          - path: /metadata
+          - path: /cache
       media:
         type: nfs
         server: nas-k8s.int.sbbh.cloud
-        path: /data/nvme/media/books/audiobooks
+        path: /data/nvme/media/books/ebooks
         globalMounts:
-          - path: /audiobooks
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          audiobookshelf:
-            app:
-              - path: /config/cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp
+          - path: /calibre-library
