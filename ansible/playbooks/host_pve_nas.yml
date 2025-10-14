@@ -73,8 +73,24 @@
           ansible.builtin.command: exportfs -rav
           changed_when: false
 
+    - name: Configure Kubernetes pod network routing
+      tags: network
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/network/interfaces.d/k8s-route.conf
+        content: |
+          # Route for Kubernetes pod network with ECMP load balancing across all nodes
+          post-up ip route add 10.42.0.0/16 nexthop via 192.168.80.11 dev vmbr1 nexthop via 192.168.80.12 dev vmbr1 nexthop via 192.168.80.13 dev vmbr1 || true
+          pre-down ip route del 10.42.0.0/16 || true
+        mode: 0644
+      notify: apply k8s route
+
   handlers:
     - name: restart nfs
       ansible.builtin.systemd:
         name: nfs-kernel-server
         state: restarted
+
+    - name: apply k8s route
+      ansible.builtin.command: ip route add 10.42.0.0/16 nexthop via 192.168.80.11 dev vmbr1 nexthop via 192.168.80.12 dev vmbr1 nexthop via 192.168.80.13 dev vmbr1
+      failed_when: false
