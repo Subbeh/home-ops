@@ -34,7 +34,6 @@ spec:
                   name: kopia-secret
             args:
               - --without-password
-              - --no-persistent-logs
             probes:
               liveness: &probes
                 enabled: true
@@ -62,6 +61,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
