@@ -6,7 +6,7 @@ namespace: default
 components:
   - ../../components/common
 resources:
-  # - ./audiobookshelf/ks.yaml # TODO
+  - ./audiobookshelf/ks.yaml
   - ./bazarr/ks.yaml
   # - ./calibre/ks.yaml # TODO
   # - ./changedetection/ks.yaml # TODO
