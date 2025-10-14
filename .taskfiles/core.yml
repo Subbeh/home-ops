@@ -3,26 +3,36 @@
 version: "3"
 
 tasks:
-  :init:*:
-    desc: Initialize dependencies [pip, ansible, krew]
-    vars:
-      DEP: "{{index .MATCH 0}}"
-    cmds:
-      - echo "Initializing dependencies for {{.DEP}}"
-      - task: init-{{.DEP}}
-
-  :init:all:
+  :init:
     desc: Initialize all dependencies
     cmd: |
       yq '.tasks | keys | .[] | select(. == "init-*")' {{.TASKFILE}} | while read task; do
         task init:${task#init-}
       done
 
+  :init:*:
+    desc: Initialize dependencies [mise, python, ansible, krew]
+    vars:
+      DEP: "{{index .MATCH 0}}"
+    cmds:
+      - echo "Initializing dependencies for {{.DEP}}"
+      - task: init-{{.DEP}}
+
   :update:
     desc: Update all dependencies
     cmds:
       - mise upgrade
       - kubectl krew update
+
+  init-mise:
+    internal: true
+    desc: Initialize Mise
+    cmds:
+      - mise trust
+      - mise install
+    preconditions:
+      - test -f {{.ROOT_DIR}}/.mise.toml
+      - command -v mise >/dev/null
 
   init-python:
     internal: true
