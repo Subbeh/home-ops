@@ -23,7 +23,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - nas-k8s.int.sbbh.cloud:9100
+        - nas-k8s.int.sbbh.cloud:9100 # TODO
   metricsPath: /metrics
   relabelings:
     - action: replace
