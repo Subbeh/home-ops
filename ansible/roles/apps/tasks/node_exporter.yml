@@ -3,22 +3,26 @@
   file:
     path: "/etc/node_exporter"
     state: directory
-    owner: root
-    group: root
-    mode: 0640
+    owner: node-exp
+    group: node-exp
+    mode: 0600
 
 - name: Create private key
   openssl_privatekey:
     path: /etc/node_exporter/tls.key
     size: 2048
-    mode: 0640
+    owner: node-exp
+    group: node-exp
+    mode: 0600
 
 - name: Create certificate signing request
   openssl_csr:
     path: /etc/node_exporter/tls.csr
     privatekey_path: /etc/node_exporter/tls.key
     common_name: "{{ inventory_hostname }}"
-    mode: 0640
+    owner: node-exp
+    group: node-exp
+    mode: 0600
 
 - name: Create self-signed certificate
   openssl_certificate:
@@ -26,7 +30,9 @@
     csr_path: /etc/node_exporter/tls.csr
     privatekey_path: /etc/node_exporter/tls.key
     provider: selfsigned
-    mode: 0644
+    owner: node-exp
+    group: node-exp
+    mode: 0600
 
 - name: Import node_exporter role
   ansible.builtin.import_role:

@@ -1,10 +1,4 @@
 ---
-- name: Restart fail2ban
-  service:
-    name: fail2ban
-    state: restarted
-  become: true
-
 - name: Restart borgmatic timer
   ansible.builtin.systemd:
     name: borgmatic.timer
@@ -12,4 +6,3 @@
     daemon_reload: yes
     enabled: yes
   become: true
-

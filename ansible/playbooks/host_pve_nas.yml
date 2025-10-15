@@ -20,6 +20,7 @@
       - node_exporter
     host_packages:
       - name: nfs-kernel-server
+      - name: smartmontools
     ssh_config_settings:
       - { regexp: "^#?PasswordAuthentication", line: "PasswordAuthentication no" }
       - { regexp: "^#?PermitRootLogin", line: "PermitRootLogin yes" }

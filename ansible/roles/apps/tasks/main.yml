@@ -6,13 +6,6 @@
     - apps
     - tailscale
 
-- name: Install and configure fail2ban
-  ansible.builtin.import_tasks: fail2ban.yml
-  when: "'fail2ban' in apps or 'fail2ban' in ansible_run_tags"
-  tags:
-    - apps
-    - fail2ban
-
 - name: Install and configure Syncthing
   ansible.builtin.import_tasks: syncthing.yml
   when: "'syncthing' in apps or 'syncthing' in ansible_run_tags"
