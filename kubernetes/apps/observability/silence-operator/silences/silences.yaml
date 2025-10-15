@@ -41,10 +41,18 @@ spec:
 apiVersion: observability.giantswarm.io/v1alpha2
 kind: Silence
 metadata:
-  name: kube-resource-overcommit
+  name: kube-mem-overcommit
+spec:
+  matchers:
+    - name: alertname
+      value: KubeMemOvercommit
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: observability.giantswarm.io/v1alpha2
+kind: Silence
+metadata:
+  name: kube-cpu-overcommit
 spec:
   matchers:
     - name: alertname
       value: KubeCPUOvercommit
-    - name: alertname
-      value: KubeMemOvercommit
