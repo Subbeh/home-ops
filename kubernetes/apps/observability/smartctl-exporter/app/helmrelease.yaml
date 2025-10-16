@@ -18,6 +18,10 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
+    config:
+      devices:
+        - /dev/nvme0
+        - /dev/sda
     serviceMonitor:
       enabled: true
     prometheusRules:
