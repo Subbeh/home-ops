@@ -5,7 +5,7 @@ kind: ScrapeConfig
 metadata:
   name: &name node-exporter
 spec:
-  scheme: https
+  scheme: HTTPS
   tlsConfig:
     insecureSkipVerify: true
   staticConfigs:
