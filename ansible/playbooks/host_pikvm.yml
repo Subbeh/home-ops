@@ -8,17 +8,19 @@
       - update
     apps:
       - tailscale
+    host_packages:
+      - name: prometheus-node-exporter
     tailscale_hostname: pikvm
     ssh_config_settings:
-      - {regexp: "^#?PasswordAuthentication", line: "PasswordAuthentication yes"}
-      - {regexp: "^#?PermitRootLogin", line: "PermitRootLogin yes"}
-      - {regexp: "^#?PubkeyAuthentication", line: "PubkeyAuthentication yes"}
-      - {regexp: "^#?PermitEmptyPasswords", line: "PermitEmptyPasswords no"}
-      - {regexp: "^#?X11Forwarding", line: "X11Forwarding no"}
-      - {regexp: "^#?MaxAuthTries", line: "MaxAuthTries 3"}
-      - {regexp: "^#?ClientAliveInterval", line: "ClientAliveInterval 300"}
-      - {regexp: "^#?ClientAliveCountMax", line: "ClientAliveCountMax 2"}
-      - {regexp: "^#?Protocol", line: "Protocol 2",}
+      - { regexp: "^#?PasswordAuthentication", line: "PasswordAuthentication yes" }
+      - { regexp: "^#?PermitRootLogin", line: "PermitRootLogin yes" }
+      - { regexp: "^#?PubkeyAuthentication", line: "PubkeyAuthentication yes" }
+      - { regexp: "^#?PermitEmptyPasswords", line: "PermitEmptyPasswords no" }
+      - { regexp: "^#?X11Forwarding", line: "X11Forwarding no" }
+      - { regexp: "^#?MaxAuthTries", line: "MaxAuthTries 3" }
+      - { regexp: "^#?ClientAliveInterval", line: "ClientAliveInterval 300" }
+      - { regexp: "^#?ClientAliveCountMax", line: "ClientAliveCountMax 2" }
+      - { regexp: "^#?Protocol", line: "Protocol 2" }
 
   pre_tasks:
     - name: Import authentication tasks
@@ -40,8 +42,8 @@
         sed -i.bak 's/^Server/# &/;s/# \(.*jp.mirror\)/\1/' /etc/pacman.d/mirrorlist
 
   roles:
-    - {role: common, tags: common}
-    - {role: apps, tags: apps,}
+    - { role: common, tags: common }
+    - { role: apps, tags: apps }
 
   tasks:
     - name: Change root password if it's still default
@@ -65,7 +67,7 @@
       ansible.builtin.copy:
         content: "admin:{{ pikvm_admin_password | string | password_hash('bcrypt') }}"
         dest: /etc/kvmd/htpasswd
-        mode: '0600'
+        mode: "0600"
       no_log: true
 
     - name: Set up Wifi Acccess Point
@@ -79,6 +81,13 @@
 
         - name: Run AP script
           ansible.builtin.command: /etc/hotspot -f
+
+    - name: Enable and start prometheus-node-exporter
+      tags: node_exporter
+      ansible.builtin.systemd:
+        name: prometheus-node-exporter
+        enabled: true
+        state: started
 
   post_tasks:
     - name: Return to Read-Only mode

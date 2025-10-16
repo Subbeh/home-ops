@@ -3,16 +3,16 @@
   file:
     path: "/etc/node_exporter"
     state: directory
-    owner: node-exp
-    group: node-exp
+    owner: 999
+    group: 997
     mode: 0600
 
 - name: Create private key
   openssl_privatekey:
     path: /etc/node_exporter/tls.key
     size: 2048
-    owner: node-exp
-    group: node-exp
+    owner: 999
+    group: 997
     mode: 0600
 
 - name: Create certificate signing request
@@ -20,8 +20,8 @@
     path: /etc/node_exporter/tls.csr
     privatekey_path: /etc/node_exporter/tls.key
     common_name: "{{ inventory_hostname }}"
-    owner: node-exp
-    group: node-exp
+    owner: 999
+    group: 997
     mode: 0600
 
 - name: Create self-signed certificate
@@ -30,8 +30,8 @@
     csr_path: /etc/node_exporter/tls.csr
     privatekey_path: /etc/node_exporter/tls.key
     provider: selfsigned
-    owner: node-exp
-    group: node-exp
+    owner: 999
+    group: 997
     mode: 0600
 
 - name: Import node_exporter role
