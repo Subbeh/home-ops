@@ -8,9 +8,9 @@ enter = [
 ]
 
 # remove annoying ansible dir created by ansible-lint
-[[watch_files]]
-patterns = ["**/.ansible/*"]
-run = "find . -name '.ansible' -type d -exec rm -r {} +"
+# [[watch_files]]
+# patterns = ["**/.ansible/*"]
+# run = "find . -name '.ansible' -type d -exec rm -r {} +"
 
 [env]
 _.python.venv = { path = ".venv", create = true }
