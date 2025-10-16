@@ -127,5 +127,5 @@ spec:
                 subPath: logs
               - path: /tmp
                 subPath: tmp
-              - path: /transcode # TODO
+              - path: /transcode
                 subPath: transcode
