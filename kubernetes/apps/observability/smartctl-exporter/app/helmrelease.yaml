@@ -21,7 +21,6 @@ spec:
     config:
       devices:
         - /dev/nvme0
-        - /dev/sda
     serviceMonitor:
       enabled: true
     prometheusRules:
