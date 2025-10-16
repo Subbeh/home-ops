@@ -28,6 +28,7 @@ spec:
               CACHE_DIR: /cache
               PUID: 1000
               PGID: 1000
+              NETWORK_SHARE_MODE: true
             probes:
               liveness:
                 enabled: true
