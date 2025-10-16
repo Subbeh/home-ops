@@ -18,9 +18,9 @@ spec:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: node-exporter-https
+  name: &name node-exporter-https
 spec:
-  scheme: https
+  scheme: HTTPS
   tlsConfig:
     insecureSkipVerify: true
   staticConfigs:
