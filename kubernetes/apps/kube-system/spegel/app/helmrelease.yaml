@@ -5,20 +5,15 @@ kind: HelmRelease
 metadata:
   name: spegel
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: spegel
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     grafanaDashboard:
       enabled: true
+      annotations:
+        grafana_folder: kube-system
     service:
       registry:
         hostPort: 29999

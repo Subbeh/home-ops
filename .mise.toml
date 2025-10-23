@@ -7,10 +7,10 @@ enter = [
   "mkdir -p .cache/{ansible,terraform/plugins}"
 ]
 
-# remove annoying ansible dir created by ansible-lint
-# [[watch_files]]
-# patterns = ["**/.ansible/*"]
-# run = "find . -name '.ansible' -type d -exec rm -r {} +"
+# remove annoying ansible cache dir created by ansible-lint
+[[watch_files]]
+patterns = ["**/.ansible/*"]
+run = "find . -name '.ansible' -type d -exec rmdir -p {} +"
 
 [env]
 _.python.venv = { path = ".venv", create = true }

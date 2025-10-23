@@ -1,39 +1,35 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/helmfile
+
+# This helmfile is for extracting and installing Custom Resource Definitions (CRDs) from Helm charts.
+# It is not intended to be used with helmfile apply or helmfile sync.
+
 helmDefaults:
-  cleanupOnFail: true
-  wait: true
-  waitForJobs: true
   args:
     - --include-crds
     - --no-hooks
   postRenderer: bash
   postRendererArgs:
     - -c
-    - yq ea --exit-status 'select(.kind == "CustomResourceDefinition")' -
+    - yq ea -e 'select(.kind == "CustomResourceDefinition")'
 
 releases:
-  # - name: external-secrets
-  #   namespace: external-secrets
-  #   chart: oci://ghcr.io/external-secrets/charts/external-secrets
-  #   version: 0.19.2
-
-  - name: external-dns
-    namespace: network
-    chart: oci://ghcr.io/home-operations/charts-mirror/external-dns
-    version: 1.19.0
-
   - name: envoy-gateway
     namespace: network
-    chart: oci://docker.io/envoyproxy/gateway-helm
-    version: 1.5.1
+    chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
+    version: 1.5.3
+
+  - name: grafana-operator
+    namespace: observability
+    chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
+    version: v5.19.4
 
   - name: keda
-    namespace: kube-system
+    namespace: observability
     chart: oci://ghcr.io/home-operations/charts-mirror/keda
-    version: 2.17.2
+    version: 2.18.0
 
   - name: kube-prometheus-stack
     namespace: observability
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
-    version: 77.9.1
+    version: 78.3.1

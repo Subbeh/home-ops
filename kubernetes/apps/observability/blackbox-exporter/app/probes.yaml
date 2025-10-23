@@ -3,27 +3,34 @@
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: lan-icmp
+  name: icmp
 spec:
   module: icmp
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
     staticConfig:
-      static:
-        - nas-k8s.int.sbbh.cloud
-        # - pikvm.internal # TODO
+      static: # TODO
+        - nas-k8s.int.sbbh.cloud:2049
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter
+      action: replace
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: lan-tcp
+  name: tcp
 spec:
   module: tcp_connect
   prober:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
     staticConfig:
-      static:
+      static: # TODO
         - nas-k8s.int.sbbh.cloud:2049
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter
+      action: replace

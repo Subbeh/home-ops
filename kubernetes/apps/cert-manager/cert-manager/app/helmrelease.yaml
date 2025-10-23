@@ -5,14 +5,10 @@ kind: HelmRelease
 metadata:
   name: cert-manager
 spec:
-  interval: 30m
   chartRef:
     kind: OCIRepository
     name: cert-manager
-  install:
-    crds: CreateReplace
-  upgrade:
-    crds: CreateReplace
+  interval: 1h
   values:
     crds:
       enabled: true
@@ -21,4 +17,8 @@ spec:
     prometheus:
       enabled: true
       servicemonitor:
+        enabled: true
+    webhook:
+      replicaCount: 2
+      podDisruptionBudget:
         enabled: true

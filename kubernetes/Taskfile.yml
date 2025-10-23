@@ -14,7 +14,7 @@ includes:
     dir: flux
 
 tasks:
-  debug:node:*:
+  debug:*:
     desc: Open shell on a node [NODE] [vars NS]
     cmd: |
       kubectl debug node/{{.NODE}} -n {{.NAMESPACE}} -it --image="ghcr.io/nicolaka/netshoot:latest" --profile sysadmin
@@ -22,3 +22,24 @@ tasks:
     vars:
       NODE: "{{index .MATCH 0}}"
       NAMESPACE: '{{.NS | default "default" }}'
+
+  browse-pvc:*:*:
+    desc: Browse a PVC [NAMESPACE:CLAIM]
+    cmd: kubectl browse-pvc -n {{.NAMESPACE}} -i mirror.gcr.io/alpine:latest {{.CLAIM}}
+    vars:
+      NAMESPACE: "{{index .MATCH 0}}"
+      CLAIM: "{{index .MATCH 1}}"
+
+  cleanup:
+    desc: Prune pods in Failed, Pending, or Succeeded state
+    cmd: |
+      for phase in Failed Pending Succeeded; do
+          kubectl delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true
+      done
+
+  volsync:snapshot:
+    desc: Snapshot VolSync PVCs
+    cmd: |
+      kubectl get replicationsources --no-headers -A | while read -r ns name _; do
+          kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'
+      done

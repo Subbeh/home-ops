@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: kube-prometheus-stack
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: kube-prometheus-stack
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
@@ -59,10 +52,11 @@ spec:
               sectionName: https
       prometheusSpec:
         externalUrl: https://prometheus.sbbh.cloud
+        version: v2.55.1 # override 'unsupported Prometheus version' error
         image:
           registry: docker.io
           repository: prompp/prompp
-          tag: 2.53.2-0.4.0
+          tag: 0.6.0
         securityContext:
           runAsNonRoot: true
           runAsUser: 64535
@@ -89,35 +83,16 @@ spec:
                   storage: 50Gi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
-      metricLabelsAllowlist:
-        - pods=[*]
-        - deployments=[*]
-        - persistentvolumeclaims=[*]
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
     grafana:
       enabled: false
       forceDeployDashboards: true
+      operator:
+        dashboardsConfigMapRefEnabled: true
+        folder: observability
+        matchLabels:
+          grafana.internal/instance: grafana
     additionalPrometheusRulesMap:
       dockerhub-rules:
         groups:

@@ -10,9 +10,9 @@ tasks:
     desc: Create Kubernetes namespaces
     silent: true
     cmd: |
-      find "{{.K8S_DIR}}/apps" -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | while IFS= read -r ns; do
-        if ! kubectl create namespace "$ns" --dry-run=client -o yaml | kubectl apply --server-side -f -; then
-          echo "ERROR: Failed to apply namespace $ns"
+      find "{{.K8S_DIR}}/apps" -mindepth 1 -maxdepth 1 -type d | while IFS= read -r dir; do
+        if ! kustomize build "$dir" | yq ea -e 'select(.kind == "Namespace")' | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
+            just log fatal "Failed to apply namespace" "stage" "$0" "namespace" "$(basename "$dir")"
         fi
       done
 
@@ -20,7 +20,7 @@ tasks:
     desc: Apply Helmfile CRDs
     silent: true
     cmd: |
-      if ! helmfile -f "{{.BOOTSTRAP_DIR}}/helmfile.d/00-crds.yaml" template -q | kubectl apply --server-side -f -; then
+      if ! helmfile -f "{{.BOOTSTRAP_DIR}}/helmfile.d/00-crds.yaml" template -q | kubectl apply --server-side --field-manager bootstrap --force-conflicts -f -; then
         echo "ERROR: Failed to apply CRDs"
       fi
 

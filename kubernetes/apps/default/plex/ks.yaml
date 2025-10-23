@@ -3,18 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app plex
-  namespace: &namespace default
+  name: plex
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/external
-    - ../../../../components/keda/nfs-scaler
+    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-    - name: intel-device-plugin-gpu
+    - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -22,47 +17,36 @@ spec:
   path: ./kubernetes/apps/default/plex/app
   postBuild:
     substitute:
-      APP: *app
-      GATUS_PATH: /web/index.html
+      APP: plex
       VOLSYNC_CAPACITY: 50Gi
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
+  targetNamespace: default
   wait: false
----
-
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kometa
-  namespace: &namespace default
+  name: kometa
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   dependsOn:
     - name: plex
-      namespace: *namespace
+      namespace: default
   interval: 1h
-  retryInterval: 2m
   path: ./kubernetes/apps/default/plex/kometa
   postBuild:
     substitute:
-      APP: *app
+      APP: kometa
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
+  targetNamespace: default
   wait: false

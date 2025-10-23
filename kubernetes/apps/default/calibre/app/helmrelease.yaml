@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: calibre
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: calibre
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     controllers:
       calibre:
@@ -63,10 +56,6 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      data-cache:
-        existingClaim: calibre-cache
-        globalMounts:
-          - path: /cache
       media:
         type: nfs
         server: nas-k8s.int.sbbh.cloud

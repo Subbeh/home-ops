@@ -9,7 +9,6 @@ customization:
     - init_on_free=0 # Less security, faster puter
     - intel_iommu=on # PCI Passthrough
     - iommu=pt # PCI Passthrough
-    - iommu.passthrough=1 # Less secure, faster puter
     - mitigations=off # Less security, faster puter
     - security=none # Less security, faster puter
     - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU

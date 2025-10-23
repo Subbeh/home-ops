@@ -60,3 +60,4 @@ tasks:
       - kubectl krew install netshoot/netshoot
       - kubectl krew install get-all
       - kubectl krew install tree
+      - kubectl krew install browse-pvc

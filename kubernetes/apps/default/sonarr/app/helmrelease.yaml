@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: sonarr
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: sonarr
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     controllers:
       sonarr:
@@ -59,7 +52,7 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 2Gi
+                memory: 4Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -83,10 +76,12 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
+      scripts:
+        type: configMap
+        name: sonarr-configmap
+        defaultMode: 0775
         globalMounts:
-          - path: /config/MediaCover
+          - readOnly: true
       downloads:
         type: nfs
         server: nas-k8s.int.sbbh.cloud

@@ -5,19 +5,10 @@ kind: HelmRelease
 metadata:
   name: kometa
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: kometa
-  driftDetection:
-    mode: enabled
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     controllers:
       kometa:

@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: kopia
 spec:
-  interval: 30m
   chartRef:
     kind: OCIRepository
     name: kopia
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     controllers:
       kopia:
@@ -53,9 +46,9 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 15m
+                cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -114,3 +107,5 @@ spec:
                 subPath: cache
               - path: /config/logs
                 subPath: logs
+              - path: /tmp
+                subPath: tmp

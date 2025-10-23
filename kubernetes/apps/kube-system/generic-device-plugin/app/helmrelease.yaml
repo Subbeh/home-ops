@@ -5,12 +5,10 @@ kind: HelmRelease
 metadata:
   name: generic-device-plugin
 spec:
-  interval: 30m
   chartRef:
     kind: OCIRepository
     name: generic-device-plugin
-  driftDetection:
-    mode: enabled
+  interval: 30m
   values:
     defaultPodOptions:
       priorityClassName: system-node-critical

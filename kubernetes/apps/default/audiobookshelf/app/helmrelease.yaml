@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: audiobookshelf
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: audiobookshelf
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     controllers:
       audiobookshelf:
@@ -68,24 +61,11 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      metadata:
-        existingClaim: audiobookshelf-metadata
-        globalMounts:
-          - path: /metadata
       media:
         type: nfs
         server: nas-k8s.int.sbbh.cloud
         path: /data/nvme/media/books/audiobooks
         globalMounts:
           - path: /audiobooks
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          audiobookshelf:
-            app:
-              - path: /config/cache
-                subPath: cache
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp

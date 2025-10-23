@@ -3,11 +3,8 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: &name node-exporter
+  name: node-exporter
 spec:
-  scheme: HTTPS
-  tlsConfig:
-    insecureSkipVerify: true
   staticConfigs:
     - targets:
         - pve-nas.int.sbbh.cloud:9100
@@ -16,4 +13,4 @@ spec:
   relabelings:
     - action: replace
       targetLabel: job
-      replacement: *name
+      replacement: node-exporter
