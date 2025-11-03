@@ -111,7 +111,7 @@ tasks:
   shutdown:*:
     desc: Shutdown a Talos node ["all" for all nodes]
     prompt: Shutdown node {{.NODE}}?
-    cmd: talosctl --nodes {{.NODES}} shutdown --force
+    cmd: talosctl --nodes {{.NODE}} shutdown --force
     vars:
       NODE:
         sh: |
@@ -121,7 +121,7 @@ tasks:
             echo {{index .MATCH 0}}
           fi
     preconditions:
-      - talosctl --nodes {{.NODES}} get machineconfig
+      - talosctl --nodes {{.NODE}} get machineconfig
 
   upgrade:kubernetes:
     desc: Upgrade Kubernetes version on the cluster [vars VERSION]
