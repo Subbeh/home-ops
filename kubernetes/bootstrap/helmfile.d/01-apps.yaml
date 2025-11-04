@@ -7,12 +7,21 @@ helmDefaults:
   waitForJobs: true
 
 releases:
+  - name: k8tz
+    namespace: kube-system
+    chart: oci://ghcr.io/home-operations/charts-mirror/k8tz
+    version: 0.18.0
+    values:
+      - templates/values.yaml.gotmpl
+
   - name: cilium
     namespace: kube-system
     chart: oci://ghcr.io/home-operations/charts-mirror/cilium
     version: 1.18.3
     values:
       - templates/values.yaml.gotmpl
+    needs:
+      - kube-system/k8tz
     hooks:
       # Apply cilium network configuration
       - events: [postsync]
@@ -83,8 +92,8 @@ releases:
     wait: false
     values:
       - templates/values.yaml.gotmpl
-    # needs:
-    #   - flux-system/flux-operator
+    needs:
+      - flux-system/flux-operator
     hooks:
       # Prepare github deploy key and webhook token
       - events: [presync]
