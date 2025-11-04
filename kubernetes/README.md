@@ -68,7 +68,7 @@
 
 ## Bootstrap Kubernetes resources
 
-1. Temporarily point api-server to one of the nodes in `.private/talos/kubeconfig`:
+1. Temporarily point api-server to one of the nodes in `.private/kubernetes/kubeconfig`:
 
     ```
     -      server: https://10.11.10.180:6443

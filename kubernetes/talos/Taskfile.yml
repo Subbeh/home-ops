@@ -75,7 +75,7 @@ tasks:
 
   init:kubeconfig:
     desc: Fetch kubeconfig for Talos cluster [vars NODE]
-    cmd: talosctl --nodes {{.NODE | default .DEFAULT_NODE}} kubeconfig -f --force-context-name main {{.PRIVATE_DIR}}/talos/
+    cmd: talosctl --nodes {{.NODE | default .DEFAULT_NODE}} kubeconfig -f --force-context-name main {{.PRIVATE_DIR}}/kubernetes/
     vars:
       DEFAULT_NODE:
         sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1

@@ -37,7 +37,7 @@ ANSIBLE_LOG_PATH = "{{config_root}}/.cache/ansible.log"
 ANSIBLE_GALAXY_TOKEN_PATH = "{{config_root}}/.cache/galaxy_token"
 
 # kubernetes
-KUBECONFIG = "{{config_root}}/.private/talos/kubeconfig"
+KUBECONFIG = "{{config_root}}/.private/kubernetes/kubeconfig"
 TALOSCONFIG = "{{config_root}}/.private/talos/talosconfig.yaml"
 
 # terraform
