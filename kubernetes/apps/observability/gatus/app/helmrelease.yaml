@@ -83,7 +83,7 @@ spec:
           gatus.home-operations.com/enabled: "false"
         hostnames:
           - "{{ .Release.Name }}.sbbh.cloud"
-          - status.sbbh.cloud.
+          - status.sbbh.cloud
         parentRefs:
           - name: envoy-external
             namespace: network
