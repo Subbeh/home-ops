@@ -47,11 +47,11 @@ spec:
           matchType: =
 
   receivers:
-    - name: "null"
+    - name: blackhole
     - name: heartbeat
       webhookConfigs:
         - urlSecret:
-            name: &secret alertmanager-secret
+            name: alertmanager-secret
             key: ALERTMANAGER_HEARTBEAT_URL
     - name: pushover
       pushoverConfigs:
