@@ -9,12 +9,12 @@ components:
 
 resources:
   - ./namespace.yaml
-  # - ./blackbox-exporter/ks.yaml
-  # - ./fluent-bit/ks.yaml
-  # - ./gatus/ks.yaml
-  # - ./grafana/ks.yaml
-  # - ./keda/ks.yaml
-  # - ./kromgo/ks.yaml
-  # - ./kube-prometheus-stack/ks.yaml
-  # - ./silence-operator/ks.yaml
-  # - ./victoria-logs/ks.yaml
+  - ./blackbox-exporter/ks.yaml
+  - ./fluent-bit/ks.yaml
+  - ./gatus/ks.yaml
+  - ./grafana/ks.yaml
+  - ./keda/ks.yaml
+  - ./kromgo/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
+  - ./silence-operator/ks.yaml
+  - ./victoria-logs/ks.yaml
