@@ -73,3 +73,15 @@
     ```sh
     task k8s:bootstrap:ns
     ```
+
+3. Apply Helmfile CRDs
+
+    ```sh
+    task k8s:bootstrap:crds
+    ```
+
+4. Apply Helmfile apps
+
+    ```sh
+    task k8s:bootstrap:apps
+    ```

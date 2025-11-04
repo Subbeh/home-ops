@@ -10,7 +10,8 @@ spec:
     name: k8tz
   interval: 30m
   values:
-    namespace: kube-system
+    namespace: null
+    createNamespace: false
     replicaCount: 2
     timezone: Australia/Melbourne
     cronJobTimeZone: true
