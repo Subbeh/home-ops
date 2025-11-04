@@ -3,7 +3,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: victoria-logs-single-node
+  name: keda
 spec:
   allowCrossNamespaceImport: true
   instanceSelector:
@@ -12,6 +12,4 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  configMapRef:
-    name: victoria-logs-victorialogs-single-node
-    key: victorialogs-single-node.json
+  url: https://raw.githubusercontent.com/kedacore/keda/refs/heads/main/config/grafana/keda-dashboard.json

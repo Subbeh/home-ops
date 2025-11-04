@@ -24,7 +24,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
     cephClusterSpec:
       cephConfig:
         global:
@@ -47,7 +46,7 @@ spec:
       mgr:
         modules:
           - name: diskprediction_local
-            enabled: false
+            enabled: true
           - name: insights
             enabled: true
           - name: pg_autoscaler
@@ -56,11 +55,17 @@ spec:
             enabled: true
       network:
         provider: host
-        connections:
-          requireMsgr2: true
         addressRanges:
+          public:
+            - 192.168.80.0/24
           cluster:
             - 192.168.80.0/24
+        connections:
+          requireMsgr2: true
+      resources:
+        osd:
+          limits:
+            memory: 8Gi
       storage:
         useAllNodes: true
         useAllDevices: false

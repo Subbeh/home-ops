@@ -19,6 +19,5 @@ resources:
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
-  - ./fstrim/ks.yaml
   - ./k8tz/ks.yaml
   # - ./system-upgrade/ks.yaml # TODO

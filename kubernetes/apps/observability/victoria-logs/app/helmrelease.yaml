@@ -17,9 +17,26 @@ spec:
         enabled: true
         storageClassName: ceph-block
         size: 20Gi
+      route:
+        enabled: true
+        hostnames:
+          - victoria-logs.sbbh.cloud
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        extraRules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /select/vmui/
+                  statusCode: 302
+            matches:
+              - path:
+                  type: Exact
+                  value: /
       serviceMonitor:
         enabled: true
     dashboards:
       enabled: true
-      annotations:
-        grafana_folder: observability
