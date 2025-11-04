@@ -39,14 +39,37 @@
     task k8s:talos:init:genconfig
     ```
 
-3. Bootstrap the cluster
+3. Apply the Talos configs
+
+    ```sh
+    task k8s:talos:init:apply:k8s-nuc
+    task k8s:talos:init:apply:k8s-opti-01
+    task k8s:talos:init:apply:k8s-opti-02
+    ```
+
+4. Bootstrap the cluster
 
     ```sh
     task k8s:talos:init:bootstrap
     ```
 
-4. Get the kubeconfig file
+5. Get the kubeconfig file
 
     ```sh
     task k8s:talos:init:kubeconfig
+    ```
+
+## Bootstrap Kubernetes resources
+
+1. Temporarily point api-server to one of the nodes in `.private/talos/kubeconfig`:
+
+    ```
+    -      server: https://10.11.10.180:6443
+    +      server: https://10.11.10.83:6443
+    ```
+
+2. Create namespaces
+
+    ```sh
+    task k8s:bootstrap:ns
     ```
