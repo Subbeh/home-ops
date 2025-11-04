@@ -30,23 +30,23 @@
 1. Create `talsecret.yaml` file
 
     ```sh
-    task talos:init:talsecret
+    task k8s:talos:init:talsecret
     ```
 
 2. Generate Talos config using
 
     ```sh
-    task talos:init:genconfig
+    task k8s:talos:init:genconfig
     ```
 
 3. Bootstrap the cluster
 
     ```sh
-    task talos:init:bootstrap
+    task k8s:talos:init:bootstrap
     ```
 
 4. Get the kubeconfig file
 
     ```sh
-    task talos:init:kubeconfig
+    task k8s:talos:init:kubeconfig
     ```
