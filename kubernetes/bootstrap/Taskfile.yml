@@ -49,7 +49,7 @@ tasks:
       - vault auth list | grep -q "home-ops/" || vault auth enable -path=home-ops kubernetes
       - |
         vault write auth/home-ops/config \
-          kubernetes_host="$(kubectl config view -o jsonpath='{.clusters[0].cluster.server}')" \
+          kubernetes_host=https://$(yq '.k8s.hosts | to_entries | .[0].value.ip_addr | sub("/.*", "")' {{.ANSIBLE_DIR}}/inventory.yml):6443 \
           kubernetes_ca_cert="$(kubectl config view --raw -o jsonpath='{.clusters[0].cluster.certificate-authority-data}' | base64 -d)"
 
   vault:role:
