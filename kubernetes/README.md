@@ -2,6 +2,13 @@
 
 ## Prerequisites
 
+### Versions
+
+1. Make sure the Kubernetes and Talos versions in the following files are synced:
+    - `kubernetes/talos/machineconfig.yaml.j2`
+    - `kubernetes/apps/system-upgrade/tuppr/upgrades/kubernetesupgrade.yaml`
+    - `kubernetes/apps/system-upgrade/tuppr/upgrades/talosupgrade.yaml`
+
 ### GitHub
 
 #### Flux Status Token
@@ -84,4 +91,11 @@
 
     ```sh
     task k8s:bootstrap:apps
+    ```
+
+5. Revert the api-server endpoint in `.private/talos/kubeconfig`:
+
+    ```
+    -      server: https://10.11.10.83:6443
+    +      server: https://10.11.10.180:6443
     ```

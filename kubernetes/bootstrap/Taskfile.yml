@@ -39,9 +39,6 @@ tasks:
       - task: vault:role
       - task: vault:resources
       - task: vault:token
-    vars:
-      K8S_HOST:
-        sh: kubectl config view -o jsonpath='{.clusters[0].cluster.server}'
     preconditions:
       - vault status &>/dev/null
 
