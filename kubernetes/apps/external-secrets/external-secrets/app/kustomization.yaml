@@ -7,4 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./pdb.yaml
-  - ./vault.yaml
+  - ./vault
