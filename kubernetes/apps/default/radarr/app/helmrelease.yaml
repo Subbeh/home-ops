@@ -81,5 +81,11 @@ spec:
         path: /data/hdd1/media/movies
         globalMounts:
           - path: /media/movies
+      downloads:
+        type: nfs
+        server: nas-k8s.int.sbbh.cloud
+        path: /data/nvme/downloads
+        globalMounts:
+          - path: /media/downloads
       tmp:
         type: emptyDir
