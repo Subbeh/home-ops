@@ -9,10 +9,10 @@ components:
 
 resources:
   - ./namespace.yaml
-  # - ./audiobookshelf/ks.yaml
+  - ./audiobookshelf/ks.yaml
   # - ./atuin/ks.yaml
   - ./bazarr/ks.yaml
-  # - ./calibre/ks.yaml
+  - ./calibre/ks.yaml
   # # - ./changedetection/ks.yaml # TODO
   # # - ./home-assistant/ks.yaml # TODO
   # # - ./homepage/ks.yaml # TODO
@@ -23,7 +23,7 @@ resources:
   # # - ./mealie/ks.yaml # TODO
   # # - ./morphos/ks.yaml # TODO
   # - ./fusion/ks.yaml
-  # - ./plex/ks.yaml
+  - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
@@ -32,4 +32,4 @@ resources:
   # # - ./tdarr/ks.yaml # TODO
   # # - ./watchstate/ks.yaml # TODO
   # # - ./wizarr/ks.yaml # TODO
-  # - ./tautulli/ks.yaml
+  - ./tautulli/ks.yaml
