@@ -33,6 +33,13 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
+  - name: PiKVM
+    group: servers
+    url: icmp://pikvm.int.sbbh.cloud
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
 metrics: true
 
 storage:
