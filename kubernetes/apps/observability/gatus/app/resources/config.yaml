@@ -26,14 +26,12 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
-  # - name: flux-webhook
-  #   group: external
-  #   url: https://flux-webhook.sbbh.cloud
-  #   interval: 1m
-  #   client:
-  #     dns-resolver: tcp://1.1.1.1:53
-  #   conditions:
-  #     - "[STATUS] == 404"
+  - name: NAS
+    group: servers
+    url: icmp://nas-k8s.int.sbbh.cloud
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
 
 metrics: true
 
