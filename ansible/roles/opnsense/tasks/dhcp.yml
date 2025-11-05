@@ -1,11 +1,11 @@
 ---
 - name: Enable Kea DHCP per interface
-  ansibleguy.opnsense.dhcp_general:
+  oxlorg.opnsense.dhcp_general:
     enabled: true
     interfaces: "{{ vlans | map(attribute='name') | map('extract', interface_mapping) | join(',') }}"
 
 - name: Add DHCP subnets
-  ansibleguy.opnsense.dhcp_subnet:
+  oxlorg.opnsense.dhcp_subnet:
     description: "{{ item.desc }}"
     subnet: "{{ item.subnet }}"
     auto_options: false
@@ -20,7 +20,7 @@
   loop: "{{ vlans }}"
 
 - name: Pulling existing reservations
-  ansibleguy.opnsense.list:
+  oxlorg.opnsense.list:
     target: dhcp_reservation
   register: existing_entries
 
@@ -29,13 +29,13 @@
     var: existing_entries.data
 
 - name: Remove existing reservations
-  ansibleguy.opnsense.dhcp_reservation:
+  oxlorg.opnsense.dhcp_reservation:
     ip: "{{ item.ip }}"
     state: absent
   loop: "{{ existing_entries.data }}"
 
 - name: Add DHCP reservations
-  ansibleguy.opnsense.dhcp_reservation:
+  oxlorg.opnsense.dhcp_reservation:
     ip: "{{ hostvars[item].ip_addr | ansible.utils.ipaddr('address') }}"
     subnet: "{{ hostvars[item].ip_addr | ansible.utils.ipaddr('network') ~ '/' ~ hostvars[item].ip_addr.split('/')[1] }}"
     mac: "{{ hostvars[item].mac_addr }}"

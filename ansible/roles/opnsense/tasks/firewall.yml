@@ -1,7 +1,7 @@
 ---
 - name: Pulling existing rules
-  ansibleguy.opnsense.list:
-    target: 'rule'
+  oxlorg.opnsense.list:
+    target: "rule"
   register: existing_entries
 
 - name: Printing rules
@@ -9,16 +9,17 @@
     var: existing_entries.data
 
 - name: Purge all firewall rules
-  ansibleguy.opnsense.rule_purge:
-    force_all: true
+  oxlorg.opnsense.rule:
+    multi_control:
+      purge_all: true
 
 - name: Create firewall groups
-  ansibleguy.opnsense.rule_interface_group:
+  oxlorg.opnsense.rule_interface_group:
     name: "{{ item.name }}"
     members: "{{ item.members | map('extract', interface_mapping) | list }}"
     description: "{{ item.desc }}"
   loop: "{{ firewall.groups }}"
 
 - name: Create firewall rules
-  ansibleguy.opnsense.rule_multi:
+  oxlorg.opnsense.rule:
     rules: "{{ firewall.rules }}"

@@ -9,7 +9,7 @@ collections:
   - name: community.crypto
   - name: adhawkins.borgbase
   - name: prometheus.prometheus
-  - name: git+https://github.com/O-X-L/ansible_opnsense.git
+  - name: git+https://github.com/O-X-L/ansible-opnsense.git
 roles:
   - name: geerlingguy.docker
   - name: geerlingguy.pip

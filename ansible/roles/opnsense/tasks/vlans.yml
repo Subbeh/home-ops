@@ -1,6 +1,6 @@
 ---
 - name: Create VLANs
-  ansibleguy.opnsense.interface_vlan:
+  oxlorg.opnsense.interface_vlan:
     description: "{{ item.desc }}"
     interface: "{{ interfaces[item.interface] }}"
     vlan: "{{ item.id }}"

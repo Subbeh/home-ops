@@ -1,16 +1,16 @@
 ---
 - name: List certificates
-  ansibleguy.opnsense.list:
+  oxlorg.opnsense.list:
     target: 'acme_certificate'
   register: opnsense_certificates
 
 - name: Install Postfix plugin
-  ansibleguy.opnsense.package:
+  oxlorg.opnsense.package:
     name: os-postfix
     action: install
 
 - name: Setup Postfix
-  ansibleguy.opnsense.postfix_general:
+  oxlorg.opnsense.postfix_general:
     enabled: true
     myhostname: "mail.{{ net_domain_loc }}"
     mydomain: "{{ net_domain_loc }}"
@@ -43,7 +43,7 @@
     delay_warning_time: 0
 
 - name: Add Domain for Mail Relay
-  ansibleguy.opnsense.postfix_domain:
+  oxlorg.opnsense.postfix_domain:
     domainname: "{{ net_domain_loc }}"
     destination: smtp.gmail.com
     enabled: true
