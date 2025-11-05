@@ -9,8 +9,8 @@ all:
       ip_addr: 100.94.245.44/24
     pikvm:
       ansible_user: root
-      ip_addr: 10.11.10.5/24
-      mac_addr: dc:a6:32:73:9b:0f
+      ip_addr: 192.168.100.110/24
+      mac_addr: dc:a6:32:73:9b:11
     unifi-switch:
       ip_addr: 10.11.254.2/24
 pve:
@@ -55,7 +55,7 @@ k8s:
     cluster_endpoint: k8s.int.sbbh.cloud
     cluster_endpoint_addr: 10.11.80.80
     cluster_cidr: 10.11.80.0/24
-    gateway_dns: 10.11.80.88/24
+    gateway_dns: 10.11.80.53/24
     gateway_int: 10.11.80.180/24
     gateway_ext: 10.11.80.181/24
     # gateway_root: 10.11.80.101/24
