@@ -84,7 +84,7 @@ releases:
     values:
       - templates/values.yaml.gotmpl
     needs:
-      - flux-system/flux-operator
+      - cert-manager/cert-manager
     hooks:
       # Prepare github deploy key and webhook token
       - events: [presync]

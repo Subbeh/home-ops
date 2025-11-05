@@ -71,14 +71,14 @@ tasks:
     cmd: talosctl --nodes {{.NODE | default .DEFAULT_NODE}} bootstrap
     vars:
       DEFAULT_NODE:
-        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
+        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[0]'
 
   init:kubeconfig:
     desc: Fetch kubeconfig for Talos cluster [vars NODE]
     cmd: talosctl --nodes {{.NODE | default .DEFAULT_NODE}} kubeconfig -f --force-context-name main {{.PRIVATE_DIR}}/kubernetes/
     vars:
       DEFAULT_NODE:
-        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1
+        sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[0]'
 
   reboot:*:
     desc: Reboot a Talos node ["all" for all nodes]

@@ -11,7 +11,7 @@ tasks:
       done
 
   :init:*:
-    desc: Initialize dependencies [mise, python, ansible, krew]
+    desc: Initialize dependencies [mise, python, ansible, k8s]
     vars:
       DEP: "{{index .MATCH 0}}"
     cmds:
@@ -51,10 +51,11 @@ tasks:
       - ansible-galaxy collection install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/collections" --force
       - ansible-galaxy role install -r requirements.yml -p "{{.ROOT_DIR}}/.cache/ansible/roles" --force
 
-  init-krew:
+  init-k8s:
     internal: true
-    desc: Initialize kubectl krew plugins
+    desc: Initialize helm and kubectl krew plugins
     cmds:
+      - helm plugin install https://github.com/databus23/helm-diff
       - kubectl krew update
       - kubectl krew index add netshoot https://github.com/nilic/kubectl-netshoot.git || true
       - kubectl krew install netshoot/netshoot

@@ -72,7 +72,7 @@
 
     ```
     -      server: https://10.11.10.180:6443
-    +      server: https://10.11.10.83:6443
+    +      server: https://10.11.10.81:6443
     ```
 
 2. Create namespaces
@@ -96,6 +96,6 @@
 5. Revert the api-server endpoint in `.private/talos/kubeconfig`:
 
     ```
-    -      server: https://10.11.10.83:6443
+    -      server: https://10.11.10.81:6443
     +      server: https://10.11.10.180:6443
     ```

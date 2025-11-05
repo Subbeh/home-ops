@@ -11,7 +11,7 @@ spec:
   targets:
     staticConfig:
       static: # TODO
-        - nas-k8s.int.sbbh.cloud:2049
+        - nas-k8s.int.sbbh.cloud
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter
