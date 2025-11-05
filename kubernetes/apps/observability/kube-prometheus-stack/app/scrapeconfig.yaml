@@ -9,6 +9,9 @@ spec:
     - targets:
         - pve-nas.int.sbbh.cloud:9100
         - pve-fw.int.sbbh.cloud:9100
+  scheme: HTTPS
+  tlsConfig:
+    insecureSkipVerify: true
   metricsPath: /metrics
   relabelings:
     - action: replace
