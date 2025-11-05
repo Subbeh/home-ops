@@ -75,3 +75,5 @@ spec:
           - path: /audiobooks
       tmp:
         type: emptyDir
+      metadata:
+        type: emptyDir
