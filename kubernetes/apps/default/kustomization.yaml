@@ -11,7 +11,7 @@ resources:
   - ./namespace.yaml
   # - ./audiobookshelf/ks.yaml
   # - ./atuin/ks.yaml
-  # - ./bazarr/ks.yaml
+  - ./bazarr/ks.yaml
   # - ./calibre/ks.yaml
   # # - ./changedetection/ks.yaml # TODO
   # # - ./home-assistant/ks.yaml # TODO
@@ -24,11 +24,11 @@ resources:
   # # - ./morphos/ks.yaml # TODO
   # - ./fusion/ks.yaml
   # - ./plex/ks.yaml
-  # - ./prowlarr/ks.yaml
+  - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
-  # - ./radarr/ks.yaml
-  # - ./sabnzbd/ks.yaml
-  # - ./sonarr/ks.yaml
+  - ./radarr/ks.yaml
+  - ./sabnzbd/ks.yaml
+  - ./sonarr/ks.yaml
   # # - ./tdarr/ks.yaml # TODO
   # # - ./watchstate/ks.yaml # TODO
   # # - ./wizarr/ks.yaml # TODO
