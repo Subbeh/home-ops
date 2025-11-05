@@ -7,8 +7,7 @@ metadata:
 spec:
   allowFirstLastIPs: "Yes"
   blocks:
-    - start: 10.11.10.180
-      stop: 10.11.10.199
+    - cidr: 10.11.80.0/24
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
@@ -65,7 +64,7 @@ metadata:
   name: kube-api
   annotations:
     external-dns.alpha.kubernetes.io/hostname: k8s.int.sbbh.cloud
-    lbipam.cilium.io/ips: 10.11.10.180
+    lbipam.cilium.io/ips: 10.11.80.80
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local

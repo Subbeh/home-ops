@@ -62,10 +62,9 @@
       lan: vtnet1
       trunk: vtnet2
 
-    lan: { subnet: "10.11.254.0/24" }
+    lan_net: { subnet: "10.11.254.0/24" }
     vlans:
       - { name: INFRA, interface: trunk, id: 10, subnet: "10.11.10.0/24", desc: "Infra", restricted: false }
-      # - { name: K8S, interface: trunk, id: 80, subnet: "10.11.80.0/24", desc: "Kubernetes Cluster", restricted: false }
       - { name: CLIENTS, interface: trunk, id: 100, subnet: "10.11.100.0/24", desc: "Clients", restricted: false }
       - { name: RESTRICTED, interface: trunk, id: 200, subnet: "10.11.200.0/24", desc: "Restricted", restricted: true }
 
@@ -73,6 +72,8 @@
       # networks
       net_tailscale: { desc: Tailscale CIDR, type: network, content: "100.64.0.0/10" }
       net_local_all: { desc: Local Networks, type: network, content: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"] }
+      net_k8s: { desc: Kubernetes Network, type: network, content: "10.11.80.0/24" }
+
       # hosts
       host_vps: { desc: VPS via Tailscale, type: host, content: "{{ lookup('pipe', 'tailscale status --json | jq -r \".Peer[] | select(.HostName == \\\"vps\\\") | .TailscaleIPs[0]\"') }}" }
       host_nas: { desc: NAS address, type: host, content: "{{ hostvars['pve-nas'].ip_addr | ansible.utils.ipaddr('address') }}" }
@@ -84,7 +85,6 @@
       # host_k8s_root_gw: { desc: Kubernetes Internal Root Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
       host_k8s_dns_gw: { desc: Kubernetes DNS Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_dns | ansible.utils.ipaddr('address') }}" }
       host_nas_k8s: { desc: NAS Kubernetes address, type: host, content: "{{ hostvars['pve-nas'].cluster_network.ip_addr | ansible.utils.ipaddr('address') }}" }
-      # host_opnsense_k8s: { desc: OPNsense K8S VLAN Interface, type: host, content: "{{ hostvars[groups['k8s'][0]].cluster_cidr | ansible.utils.nthhost(1) }}" }
       host_unifi: { desc: Unifi Controller address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       host_pve_fw: { desc: Proxmox VE Firewall Host, type: host, content: "{{ hostvars['pve-fw'].ip_addr | ansible.utils.ipaddr('address') }}" }
       # ports
@@ -93,7 +93,6 @@
       ports_vault: { desc: Vault Server Ports, type: port, content: ["8200"] }
       ports_nfs: { desc: NFS Ports, type: port, content: ["111", "2049", "20048"] }
       ports_pve_api: { desc: Proxmox VE API Ports, type: port, content: ["8006"] }
-      # ports_k8s_api: { desc: Kubernetes API port, type: port, content: ["6443"] }
 
     firewall:
       groups:
