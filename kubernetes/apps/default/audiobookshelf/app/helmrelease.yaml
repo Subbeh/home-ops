@@ -75,12 +75,3 @@ spec:
           - path: /audiobooks
       tmp:
         type: emptyDir
-        advancedMounts:
-          audiobookshelf:
-            app:
-              - path: /.npm
-                subPath: cache
-              - path: /metadata/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
