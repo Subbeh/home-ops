@@ -70,12 +70,8 @@ spec:
           - name: envoy-external
             namespace: network
       app-int:
-        annotations:
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}-int.sbbh.cloud"
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
