@@ -74,13 +74,11 @@ spec:
             namespace: network
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}"
-      scripts:
-        type: configMap
-        name: sonarr-configmap
-        defaultMode: 0775
+        existingClaim: sonarr
+      config-cache:
+        existingClaim: sonarr-cache
         globalMounts:
-          - readOnly: true
+          - path: /config/MediaCover
       downloads:
         type: nfs
         server: nas-k8s.int.sbbh.cloud
