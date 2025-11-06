@@ -113,7 +113,7 @@ spec:
         path: /data/hdd1/media
         globalMounts:
           - path: /media
-      tmp:
+      tmpfs:
         type: emptyDir
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server/Logs
