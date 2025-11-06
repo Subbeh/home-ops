@@ -9,9 +9,9 @@ spec:
     kind: OCIRepository
     name: openspeedtest
   interval: 1h
+  driftDetection:
+    mode: enabled
   values:
-    driftDetection:
-      mode: enabled
     controllers:
       openspeedtest:
         containers:
