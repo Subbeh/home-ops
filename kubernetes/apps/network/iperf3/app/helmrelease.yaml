@@ -48,6 +48,8 @@ spec:
               limits:
                 cpu: 200m
                 memory: 128Mi
+    defaultPodOptions:
+      hostNetwork: true
     service:
       server:
         ports:
