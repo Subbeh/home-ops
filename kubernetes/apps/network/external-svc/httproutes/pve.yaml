@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-helm/crds/generated/gateway.envoyproxy.io_backends.yaml
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: pve
+spec:
+  endpoints:
+    - ip:
+        address: 192.168.100.100
+        port: 8006
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pve
+spec:
+  hostnames:
+    - pve.sbbh.cloud
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  rules:
+    - backendRefs:
+        - group: gateway.envoyproxy.io
+          kind: Backend
+          name: pve
