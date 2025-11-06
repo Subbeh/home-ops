@@ -44,12 +44,9 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              capabilities: { drop: [] }
+              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
+      securityContext: {}
     service:
       app:
         ports:
