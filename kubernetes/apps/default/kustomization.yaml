@@ -13,15 +13,15 @@ resources:
   - ./atuin/ks.yaml
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
-  # # - ./changedetection/ks.yaml # TODO
-  # # - ./home-assistant/ks.yaml # TODO
-  # # - ./homepage/ks.yaml # TODO
-  # # - ./it-tools/ks.yaml # TODO
-  # # - ./jellyfin/ks.yaml # TODO
-  # # - ./karakeep/ks.yaml # TODO
-  # # - ./linx/ks.yaml # TODO
-  # # - ./mealie/ks.yaml # TODO
-  # # - ./morphos/ks.yaml # TODO
+  # - ./changedetection/ks.yaml # TODO
+  # - ./home-assistant/ks.yaml # TODO
+  # - ./homepage/ks.yaml # TODO
+  - ./it-tools/ks.yaml # TODO
+  # - ./jellyfin/ks.yaml # TODO
+  # - ./karakeep/ks.yaml # TODO
+  # - ./linx/ks.yaml # TODO
+  # - ./mealie/ks.yaml # TODO
+  # - ./morphos/ks.yaml # TODO
   - ./fusion/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
@@ -29,7 +29,7 @@ resources:
   - ./radarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
-  # # - ./tdarr/ks.yaml # TODO
-  # # - ./watchstate/ks.yaml # TODO
-  # # - ./wizarr/ks.yaml # TODO
+  # - ./tdarr/ks.yaml # TODO
+  # - ./watchstate/ks.yaml # TODO
+  # - ./wizarr/ks.yaml # TODO
   - ./tautulli/ks.yaml
