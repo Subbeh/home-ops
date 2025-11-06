@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: speedtest-tracker
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: speedtest-tracker
+  interval: 1h
+  values:
+    controllers:
+      speedtest-tracker:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          01-init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.6.0@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
+              pullPolicy: IfNotPresent
+            envFrom: &envFrom
+              - secretRef:
+                  name: speedtest-tracker-secret
+        containers:
+          app:
+            image:
+              repository: lscr.io/linuxserver/speedtest-tracker
+              tag: 1.6.11@sha256:81257a18cf15522e4e372d9857c6c51e54f7e60b2a5d243250cbf778a1ac6ae3
+            envFrom: *envFrom
+            env:
+              SPEEDTEST_SCHEDULE: "0 * * * *"
+              SPEEDTEST_SERVERS: "60412,25134,68925,37688"
+              APP_URL: https://speedtracker.sbbh.cloud
+              APP_TIMEZONE: &tz Australia/Melbourne
+              DISPLAY_TIMEZONE: *tz
+              DB_CONNECTION: sqlite
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 80
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+    route:
+      app:
+        hostnames:
+          - "speedtracker.sbbh.cloud"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"

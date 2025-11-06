@@ -50,6 +50,10 @@ spec:
                 memory: 128Mi
     defaultPodOptions:
       hostNetwork: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
     service:
       server:
         ports:

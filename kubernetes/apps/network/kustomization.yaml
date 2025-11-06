@@ -17,4 +17,5 @@ resources:
   - ./echo/ks.yaml
   - ./iperf3/ks.yaml
   - ./external-svc/ks.yaml
+  - ./speedtest-tracker/ks.yaml
   # - ./speedtest/ks.yaml # TODO
