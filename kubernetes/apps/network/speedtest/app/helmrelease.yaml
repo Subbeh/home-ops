@@ -19,9 +19,6 @@ spec:
             image:
               repository: docker.io/openspeedtest/latest
               tag: v2.0.6@sha256:a6a7e3b3e9e93cfe7b9b2eb49c60b2a93644149a0a600845d4df57148b193ff6
-            env:
-              CHANGE_CONTAINER_PORTS: True
-              HTTP_PORT: &port 80
             probes:
               liveness: &probes
                 enabled: true
@@ -29,7 +26,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: *port
+                    port: &port 3000
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
