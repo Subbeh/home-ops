@@ -53,3 +53,6 @@ spec:
         ports:
           tcp:
             port: 5201
+    persistence:
+      tmp:
+        type: emptyDir
