@@ -81,7 +81,7 @@ tasks:
         sh: talosctl config info --output json | jq --exit-status --raw-output '.endpoints[0]'
 
   reboot:*:
-    desc: Reboot a Talos node ["all" for all nodes]
+    desc: Reboot a Talos node [NODE | "all"]
     prompt: Reboot node {{.NODE}}?
     cmd: talosctl --nodes {{.NODE}} reboot -m powercycle
     vars:
@@ -105,7 +105,7 @@ tasks:
       - talosctl --nodes {{.NODE}} -e {{.NODE}} get machineconfig
 
   shutdown:*:
-    desc: Shutdown a Talos node ["all" for all nodes]
+    desc: Shutdown a Talos node [NODE | "all"]
     prompt: Shutdown node {{.NODE}}?
     cmd: talosctl --nodes {{.NODE}} shutdown --force
     vars:

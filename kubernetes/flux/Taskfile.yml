@@ -16,7 +16,7 @@ tasks:
       NS: "{{index .MATCH 2}}"
 
   sync:*:
-    desc: Sync Flux resources [repo, es, helm, ks, oci]
+    desc: Sync Flux resources ["repo" | "es" | "helm" | "ks" | "oci"]
     cmds:
       - task: annotate:{{.RESOURCE}}
     vars:

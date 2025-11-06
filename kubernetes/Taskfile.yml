@@ -43,3 +43,12 @@ tasks:
       kubectl get replicationsources --no-headers -A | while read -r ns name _; do
           kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'
       done
+
+  keda:*:
+    desc: Suspend or resume Keda ScaledObjects ["suspend" | "resume"]
+    cmd: |
+      kubectl get scaledobjects --no-headers -A | while read -r ns name _; do
+          kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite so "$name" autoscaling.keda.sh/paused{{if .STATE != "suspend"}}{{ "-" }}{{else}}{{ "=true" }}{{end}}
+      done
+    vars:
+      STATE: "{{index .MATCH 0}}"
