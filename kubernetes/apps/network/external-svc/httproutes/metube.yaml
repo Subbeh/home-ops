@@ -19,7 +19,7 @@ spec:
   hostnames:
     - metube.sbbh.cloud
   parentRefs:
-    - name: envoy-external
+    - name: envoy-internal
       namespace: network
   rules:
     - backendRefs:
