@@ -52,3 +52,44 @@ tasks:
       done
     vars:
       STATE: "{{index .MATCH 0}}"
+
+  iperf3:
+    desc: Run full iperf3 network test matrix between all nodes on 192.168.80.x network
+    silent: true
+    cmd: |
+      echo "=== iperf3 Network Test Matrix (2.5G Network) ==="
+      echo ""
+
+      # Dynamically build node to IP mapping from Ansible inventory
+      declare -A node_to_ip
+      while IFS= read -r node; do
+          ip=$(yq eval ".k8s.hosts.$node.internal.ip_addr" {{.INVENTORY}} | cut -d'/' -f1)
+          node_to_ip["$node"]="$ip"
+      done < <(yq eval '.k8s.hosts | keys | .[]' {{.INVENTORY}})
+
+      # Get all iperf3 pods
+      pods=$(kubectl get pods -n network -l app.kubernetes.io/name=iperf3 -o json)
+      readarray -t pod_names < <(echo "$pods" | jq -r '.items[].metadata.name')
+      readarray -t pod_nodes < <(echo "$pods" | jq -r '.items[].spec.nodeName')
+
+      # Run tests between all pairs on the 192.168.80.x network
+      for i in "${!pod_names[@]}"; do
+          source_node="${pod_nodes[$i]}"
+          source_ip="${node_to_ip[$source_node]}"
+
+          for j in "${!pod_names[@]}"; do
+              if [ $i -ne $j ]; then
+                  target_node="${pod_nodes[$j]}"
+                  target_ip="${node_to_ip[$target_node]}"
+
+                  echo "Testing: $source_node ($source_ip) -> $target_node ($target_ip)"
+                  result=$(kubectl exec -n network "${pod_names[$i]}" -c client -- iperf3 -c "$target_ip" -B "$source_ip" -t 3 2>&1 | grep "sender\|receiver" | tail -2)
+                  echo "$result"
+                  echo ""
+              fi
+          done
+      done
+
+      echo "=== Test Complete ==="
+    vars:
+      INVENTORY: "{{.TASKFILE_DIR}}/../ansible/inventory.yml"
