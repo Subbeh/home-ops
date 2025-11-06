@@ -52,4 +52,4 @@ spec:
       server:
         ports:
           tcp:
-            port: *port
+            port: 5201
