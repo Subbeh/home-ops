@@ -15,7 +15,7 @@ spec:
         containers:
           app:
             image:
-              repository: openspeedtest/latest
+              repository: docker.io/openspeedtest/latest
               tag: v2.0.6@sha256:a6a7e3b3e9e93cfe7b9b2eb49c60b2a93644149a0a600845d4df57148b193ff6
             env:
               CHANGE_CONTAINER_PORTS: True
@@ -50,8 +50,6 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
