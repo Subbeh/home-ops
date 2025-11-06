@@ -15,7 +15,7 @@ spec:
         containers:
           app:
             image:
-              repository: openspeedtest
+              repository: openspeedtest/latest
               tag: v2.0.6
             env:
               CHANGE_CONTAINER_PORTS: True
