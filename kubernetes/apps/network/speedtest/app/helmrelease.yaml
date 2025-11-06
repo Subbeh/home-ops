@@ -22,7 +22,6 @@ spec:
             env:
               CHANGE_CONTAINER_PORTS: True
               HTTP_PORT: &port 80
-              SET_USER: 1000
             probes:
               liveness: &probes
                 enabled: true
