@@ -12,7 +12,7 @@ spec:
   values:
     controllers:
       iperf3:
-        strategy: DaemonSet
+        type: daemonset
         containers:
           server:
             image:
