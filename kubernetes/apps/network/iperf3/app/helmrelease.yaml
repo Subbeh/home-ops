@@ -21,7 +21,7 @@ spec:
             command: ["iperf3"]
             args: ["-s", "-p", "5201"]
             probes:
-              liveness: &probes
+              readiness: &probes
                 enabled: true
                 custom: true
                 spec:
@@ -31,7 +31,6 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
-              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
