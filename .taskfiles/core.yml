@@ -11,7 +11,7 @@ tasks:
       done
 
   :init:*:
-    desc: Initialize dependencies [mise, python, ansible, k8s]
+    desc: Initialize dependencies ["mise" | "python" | "ansible" | "k8s"]
     vars:
       DEP: "{{index .MATCH 0}}"
     cmds:
