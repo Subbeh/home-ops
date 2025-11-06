@@ -10,6 +10,8 @@ spec:
     name: openspeedtest
   interval: 1h
   values:
+    driftDetection:
+      mode: enabled
     controllers:
       openspeedtest:
         containers:
@@ -41,10 +43,6 @@ spec:
               limits:
                 cpu: 1000m
                 memory: 512Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext: {}
     service:
