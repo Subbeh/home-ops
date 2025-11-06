@@ -14,21 +14,14 @@ spec:
       speedtest-tracker:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17.6.0@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
-              pullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: speedtest-tracker-secret
         containers:
           app:
             image:
               repository: lscr.io/linuxserver/speedtest-tracker
               tag: 1.6.11@sha256:81257a18cf15522e4e372d9857c6c51e54f7e60b2a5d243250cbf778a1ac6ae3
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: speedtest-tracker-secret
             env:
               SPEEDTEST_SCHEDULE: "0 * * * *"
               SPEEDTEST_SERVERS: "60412,25134,68925,37688"
