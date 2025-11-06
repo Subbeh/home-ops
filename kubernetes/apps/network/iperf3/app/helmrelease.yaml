@@ -11,7 +11,7 @@ spec:
   interval: 1h
   values:
     controllers:
-      echo:
+      iperf3:
         strategy: DaemonSet
         containers:
           server:
