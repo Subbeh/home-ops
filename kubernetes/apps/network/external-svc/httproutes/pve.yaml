@@ -9,6 +9,8 @@ spec:
     - ip:
         address: 192.168.100.100
         port: 8006
+  tls:
+    insecureSkipVerify: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
 apiVersion: gateway.networking.k8s.io/v1
