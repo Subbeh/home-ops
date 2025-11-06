@@ -10,7 +10,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./audiobookshelf/ks.yaml
-  # - ./atuin/ks.yaml
+  - ./atuin/ks.yaml
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   # # - ./changedetection/ks.yaml # TODO
@@ -22,7 +22,7 @@ resources:
   # # - ./linx/ks.yaml # TODO
   # # - ./mealie/ks.yaml # TODO
   # # - ./morphos/ks.yaml # TODO
-  # - ./fusion/ks.yaml
+  - ./fusion/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml

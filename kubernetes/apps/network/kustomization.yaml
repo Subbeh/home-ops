@@ -15,6 +15,6 @@ resources:
   - ./cloudflare-tunnel/ks.yaml
   - ./external-dns/ks.yaml
   - ./echo/ks.yaml
+  - ./iperf3/ks.yaml
   # - ./external-svc/ks.yaml # TODO
   # - ./speedtest/ks.yaml # TODO
-  - ./iperf3/ks.yaml
