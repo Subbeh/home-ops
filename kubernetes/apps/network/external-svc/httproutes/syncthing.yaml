@@ -7,7 +7,7 @@ metadata:
 spec:
   endpoints:
     - ip:
-        address: vps.int.sbbh.cloud
+        address: 100.94.245.44
         port: 8384
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
@@ -17,7 +17,7 @@ metadata:
   name: syncthing
 spec:
   hostnames:
-    - syncthing.sbbh.cloud
+    - sync.sbbh.cloud
   parentRefs:
     - name: envoy-internal
       namespace: network
