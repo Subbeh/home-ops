@@ -76,13 +76,13 @@ tasks:
     desc: Reset Flux application
     cmds:
       - |
-        set -x
         NS=$(kubectl get deploy -A -l 'app.kubernetes.io/name={{.APP}}' -o jsonpath='{range .items[*]}{.metadata.namespace}{"\n"}{end}')
         if [[ -n "$NS" ]]; then
-          kubectl -n "$NS" delete ks {{.APP}} || true
+          kubectl -n "$NS" delete ks {{.APP}} || true &
           kubectl -n "$NS" delete ocirepo {{.APP}} || true
           kubectl -n "$NS" delete deploy -l 'app.kubernetes.io/name={{.APP}}' || true
-          task annotate:ocirepo:{{.APP}}:$NS REQUESTED_AT=true
+          while ! kubectl -n "$NS" get ks {{.APP}} &>/dev/null; do sleep 1; done
+          task annotate:ocirepo:{{.APP}}:$NS REQUESTED_AT=true 2>/dev/null || true
           task annotate:ks:{{.APP}}:$NS REQUESTED_AT=true
         else
           task annotate:ks:cluster-apps:flux-system REQUESTED_AT=true

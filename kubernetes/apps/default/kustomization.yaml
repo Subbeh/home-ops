@@ -15,7 +15,7 @@ resources:
   - ./calibre/ks.yaml
   # - ./changedetection/ks.yaml # TODO
   # - ./home-assistant/ks.yaml # TODO
-  # - ./homepage/ks.yaml # TODO
+  - ./homepage/ks.yaml
   - ./it-tools/ks.yaml # TODO
   # - ./jellyfin/ks.yaml # TODO
   # - ./karakeep/ks.yaml # TODO
