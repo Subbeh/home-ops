@@ -30,11 +30,3 @@
           url: *pve_url
           username: "{{HOMEPAGE_VAR_PVE_TOKEN}}"
           password: "{{HOMEPAGE_VAR_PVE_SECRET}}"
-    - Unifi:
-        icon: unifi.svg
-        href: &unifi_url https://unifi.int.sbbh.cloud:8443
-        widget:
-          type: unifi
-          url: *unifi_url
-          username: monitoring
-          password: "{{HOMEPAGE_VAR_UNIFI_PASS}}"
