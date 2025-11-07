@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./metube.yaml
   - ./sts.yaml
+  - ./syncthing.yaml
   - ./unifi.yaml
