@@ -9,8 +9,6 @@ spec:
     kind: OCIRepository
     name: fusion
   interval: 1h
-  driftDetection:
-    mode: enabled
   values:
     controllers:
       fusion:

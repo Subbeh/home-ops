@@ -71,6 +71,14 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: "{{ .Release.Name }}.svg"
+          gethomepage.dev/name: "{{ .Release.Name | title }}"
+          gethomepage.dev/widget.type: "{{ .Release.Name }}"
+          gethomepage.dev/widget.url: "https://{{ .Release.Name }}.sbbh.cloud"
+          gethomepage.dev/widget.key: "{{`{{HOMEPAGE_VAR_SABNZBD_TOKEN}}`}}"
     persistence:
       config:
         existingClaim: sabnzbd

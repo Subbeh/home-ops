@@ -9,8 +9,6 @@ spec:
     kind: OCIRepository
     name: radarr
   interval: 1h
-  driftDetection:
-    mode: enabled
   values:
     controllers:
       radarr:

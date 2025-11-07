@@ -9,8 +9,6 @@ spec:
     kind: OCIRepository
     name: calibre
   interval: 1h
-  driftDetection:
-    mode: enabled
   values:
     controllers:
       calibre:
@@ -54,6 +52,15 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: "calibre-web.svg"
+          gethomepage.dev/name: "{{ .Release.Name | title }}"
+          gethomepage.dev/widget.type: "calibreweb"
+          gethomepage.dev/widget.url: "https://{{ .Release.Name }}.sbbh.cloud"
+          gethomepage.dev/widget.username: "{{`{{HOMEPAGE_VAR_CALIBRE_USER}}`}}"
+          gethomepage.dev/widget.password: "{{`{{HOMEPAGE_VAR_CALIBRE_PASS}}`}}"
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"

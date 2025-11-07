@@ -9,8 +9,6 @@ spec:
     kind: OCIRepository
     name: it-tools
   interval: 1h
-  driftDetection:
-    mode: enabled
   values:
     controllers:
       it-tools:
