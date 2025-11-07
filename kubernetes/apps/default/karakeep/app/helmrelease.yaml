@@ -158,8 +158,13 @@ spec:
                 subPath: meilisearch
     route:
       app:
+        enabled: true
         hostnames:
           - karakeep.sbbh.cloud
         parentRefs:
           - name: envoy-external
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 3000
