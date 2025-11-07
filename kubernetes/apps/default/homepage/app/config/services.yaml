@@ -24,7 +24,7 @@
           password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
     - Proxmox:
         icon: proxmox.svg
-        href: &pve_url https://pve.sbbh.cloud
+        href: &pve_url https://pve-fw.int.sbbh.cloud:8006
         widget:
           type: proxmox
           url: *pve_url
