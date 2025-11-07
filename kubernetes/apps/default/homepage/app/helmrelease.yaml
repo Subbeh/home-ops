@@ -36,13 +36,13 @@ spec:
                 cpu: 15m
               limits:
                 memory: 512Mi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        # fsGroup: 1000
-        # fsGroupChangePolicy: OnRootMismatch
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 1000
+    #     runAsGroup: 1000
+    #     fsGroup: 1000
+    #     fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -123,8 +123,6 @@ spec:
           - name: envoy-internal
             namespace: network
     persistence:
-      app:
-        type: emptyDir
       config:
         type: configMap
         name: homepage-config
