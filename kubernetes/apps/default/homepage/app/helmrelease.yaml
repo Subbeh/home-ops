@@ -123,6 +123,8 @@ spec:
           - name: envoy-internal
             namespace: network
     persistence:
+      app:
+        type: emptyDir
       config:
         type: configMap
         name: homepage-config
