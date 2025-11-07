@@ -18,7 +18,7 @@ resources:
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml # TODO
   # - ./jellyfin/ks.yaml # TODO
-  # - ./karakeep/ks.yaml # TODO
+  - ./karakeep/ks.yaml
   # - ./linx/ks.yaml # TODO
   # - ./mealie/ks.yaml # TODO
   # - ./morphos/ks.yaml # TODO
