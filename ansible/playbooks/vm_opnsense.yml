@@ -76,6 +76,7 @@
       - { name: net_local_all, desc: Local Networks, type: network, content: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "100.64.0.0/10"] }
       - { name: net_k8s, desc: Kubernetes Network, type: network, content: "10.11.80.0/24" }
       # hosts
+      - { name: host_fw, desc: OPNsense address, type: host, content: "10.11.10.1" }
       - { name: host_vps, desc: VPS via Tailscale, type: host, content: "{{ lookup('pipe', 'tailscale status --json | jq -r \".Peer[] | select(.HostName == \\\"vps\\\") | .TailscaleIPs[0]\"') }}" }
       - { name: host_nas, desc: NAS address, type: host, content: "{{ hostvars['pve-nas'].ip_addr | ansible.utils.ipaddr('address') }}" }
       - { name: host_mgmt, desc: Management VM address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
@@ -118,7 +119,7 @@
         - { description: Allow UDP NFS and RPC to NAS from all networks, interface: VLANGroup, protocol: UDP, destination_net: host_nas, destination_port: ports_nfs }
         - { description: Allow TFTP to NAS, interface: VLANGroup, protocol: UDP, source_net: __VLANGroup_network, destination_net: host_services, destination_port: 69 }
         - { description: Allow TFTP UDP replies, interface: INFRAGroup, protocol: UDP, source_net: host_services, destination_port: 1024-65535 }
-        # allow_k8s_opnsense: { interface: K8SGroup, protocol: TCP, source_net: __K8SGroup_network, destination_net: "{{ aliases.host_opnsense_k8s.content }}", destination_port: 4443, description: Allow K8S to OPNsense Web UI }
+        - { description: Allow INFRA to OPNsense Web UI, interface: INFRAGroup, protocol: TCP, source_net: __INFRAGroup_network, destination_net: host_fw, destination_port: 4443 }
         # allow_k8s_node_exporter: { interface: K8SGroup, protocol: TCP, source_net: __K8SGroup_network, destination_net: "{{ aliases.host_opnsense_k8s.content }}", destination_port: 9100, description: Allow K8S to OPNsense Node Exporter }
         # allow_k8s_pve_api: { interface: K8SGroup, protocol: TCP, source_net: __K8SGroup_network, destination_net: "{{ aliases.host_pve_fw.content }}", destination_port: ports_pve_api, description: Allow K8S to Proxmox VE API }
         # allow_k8s_vps: { interface: K8SGroup, protocol: TCP, source_net: __K8SGroup_network, destination_net: "{{ aliases.host_vps.content }}", description: Allow all traffic from K8S to vps }
