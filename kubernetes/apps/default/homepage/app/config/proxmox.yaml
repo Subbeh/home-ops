@@ -1,4 +1,4 @@
 ---
-url: https://pve-fw.int.${DOMAIN}:8006
+url: https://pve.sbbh.cloud
 token: "{{ HOMEPAGE_VAR_PVE_TOKEN }}"
 secret: "{{ HOMEPAGE_VAR_PVE_SECRET }}"

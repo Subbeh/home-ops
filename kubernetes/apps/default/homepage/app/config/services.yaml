@@ -15,16 +15,16 @@
 
 - Infrastructure:
     - OPNsense:
-        href: https://opnsense.int.${DOMAIN}:4443
+        href: https://opnsense.int.sbbh.cloud:4443
         icon: opnsense.svg
         widget:
           type: opnsense
-          url: https://opnsense.int.${DOMAIN}:4443
+          url: https://opnsense.int.sbbh.cloud:4443
           username: "{{HOMEPAGE_VAR_OPNSENSE_KEY}}"
           password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
     - Proxmox:
         icon: proxmox.svg
-        href: &pve_url https://pve-fw.int.${DOMAIN}:8006
+        href: &pve_url https://pve.sbbh.cloud
         widget:
           type: proxmox
           url: *pve_url

@@ -21,8 +21,6 @@ spec:
               tag: v1.6.1@sha256:8c7ec6a3c9094af7ac0686aa361fed3129264a8ed2c17594d5114a5e8342f7c9
             env:
               HOMEPAGE_ALLOWED_HOSTS: home.sbbh.cloud
-              PUID: 1000
-              PGID: 1000
             envFrom:
               - secretRef:
                   name: homepage-secret

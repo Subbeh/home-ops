@@ -81,7 +81,7 @@ tasks:
           kubectl -n "$NS" delete ks {{.APP}} || true &
           kubectl -n "$NS" delete ocirepo {{.APP}} || true
           kubectl -n "$NS" delete deploy -l 'app.kubernetes.io/name={{.APP}}' || true
-          while ! kubectl -n "$NS" get ks {{.APP}} &>/dev/null; do sleep 1; done
+          while kubectl -n "$NS" get ks {{.APP}} &>/dev/null; do sleep 1; done
           task annotate:ocirepo:{{.APP}}:$NS REQUESTED_AT=true 2>/dev/null || true
           task annotate:ks:{{.APP}}:$NS REQUESTED_AT=true
         else
