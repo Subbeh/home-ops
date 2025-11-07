@@ -19,7 +19,7 @@
         icon: opnsense.svg
         widget:
           type: opnsense
-          url: https://opnsense.int.sbbh.cloud:4443
+          url: https://10.11.10.1:4443
           username: "{{HOMEPAGE_VAR_OPNSENSE_KEY}}"
           password: "{{HOMEPAGE_VAR_OPNSENSE_SECRET}}"
     - Proxmox:
