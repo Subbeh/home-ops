@@ -6,7 +6,8 @@
     "helpers:pinGitHubActionDigests",
     "github>Subbeh/home-ops//.renovate/autoMerge.json5",
     "github>Subbeh/home-ops//.renovate/changelogs.json5",
-    "github>Subbeh/home-ops//.renovate/customManagers.json5",
+    // Temporarily disabled to test if this is causing the conflict
+    // "github>Subbeh/home-ops//.renovate/customManagers.json5",
     "github>Subbeh/home-ops//.renovate/grafanaDashboards.json5",
     "github>Subbeh/home-ops//.renovate/groups.json5",
     "github>Subbeh/home-ops//.renovate/labels.json5",
