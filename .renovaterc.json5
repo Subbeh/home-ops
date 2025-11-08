@@ -3,6 +3,7 @@
   extends: [
     "config:recommended",
     ":dependencyDashboard",
+    "github>Subbeh/home-ops//.renovate/customManagers.json5",
   ],
   enabledManagers: ["flux", "kubernetes", "helm-values", "github-actions"],
   flux: {
