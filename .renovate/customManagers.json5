@@ -4,7 +4,7 @@
     {
       customType: "regex",
       description: "Process annotated dependencies",
-      managerFilePatterns: [
+      fileMatch: [
         "\\.env(?:\\.j2)?$",
         "\\.sh(?:\\.j2)?$",
         "\\.yaml(?:\\.j2)?$",
@@ -21,7 +21,7 @@
     {
       customType: "regex",
       description: "Process OCI dependencies",
-      managerFilePatterns: [
+      fileMatch: [
         "\\.yaml(?:\\.j2)?$",
       ],
       matchStrings: [
