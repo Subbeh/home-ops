@@ -24,17 +24,19 @@
     "prIgnoreNotification",
   ],
   ignorePaths: [
+    "**/*.sops.*",
+    "**/resources/**",
     "ansible/**",
     "!ansible/requirements.yml",
     "!ansible/services/*.yaml",
   ],
   flux: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   "helm-values": {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   kubernetes: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
 }
