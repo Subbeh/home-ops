@@ -27,27 +27,17 @@
     "ansible/**/!(requirements.yml)",
     "!ansible/services/*.yaml",
   ],
-  packageRules: [
-    {
-      description: "Flux manager - kubernetes directory only",
-      matchManagers: ["flux"],
-      matchFileNames: ["kubernetes/**"],
-    },
-    {
-      description: "Helm-values manager - kubernetes directory only",
-      matchManagers: ["helm-values"],
-      matchFileNames: ["kubernetes/**"],
-    },
-    {
-      description: "Kubernetes manager - kubernetes directory only",
-      matchManagers: ["kubernetes"],
-      matchFileNames: ["kubernetes/**"],
-    },
-    {
-      description: "Docker manager - ansible services only",
-      matchManagers: ["docker"],
-      matchFileNames: ["ansible/services/*.yaml"],
-    },
-  ],
+  flux: {
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
+  },
+  "helm-values": {
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
+  },
+  kubernetes: {
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
+  },
+  docker: {
+    fileMatch: ["(^|/)ansible/services/[^/]+\\.ya?ml$"],
+  },
 }
 
