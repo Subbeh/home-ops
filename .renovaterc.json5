@@ -24,6 +24,8 @@
     "prIgnoreNotification",
   ],
   ignorePaths: [
+    "**/*.sops.*",
+    "**/resources/**",
     "ansible/**",
     "!ansible/requirements.yml",
     "!ansible/services/*.yaml",
