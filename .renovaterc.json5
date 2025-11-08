@@ -29,16 +29,16 @@
     "!ansible/services/*.yaml",
   ],
   flux: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: ["/\\.yaml$/"],
   },
   "helm-values": {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: ["/\\.yaml$/"],
   },
   kubernetes: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: ["/\\.yaml$/"],
   },
   docker: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: ["/\\.yaml$/"],
   },
 }
 
