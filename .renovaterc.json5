@@ -37,8 +37,5 @@
   kubernetes: {
     managerFilePatterns: ["/\\.yaml$/"],
   },
-  docker: {
-    managerFilePatterns: ["/\\.yaml$/"],
-  },
 }
 
