@@ -1,44 +1,56 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    "config:recommended",
-    "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
-    "github>Subbeh/home-ops//.renovate/autoMerge.json5",
-    "github>Subbeh/home-ops//.renovate/changelogs.json5",
-    "github>Subbeh/home-ops//.renovate/customManagers.json5",
-    "github>Subbeh/home-ops//.renovate/grafanaDashboards.json5",
-    "github>Subbeh/home-ops//.renovate/groups.json5",
-    "github>Subbeh/home-ops//.renovate/labels.json5",
-    "github>Subbeh/home-ops//.renovate/overrides.json5",
-    "github>Subbeh/home-ops//.renovate/semanticCommits.json5",
-    ":automergeBranch",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
-    ":semanticCommits",
-    ":timezone(Australia/Melbourne)",
+    'config:recommended',
+    'docker:enableMajor',
+    'helpers:pinGitHubActionDigests',
+    'github>Subbeh/home-ops//.renovate/autoMerge.json5',
+    'github>Subbeh/home-ops//.renovate/changelogs.json5',
+    'github>Subbeh/home-ops//.renovate/customManagers.json5',
+    'github>Subbeh/home-ops//.renovate/grafanaDashboards.json5',
+    'github>Subbeh/home-ops//.renovate/groups.json5',
+    'github>Subbeh/home-ops//.renovate/labels.json5',
+    'github>Subbeh/home-ops//.renovate/overrides.json5',
+    'github>Subbeh/home-ops//.renovate/semanticCommits.json5',
+    ':automergeBranch',
+    ':disableRateLimiting',
+    ':dependencyDashboard',
+    ':semanticCommits',
+    ':timezone(Australia/Melbourne)',
   ],
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   suppressNotifications: [
-    "prEditedNotification",
-    "prIgnoreNotification",
+    'prEditedNotification',
+    'prIgnoreNotification',
   ],
   ignorePaths: [
-    "ansible/**",
-    "!ansible/requirements.yml",
-    "!ansible/services/*.yaml",
+    'ansible/**',
+    '!ansible/requirements.yml',
+    '!ansible/services/*.yaml',
   ],
   flux: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: [
+      '/\\.ya?ml$/',
+    ],
   },
-  "helm-values": {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+  'helm-values': {
+    managerFilePatterns: [
+      '/\\.ya?ml$/',
+    ],
   },
   kubernetes: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
+    managerFilePatterns: [
+      '/\\.ya?ml$/',
+    ],
   },
-  docker: {
-    managerFilePatterns: ["/\\.ya?ml$/"],
-  },
+  packageRules: [
+    {
+      matchCategories: [
+        'docker',
+      ],
+      managerFilePatterns: [
+        '/\\.ya?ml$/',
+      ],
+    },
+  ],
 }
-
