@@ -55,7 +55,7 @@ tasks:
       - task secrets:create:cloudflare-api --yes
       - task secrets:create:cloudflare-tunnel --yes
 
-  github:repo:secrets:
+  github:runner:secrets:
     desc: Create Repository secrets
     dir: "{{.ROOT_DIR}}"
     cmds:
@@ -63,6 +63,7 @@ tasks:
       - gh secret set CLOUDFLARE_API_TOKEN -b "{{.CLOUDFLARE_API_TOKEN}}"
       - gh secret set BOT_APP_ID -b "{{.BOT_APP_ID}}"
       - gh secret set BOT_APP_PRIVATE_KEY -b "{{.BOT_APP_PRIVATE_KEY}}"
+      - task secrets:create:github-runner --yes
     vars:
       CLOUDFLARE_ACCOUNT_ID:
         sh: bwget cloudflare.com account-id
@@ -176,7 +177,6 @@ tasks:
       - task secrets:create:github-deploy-key --yes
       - task secrets:create:github-status-token --yes
       - task secrets:create:github-webhook-token --yes
-      - task secrets:create:github-runner --yes
 
   github:postproc:
     desc: Post processing after Flux deployment

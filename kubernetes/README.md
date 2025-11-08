@@ -64,10 +64,10 @@
         - save in Bitwarden under `github.com`
             - `actions-app-installation-id`
 
-6. Create Repository secrets
+6. Create Actions runner secrets
 
     ```sh
-    task k8s:bootstrap:github:repo:secrets
+    task k8s:bootstrap:github:runner:secrets
     ```
 
 ### Secrets
