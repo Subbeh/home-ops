@@ -36,7 +36,7 @@
   kubernetes: {
     managerFilePatterns: ["/\\.yaml$/"],
   },
-  "docker-compose": {
-    managerFilePatterns: ["/\\.yaml$/"],
-  },
+  // "docker-compose": {
+  //   managerFilePatterns: ["/\\.yaml$/"],
+  // },
 }
