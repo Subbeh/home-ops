@@ -24,13 +24,20 @@
     "prIgnoreNotification",
   ],
   flux: {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+    fileMatch: ["kubernetes/.*\\.yaml$"],
   },
   "helm-values": {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+    fileMatch: ["kubernetes/.*\\.yaml$"],
   },
   kubernetes: {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+    fileMatch: ["kubernetes/.*\\.yaml$"],
   },
+  docker: {
+    fileMatch: ["ansible/services/[^/]+\\.yaml$"],
+  },
+  ignorePaths: [
+    "ansible/**/!(requirements.yml)",
+    "!ansible/services/*.yaml",
+  ],
 }
 
