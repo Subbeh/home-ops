@@ -24,12 +24,66 @@
     - Item: `github.com`
     - Field: `flux-status-token`
 
+#### GitHub App
+
+1. Create GitHub App
+
+    - Go to github.com -> Developer settings -> GitHub Apps -> New
+        - App name: `home-ops-runner-sbbh`
+        - Homepage URL: `https://github.com`
+        - Webhook: disable
+        - Repository permissions:
+            - Actions: rw
+            - Administration: rw
+            - Checks: rw
+            - Commit statuses: rw
+            - Contents: rw
+            - Issues: rw
+            - Metadata: ro
+            - Pull requests: rw
+
+2. Take note of the **App ID** and **Client ID**
+
+    - save in Bitwarden under `github.com`
+        - `actions-app-id`
+        - `actions-client-id`
+
+3. Generate new client secret
+
+    - save in Bitwarden under `github.com`
+        - `actions-app-secret`
+
+4. Generate a private key
+
+    - save as: `./.private/kubernetes/home-ops-runner-sbbh.private-key.pem`
+
+5. Install app
+
+    - select `home-ops` repository
+    - save Installation ID from URL (`https://github.com/settings/installations/[Installation ID]`)
+        - save in Bitwarden under `github.com`
+            - `actions-app-installation-id`
+
+6. Create Repository secrets
+
+    ```sh
+    task k8s:bootstrap:github:repo:secrets
+    ```
+
 ### Secrets
 
 1. Run secrets task for all required secrets
 
     ```sh
     task secrets:create:[secret-name]
+    ```
+
+### Cloudflare tunnel
+
+1. Create Cloudflare tunnel
+
+    ```sh
+    task k8s:bootstrap:cloudflare
     ```
 
 ## Bootstrap Talos Cluster

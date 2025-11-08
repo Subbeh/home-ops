@@ -32,6 +32,51 @@ tasks:
         echo "ERROR: Failed to sync helmfile"
       fi
 
+  cloudflare:
+    desc: Set up Cloudflare tunnel
+    cmds:
+      - task: cloudflare:tunnel
+      - task: cloudflare:secrets
+
+  cloudflare:tunnel:
+    desc: Create Cloudflare tunnel
+    internal: true
+    cmd: cloudflared tunnel create --credentials-file "{{.TUNNEL_FILE}}" kubernetes
+    vars:
+      TUNNEL_FILE: "{{.PRIVATE_DIR}}/kubernetes/cloudflare-tunnel.json"
+    status:
+      - test -f {{.TUNNEL_FILE}}
+
+  cloudflare:secrets:
+    desc: Create Cloudflare secrets
+    internal: true
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - task secrets:create:cloudflare-api --yes
+      - task secrets:create:cloudflare-tunnel --yes
+
+  github:repo:secrets:
+    desc: Create Repository secrets
+    dir: "{{.ROOT_DIR}}"
+    cmds:
+      - gh secret set CLOUDFLARE_ACCOUNT_ID -b "{{.CLOUDFLARE_ACCOUNT_ID}}"
+      - gh secret set CLOUDFLARE_API_TOKEN -b "{{.CLOUDFLARE_API_TOKEN}}"
+      - gh secret set BOT_APP_ID -b "{{.BOT_APP_ID}}"
+      - gh secret set BOT_APP_PRIVATE_KEY -b "{{.BOT_APP_PRIVATE_KEY}}"
+    vars:
+      CLOUDFLARE_ACCOUNT_ID:
+        sh: bwget cloudflare.com account-id
+      CLOUDFLARE_API_TOKEN:
+        sh: bwget cloudflare.com infra-api-token
+      BOT_APP_ID:
+        sh: bwget github.com actions-app-id
+      BOT_APP_PRIVATE_KEY_FILE: "{{.PRIVATE_DIR}}/kubernetes/home-ops-runner-sbbh.private-key.pem"
+      BOT_APP_PRIVATE_KEY:
+        sh: cat "{{.BOT_APP_PRIVATE_KEY_FILE}}"
+    preconditions:
+      - test -f {{.BOT_APP_PRIVATE_KEY_FILE}}
+      - gh status &>/dev/null
+
   vault:
     desc: Setup Kubernetes Vault authentication
     cmds:
@@ -80,41 +125,13 @@ tasks:
       until JWT_TOKEN=$(kubectl get secret external-secrets-token -n external-secrets -o jsonpath='{.data.token}' | base64 -d); do sleep 5; done
       vault write auth/home-ops/login role=external-secrets jwt="$JWT_TOKEN"
 
-  cloudflare:
-    desc: Set up Cloudflare DNS
-    cmds:
-      - task: cloudflare:tunnel
-      - task: cloudflare:secrets
-
-  cloudflare:tunnel:
-    desc: Create Cloudflare tunnel
-    internal: true
-    cmd: cloudflared tunnel create --credentials-file "{{.TUNNEL_FILE}}" kubernetes
-    vars:
-      TUNNEL_FILE: "{{.PRIVATE_DIR}}/kubernetes/cloudflare-tunnel.json"
-    status:
-      - test -f {{.TUNNEL_FILE}}
-
-  cloudflare:secrets:
-    desc: Create Cloudflare secrets
-    internal: true
-    dir: "{{.ROOT_DIR}}"
-    cmds:
-      - task secrets:create:cloudflare-api --yes
-      - task secrets:create:cloudflare-tunnel --yes
-
   github:preproc:
-    desc: Prepare Github deploy key and webhook token
+    desc: Prepare Github keys and secrets
     cmds:
       - task: github:deploy-key:generate
       - task: github:deploy-key:upload
       - task: github:webhook-token:generate
-      - task: github:secrets
-
-  github:postproc:
-    desc: Post processing after Flux deployment
-    cmds:
-      - task: github:webhook
+      - task: github:secrets:vault
 
   github:deploy-key:generate:
     desc: Generate Github deploy key
@@ -151,7 +168,7 @@ tasks:
     status:
       - test -f "{{.WEBHOOK_TOKEN}}"
 
-  github:secrets:
+  github:secrets:vault:
     desc: Create Vault secrets
     internal: true
     dir: "{{.ROOT_DIR}}"
@@ -159,6 +176,12 @@ tasks:
       - task secrets:create:github-deploy-key --yes
       - task secrets:create:github-status-token --yes
       - task secrets:create:github-webhook-token --yes
+      - task secrets:create:github-runner --yes
+
+  github:postproc:
+    desc: Post processing after Flux deployment
+    cmds:
+      - task: github:webhook
 
   github:webhook:
     desc: Add Flux receiver webhook to GitHub repository
@@ -207,3 +230,4 @@ tasks:
       WEBHOOK_TOKEN: "{{.PRIVATE_DIR}}/kubernetes/github-webhook-token.txt"
     preconditions:
       - test -f {{.WEBHOOK_TOKEN}}
+      - gh status &>/dev/null
