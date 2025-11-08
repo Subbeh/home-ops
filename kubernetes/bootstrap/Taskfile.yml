@@ -66,11 +66,11 @@ tasks:
       - task secrets:create:github-runner --yes
     vars:
       CLOUDFLARE_ACCOUNT_ID:
-        sh: bwget cloudflare.com account-id
+        sh: task secrets:get:cloudflare.com:account-id
       CLOUDFLARE_API_TOKEN:
-        sh: bwget cloudflare.com infra-api-token
+        sh: task secrets:get:cloudflare.com:infra-api-token
       BOT_APP_ID:
-        sh: bwget github.com actions-app-id
+        sh: task secrets:get:github.com:actions-app-id
       BOT_APP_PRIVATE_KEY_FILE: "{{.PRIVATE_DIR}}/kubernetes/home-ops-runner-sbbh.private-key.pem"
       BOT_APP_PRIVATE_KEY:
         sh: cat "{{.BOT_APP_PRIVATE_KEY_FILE}}"
