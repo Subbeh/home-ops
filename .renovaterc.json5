@@ -31,12 +31,12 @@
     "!ansible/services/*.yaml",
   ],
   flux: {
-    fileMatch: ["\\.yaml$", "\\.yml$"],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   "helm-values": {
-    fileMatch: ["\\.yaml$", "\\.yml$"],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
   kubernetes: {
-    fileMatch: ["\\.yaml$", "\\.yml$"],
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
 }
