@@ -23,21 +23,31 @@
     "prEditedNotification",
     "prIgnoreNotification",
   ],
-  flux: {
-    fileMatch: ["kubernetes/.*\\.yaml$"],
-  },
-  "helm-values": {
-    fileMatch: ["kubernetes/.*\\.yaml$"],
-  },
-  kubernetes: {
-    fileMatch: ["kubernetes/.*\\.yaml$"],
-  },
-  docker: {
-    fileMatch: ["ansible/services/[^/]+\\.yaml$"],
-  },
   ignorePaths: [
     "ansible/**/!(requirements.yml)",
     "!ansible/services/*.yaml",
+  ],
+  packageRules: [
+    {
+      description: "Flux manager - kubernetes directory only",
+      matchManagers: ["flux"],
+      matchFileNames: ["kubernetes/**"],
+    },
+    {
+      description: "Helm-values manager - kubernetes directory only",
+      matchManagers: ["helm-values"],
+      matchFileNames: ["kubernetes/**"],
+    },
+    {
+      description: "Kubernetes manager - kubernetes directory only",
+      matchManagers: ["kubernetes"],
+      matchFileNames: ["kubernetes/**"],
+    },
+    {
+      description: "Docker manager - ansible services only",
+      matchManagers: ["docker"],
+      matchFileNames: ["ansible/services/*.yaml"],
+    },
   ],
 }
 
