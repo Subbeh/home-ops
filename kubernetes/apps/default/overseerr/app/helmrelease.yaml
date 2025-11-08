@@ -56,7 +56,11 @@ spec:
           - name: envoy-external
             namespace: network
     persistence:
-      config:
+      data:
         existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          overseerr:
+            app:
+              - path: /app/config
       tmp:
         type: emptyDir
