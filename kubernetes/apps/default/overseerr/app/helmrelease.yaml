@@ -17,7 +17,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/overseerr
+              repository: ghcr.io/sct/overseerr
               tag: b1c6e2fdbde49859a661767e9b414555aa7abc31
             env:
               PORT: &port 80
