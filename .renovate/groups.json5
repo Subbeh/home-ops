@@ -2,6 +2,16 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      description: "1Password Connect Group",
+      groupName: "1password-connect",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/1password/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
       description: "Actions Runner Controller Group",
       groupName: "actions-runner-controller",
       matchDatasources: ["docker"],
@@ -20,6 +30,16 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 3,
+    },
+    {
+      description: "Intel Device Plugins Group",
+      groupName: "intel-device-plugins",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/intel-device-plugins-operator/", "/intel-device-plugins-gpu/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
     },
     {
       description: "Kubernetes Group",
@@ -59,4 +79,3 @@
     },
   ],
 }
-
