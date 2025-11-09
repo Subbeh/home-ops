@@ -3,12 +3,12 @@
 name: Renovate
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - .renovaterc.json5
-      - .renovate/**.json5
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - .renovaterc.json5
+  #     - .renovate/**.json5
   schedule:
     - cron: 0 3 * * *
   workflow_dispatch:
