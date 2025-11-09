@@ -45,7 +45,8 @@ TF_LOG_PATH = "{{config_root}}/.cache/terraform/terraform.log"
 TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 
 [tools]
-"python" = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"
+# "python" = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"
+"uv" = "latest"
 "asdf:MetricMike/asdf-awscli" = "2.29.0"
 "aqua:cli/cli" = "2.78.0" # GitHub CLI
 "aqua:jqlang/jq" = "1.8.1"
