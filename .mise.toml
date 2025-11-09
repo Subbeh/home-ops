@@ -53,7 +53,7 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 "aqua:mikefarah/yq" = "4.47.1"
 "aqua:evilmartians/lefthook" = "2.0.2"
 "aqua:go-task/task" = "3.44.1"
-"aqua:hashicorp/vault" = "1.20.3"
+"aqua:hashicorp/vault" = "1.21.0"
 
 # kubernetes
 "aqua:budimanjojo/talhelper" = "3.0.34"
