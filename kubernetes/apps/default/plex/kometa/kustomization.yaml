@@ -10,12 +10,6 @@ configMapGenerator:
   - name: kometa-configmap
     files:
       - ./resources/config.yml
-  # - name: kometa-loki-rules # TODO
-  #   files:
-  #     - kometa.yaml=./lokirule.yaml
-  #   options:
-  #     labels:
-  #       loki_rule: "true"
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

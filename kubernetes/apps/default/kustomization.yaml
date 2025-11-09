@@ -14,7 +14,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   - ./homepage/ks.yaml
-  - ./it-tools/ks.yaml # TODO
+  - ./it-tools/ks.yaml
   - ./karakeep/ks.yaml
   - ./fusion/ks.yaml
   - ./plex/ks.yaml
@@ -26,7 +26,7 @@ resources:
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
   # - ./linx/ks.yaml # TODO
-  # - ./mealie/ks.yaml # TODO
+  - ./mealie/ks.yaml
   # - ./morphos/ks.yaml # TODO
   # - ./tdarr/ks.yaml # TODO
   # - ./watchstate/ks.yaml # TODO

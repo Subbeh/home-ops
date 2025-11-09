@@ -10,8 +10,13 @@ spec:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
     staticConfig:
-      static: # TODO
+      static:
         - nas-k8s.int.sbbh.cloud
+        - pve-fw.int.sbbh.cloud
+        - pikvm.int.sbbh.cloud
+        - mgmt.int.sbbh.cloud
+        - services.int.sbbh.cloud
+        - opnsense.int.sbbh.cloud
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter
@@ -28,7 +33,7 @@ spec:
     url: blackbox-exporter.observability.svc.cluster.local:9115
   targets:
     staticConfig:
-      static: # TODO
+      static:
         - nas-k8s.int.sbbh.cloud:2049
   metricRelabelings:
     - targetLabel: service
