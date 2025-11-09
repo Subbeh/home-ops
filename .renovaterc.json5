@@ -28,8 +28,8 @@
   //   "!ansible/services/*.yaml"
   // ],
   ignorePaths: [
-    "**/*.sops.*",
-    "**/resources/**",
+    "ansible/**",
+    "!ansible/services/*.yaml"
   ],
   flux: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
