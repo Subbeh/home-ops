@@ -37,6 +37,15 @@ tasks:
           kubectl delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true
       done
 
+  volsync:*:
+    desc: Suspend or resume VolSync ["suspend" | "resume"]
+    cmd: |
+      flux -n volsync-system {{.STATE}} kustomization volsync
+      flux -n volsync-system {{.STATE}} helmrelease volsync
+      kubectl -n volsync-system scale deployment volsync --replicas {{if ne .STATE "suspend"}}{{ "1" }}{{else}}{{ "0" }}{{end}}
+    vars:
+      STATE: "{{index .MATCH 0}}"
+
   volsync:snapshot:
     desc: Snapshot VolSync PVCs
     cmd: |
@@ -48,7 +57,7 @@ tasks:
     desc: Suspend or resume Keda ScaledObjects ["suspend" | "resume"]
     cmd: |
       kubectl get scaledobjects --no-headers -A | while read -r ns name _; do
-          kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite so "$name" autoscaling.keda.sh/paused{{if .STATE != "suspend"}}{{ "-" }}{{else}}{{ "=true" }}{{end}}
+          kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite so "$name" autoscaling.keda.sh/paused{{if ne .STATE "suspend"}}{{ "-" }}{{else}}{{ "=true" }}{{end}}
       done
     vars:
       STATE: "{{index .MATCH 0}}"
