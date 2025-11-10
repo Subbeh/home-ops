@@ -1,9 +1,0 @@
----
-# Patch to add Prometheus discovery label to rook-ceph-mgr ServiceMonitor
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: rook-ceph-mgr
-  namespace: rook-ceph
-  labels:
-    release: kube-prometheus-stack
