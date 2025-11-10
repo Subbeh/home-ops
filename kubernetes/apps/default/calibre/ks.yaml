@@ -16,7 +16,7 @@ spec:
   postBuild:
     substitute:
       APP: calibre
-      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 15Gi
   prune: true
   sourceRef:
     kind: GitRepository
