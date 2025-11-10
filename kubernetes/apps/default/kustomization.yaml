@@ -34,3 +34,5 @@ resources:
   # - ./jellyfin/ks.yaml # TODO
   # - ./changedetection/ks.yaml # TODO
   # - ./home-assistant/ks.yaml # TODO
+  # - ./profilarr/ks.yaml # TODO
+  # - ./pulsarr/ks.yaml # TODO
