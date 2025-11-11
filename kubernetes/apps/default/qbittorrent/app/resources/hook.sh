@@ -19,7 +19,7 @@ TORRENT_NUM_FILES=$8    # %C - Number of files
 TORRENT_SIZE=$9         # %Z - Torrent size (bytes)
 TORRENT_TRACKER=${10}   # %T - Current tracker
 
-CWA_BOOK_INGEST_PATH="/cwa-book-ingest"
+CWA_BOOK_INGEST_PATH="/media/downloads/temp/cwa-book-ingest"
 
 main() {
   log Script arguments: "$@"

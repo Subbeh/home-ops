@@ -75,3 +75,9 @@ spec:
         path: /data/nvme/media/books/ebooks
         globalMounts:
           - path: /calibre-library
+      ingest:
+        type: nfs
+        server: nas-k8s.int.sbbh.cloud
+        path: /data/nvme/media/temp/cwa-book-ingest
+        globalMounts:
+          - path: /cwa-book-ingest
