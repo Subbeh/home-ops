@@ -3,7 +3,7 @@
 # command line arguments:
 # /scripts/hook.sh [added|finished] %N %L %G %F %R %D %C %Z %T
 
-set -xeuo pipefail
+set -euo pipefail
 
 LOG_FILE="/tmp/qbittorrent_hook.log"
 exec &>>"$LOG_FILE"
@@ -19,7 +19,7 @@ TORRENT_NUM_FILES=$8    # %C - Number of files
 TORRENT_SIZE=$9         # %Z - Torrent size (bytes)
 TORRENT_TRACKER=${10}   # %T - Current tracker
 
-CWA_BOOK_INGEST_PATH="/media/downloads/temp/cwa-book-ingest"
+CWA_BOOK_INGEST_PATH="/cwa-book-ingest"
 
 main() {
   log Script arguments: "$@"
@@ -42,6 +42,7 @@ finished() {
   case "$TORRENT_CATEGORY" in
     ebooks)
       log Processing ebooks category for torrent: "$TORRENT_NAME"
+      ebook_copier
       ;;
     *)
       log No special processing for category: "$TORRENT_CATEGORY"
@@ -51,43 +52,45 @@ finished() {
 
 ebook_copier() {
   log Copying "$TORRENT_NAME" to CWA Auto Book Ingest Path
-  # if [[ -d "$TORRENT_CONTENT_PATH" ]];
+
+  _process_file() {
+    if [[ "$1" == *.epub || "$1" == *.pdf || "$1" == *.mobi ]]; then
+      cp "$1" "$CWA_BOOK_INGEST_PATH"
+    else
+      log No ebook file, skipping: "$1"
+    fi
+  }
+
+  if [[ ! -d "$CWA_BOOK_INGEST_PATH" ]]; then
+    log "Creating CWA Book Ingest Path: $CWA_BOOK_INGEST_PATH"
+    mkdir -p "$CWA_BOOK_INGEST_PATH"
+  fi
+
+  if [[ -d "$TORRENT_CONTENT_PATH" ]]; then
+    while read -r file; do
+      _process_file "$file"
+    done <<<"$(find "$TORRENT_CONTENT_PATH" -type f)"
+  else
+    _process_file "$TORRENT_CONTENT_PATH"
+  fi
 }
 
 log() {
   echo "$(date '+%Y-%m-%d %H:%M:%S') - $*"
 }
 
+log "######### Script started #########"
+echo "TORRENT_STATUS      : $TORRENT_STATUS"
+echo "TORRENT_NAME        : $TORRENT_NAME"
+echo "TORRENT_CATEGORY    : $TORRENT_CATEGORY"
+echo "TORRENT_TAGS        : $TORRENT_TAGS"
+echo "TORRENT_CONTENT_PATH: $TORRENT_CONTENT_PATH"
+echo "TORRENT_ROOT_PATH   : $TORRENT_ROOT_PATH"
+echo "TORRENT_SAVE_PATH   : $TORRENT_SAVE_PATH"
+echo "TORRENT_NUM_FILES   : $TORRENT_NUM_FILES"
+echo "TORRENT_SIZE        : $TORRENT_SIZE"
+echo "TORRENT_TRACKER     : $TORRENT_TRACKER"
+
 main "$@"
 
-# # Checking if the second argument is not 'no-copy'
-# if [[ $2 != 'no-copy' ]]; then
-#   # Checking if the provided path is a directory
-#   if [ -d "$1" ]; then
-#     new_path="${1/\/Seeding/\/data}"
-#     new_path="${new_path%/*}"
-#     mkdir -p "$new_path"
-#     if [ -e "$new_path/$(basename "$1")" ]; then
-#       echo "Error: Folder '$(basename "$1")' already exists in destination." >> "$error_file"
-#     else
-#       # Use rsync to copy directory excluding image files
-#       rsync -av --exclude='*.jpg' --exclude='*.jpeg' --exclude='*.png' --exclude='*.gif' "$1/" "$new_path/$(basename "$1")/"
-#       # Remove empty directories
-#       find "$new_path/$(basename "$1")" -type d -empty -delete
-#       chown -R 99:100 "$new_path/$(basename "$1")"
-#     fi
-#   else
-#     # If the provided path is a file, handle it accordingly
-#     new_file_path="${1/\/Seeding/\/data}"
-#     new_file_path="${new_file_path%/*}"
-#     mkdir -p "$new_file_path"
-#     if [ -e "$new_file_path/$(basename "$1")" ]; then
-#       echo "Error: File '$(basename "$1")' already exists in destination." >> "$error_file"
-#     else
-#       # Use rsync to copy the file
-#       rsync -av "$1" "$new_file_path/"
-#       chown 99:100 "$new_file_path/$(basename "$1")"
-#     fi
-#   fi
-# fi
-#
+log "######### Script finished #########"
