@@ -235,6 +235,12 @@ spec:
         globalMounts:
           - path: /config/.qbt.toml
             subPath: .qbt.toml
+      scripts:
+        type: configMap
+        name: qbittorrent-configmap
+        defaultMode: 0775
+        globalMounts:
+          - readOnly: true
       gluetun-auth:
         type: secret
         name: "{{ .Release.Name }}-gluetun"
