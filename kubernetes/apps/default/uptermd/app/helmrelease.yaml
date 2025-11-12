@@ -58,6 +58,7 @@ spec:
       app:
         ports:
           http:
+            appProtocol: kubernetes.io/ws
             port: *port
           metrics:
             port: 9090
