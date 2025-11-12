@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/default/uptermd/app
   postBuild:
     substitute:
-      APP: uptermd
+      APP: upterm
   prune: true
   sourceRef:
     kind: GitRepository
