@@ -62,3 +62,4 @@ tasks:
       - kubectl krew install get-all
       - kubectl krew install tree
       - kubectl krew install browse-pvc
+      - kubectl krew install rook-ceph
