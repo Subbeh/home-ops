@@ -69,7 +69,7 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.sbbh.cloud"
+          - "upterm.sbbh.cloud"
         parentRefs:
           - name: envoy-external
             namespace: network
