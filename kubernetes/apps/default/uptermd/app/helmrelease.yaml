@@ -69,6 +69,9 @@ spec:
             path: /metrics
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 530"]
         hostnames:
           - "upterm.sbbh.cloud"
         parentRefs:
