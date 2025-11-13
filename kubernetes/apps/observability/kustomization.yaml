@@ -18,4 +18,3 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./silence-operator/ks.yaml
   - ./victoria-logs/ks.yaml
-  - ./healthchecks/ks.yaml
