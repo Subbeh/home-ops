@@ -31,7 +31,7 @@ spec:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
                 custom: true
                 spec:
@@ -42,17 +42,7 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 3
+              readiness: *probes
               startup:
                 enabled: false
                 custom: true
