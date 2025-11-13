@@ -10,6 +10,10 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/observability/healthchecks/app
+  postBuild:
+    substitute:
+      APP: radarr
+      VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
