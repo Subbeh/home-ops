@@ -12,7 +12,7 @@ spec:
   driftDetection:
     mode: enabled
   values:
-    fullnameOverride: *app
+    fullnameOverride: sonarr
     controllers:
       sonarr:
         annotations:
