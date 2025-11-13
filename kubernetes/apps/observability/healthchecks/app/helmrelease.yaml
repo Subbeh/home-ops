@@ -22,7 +22,7 @@ spec:
               tag: v3.11.2@sha256:cd8d65cabc30bccf96ed9741f6dcfe1a93521c754cbce7af155560fda3d54526
             env:
               DB: sqlite
-              DB_NAME: /opt/healthchecks/data/hc.sqlite
+              DB_NAME: /data/hc.sqlite
               DEBUG: "True"
               SITE_ROOT: https://hc.sbbh.cloud
               ALLOWED_HOSTS: "*"
@@ -71,5 +71,3 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /opt/healthchecks
