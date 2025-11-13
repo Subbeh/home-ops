@@ -17,6 +17,10 @@ spec:
     substitute:
       APP: audiobookshelf
       VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: audiobookshelf-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
