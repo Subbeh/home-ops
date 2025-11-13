@@ -38,10 +38,10 @@ spec:
                   httpGet:
                     path: /
                     port: &port 8000
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
-                  failureThreshold: 3
+                  failureThreshold: 5
               readiness: *probes
               startup:
                 enabled: false
