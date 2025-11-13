@@ -93,6 +93,9 @@ spec:
               - headers:
                   - name: X-Api-Key
                     value: "${SONARR__AUTH__APIKEY}"
+            backendRefs:
+              - identifier: app
+                port: 80
 
     persistence:
       config:
