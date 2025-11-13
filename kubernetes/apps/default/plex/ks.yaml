@@ -19,6 +19,10 @@ spec:
     substitute:
       APP: plex
       VOLSYNC_CAPACITY: 50Gi
+    substituteFrom:
+      - kind: Secret
+        name: plex-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository

@@ -17,6 +17,10 @@ spec:
     substitute:
       APP: qbittorrent
       VOLSYNC_CAPACITY: 2Gi
+    substituteFrom:
+      - kind: Secret
+        name: qbittorrent-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository

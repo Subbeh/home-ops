@@ -17,6 +17,10 @@ spec:
     substitute:
       APP: prowlarr
       VOLSYNC_CAPACITY: 1Gi
+    substituteFrom:
+      - kind: Secret
+        name: prowlarr-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
