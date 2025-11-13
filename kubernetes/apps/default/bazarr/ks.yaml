@@ -17,6 +17,10 @@ spec:
     substitute:
       APP: bazarr
       VOLSYNC_CAPACITY: 5Gi
+    substituteFrom:
+      - kind: Secret
+        name: bazarr-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
