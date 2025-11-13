@@ -91,7 +91,7 @@ spec:
         rules:
           - matches:
               - headers:
-                  - name: X-API-KEY
+                  - name: X-Api-Key
                     value: "${SONARR__AUTH__APIKEY}"
 
     persistence:
