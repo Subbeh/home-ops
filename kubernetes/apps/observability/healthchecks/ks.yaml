@@ -12,7 +12,7 @@ spec:
   path: ./kubernetes/apps/observability/healthchecks/app
   postBuild:
     substitute:
-      APP: radarr
+      APP: healthchecks
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
