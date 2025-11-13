@@ -23,9 +23,9 @@ spec:
             env:
               DB: sqlite
               DB_NAME: /data/hc.sqlite
-              DEBUG: "true"
+              DEBUG: "True"
               SITE_ROOT: https://hc.sbbh.cloud
-              INTEGRATIONS_ALLOW_PRIVATE_IPS: "true"
+              INTEGRATIONS_ALLOW_PRIVATE_IPS: "True"
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
