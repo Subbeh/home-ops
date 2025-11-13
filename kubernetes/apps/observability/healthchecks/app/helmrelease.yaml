@@ -25,6 +25,7 @@ spec:
               DB_NAME: /data/hc.sqlite
               DEBUG: "True"
               SITE_ROOT: https://hc.sbbh.cloud
+              ALLOWED_HOSTS: "*"
               INTEGRATIONS_ALLOW_PRIVATE_IPS: "True"
             envFrom:
               - secretRef:
