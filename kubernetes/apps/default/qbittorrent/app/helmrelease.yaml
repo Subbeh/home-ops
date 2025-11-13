@@ -220,6 +220,24 @@ spec:
           gethomepage.dev/widget.username: "${USERNAME}"
           gethomepage.dev/widget.password: "${PASSWORD}"
           gethomepage.dev/widget.enableLeechProgress: "true"
+          gethomepage.dev/pod-selector: "app.kubernetes.io/name={{ .Release.Name }}"
+      app-ext:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 404"]
+        hostnames:
+          - "{{ .Release.Name }}-ext.sbbh.cloud"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - matches:
+              - headers:
+                  - name: X-Password
+                    value: "${PASSWORD}"
+            backendRefs:
+              - identifier: app
+                port: *port
     configMaps:
       config:
         data:

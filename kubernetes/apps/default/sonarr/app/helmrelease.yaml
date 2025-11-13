@@ -99,7 +99,7 @@ spec:
                     value: "${SONARR__AUTH__APIKEY}"
             backendRefs:
               - identifier: app
-                port: 80
+                port: *port
 
     persistence:
       config:
