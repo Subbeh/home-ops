@@ -80,6 +80,20 @@ spec:
           gethomepage.dev/widget.type: "{{ .Release.Name }}"
           gethomepage.dev/widget.url: "https://{{ .Release.Name }}.sbbh.cloud"
           gethomepage.dev/widget.key: "{{`{{HOMEPAGE_VAR_RADARR_TOKEN}}`}}"
+      app-ext:
+        hostnames:
+          - "{{ .Release.Name }}-ext.sbbh.cloud"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - matches:
+              - headers:
+                  - name: X-Api-Key
+                    value: "${RADARR__AUTH__APIKEY}"
+            backendRefs:
+              - identifier: app
+                port: 80
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
