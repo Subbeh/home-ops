@@ -37,7 +37,7 @@ spec:
               WIREGUARD_ADDRESSES: 10.2.0.2/32
             envFrom:
               - secretRef:
-                  name: gluetun
+                  name: gluetun-secret
             probes:
               liveness:
                 enabled: true
@@ -101,11 +101,11 @@ spec:
               GLUETUN_CONTROL_SERVER_API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: gluetun
+                    name: gluetun-secret
                     key: GLUETUN_CONTROL_SERVER_API_KEY
             envFrom:
               - secretRef:
-                  name: qbittorrent
+                  name: qbittorrent-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -143,7 +143,7 @@ spec:
               GLUETUN_CONTROL_SERVER_API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: gluetun
+                    name: gluetun-secret
                     key: GLUETUN_CONTROL_SERVER_API_KEY
               QBITTORRENT_HOST: localhost
               QBITTORRENT_WEBUI_PORT: *port
@@ -175,7 +175,7 @@ spec:
               MAM_ID:
                 valueFrom:
                   secretKeyRef:
-                    name: qbittorrent
+                    name: qbittorrent-secret
                     key: MAM_ID
             resources:
               requests:
@@ -243,7 +243,7 @@ spec:
           - readOnly: true
       gluetun-auth:
         type: secret
-        name: "{{ .Release.Name }}-gluetun"
+        name: "{{ .Release.Name }}-gluetun-secret"
         advancedMounts:
           qbittorrent:
             gluetun:
