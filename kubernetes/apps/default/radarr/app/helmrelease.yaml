@@ -94,7 +94,7 @@ spec:
           - matches:
               - headers:
                   - name: X-Api-Key
-                    value: "${RADARR__AUTH__APIKEY}"
+                    value: "${RADARR__AUTH__APIKEY:-placeholder}"
             backendRefs:
               - identifier: app
                 port: 80

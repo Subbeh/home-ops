@@ -96,7 +96,7 @@ spec:
           - matches:
               - headers:
                   - name: X-Api-Key
-                    value: "${SONARR__AUTH__APIKEY}"
+                    value: "${SONARR__AUTH__APIKEY:-placeholder}"
             backendRefs:
               - identifier: app
                 port: *port

@@ -94,7 +94,7 @@ spec:
           - matches:
               - headers:
                   - name: X-Api-Key
-                    value: "${PROWLARR__AUTH__APIKEY}"
+                    value: "${PROWLARR__AUTH__APIKEY:-placeholder}"
             backendRefs:
               - identifier: app
                 port: *port
