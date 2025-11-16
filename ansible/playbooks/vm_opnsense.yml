@@ -120,7 +120,7 @@
         - { description: Allow TFTP to NAS, interface: VLANGroup, protocol: UDP, source_net: __VLANGroup_network, destination_net: host_services, destination_port: 69 }
         - { description: Allow TFTP UDP replies, interface: INFRAGroup, protocol: UDP, source_net: host_services, destination_port: 1024-65535 }
         - { description: Allow INFRA to OPNsense Web UI, interface: INFRAGroup, protocol: TCP, source_net: __INFRAGroup_network, destination_net: host_fw, destination_port: 4443 }
-        - { description: Allow K8S gateway traffic, interface: INFRAGroup, protocol: TCP, source_net: __INFRAGroup_network, destination_net: net_k8s }
+        - { description: Allow K8S gateway traffic, interface: INFRAGroup, protocol: TCP, source_net: __INFRAGroup_network, destination_net: net_k8s, state_type: "none" }
         # allow_k8s_node_exporter: { interface: K8SGroup, protocol: TCP, source_net: __K8SGroup_network, destination_net: "{{ aliases.host_opnsense_k8s.content }}", destination_port: 9100, description: Allow K8S to OPNsense Node Exporter }
         # allow_k8s_pve_api: { interface: K8SGroup, protocol: TCP, source_net: __K8SGroup_network, destination_net: "{{ aliases.host_pve_fw.content }}", destination_port: ports_pve_api, description: Allow K8S to Proxmox VE API }
         # allow_k8s_vps: { interface: K8SGroup, protocol: TCP, source_net: __K8SGroup_network, destination_net: "{{ aliases.host_vps.content }}", description: Allow all traffic from K8S to vps }
