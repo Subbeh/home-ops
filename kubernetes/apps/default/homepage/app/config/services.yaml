@@ -30,3 +30,11 @@
           url: *pve_url
           username: "{{HOMEPAGE_VAR_PVE_TOKEN}}"
           password: "{{HOMEPAGE_VAR_PVE_SECRET}}"
+    - Backups:
+        icon: kopia.svg
+        href: https://kopia.sbbh.cloud/snapshots
+        widget:
+          type: kopia
+          url: http://kopia.volsync-system.svc.cluster.local
+          username: admin
+          password: admin
