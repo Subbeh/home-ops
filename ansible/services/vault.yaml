@@ -15,8 +15,8 @@ vault:
       - "{{ common_data_dir }}/vault/data:/vault/data"
       - "{{ common_data_dir }}/vault/logs:/vault/logs"
       - "{{ common_data_dir }}/vault/file:/vault/file"
-      - "{{ common_data_dir }}/certbot/data/archive/{{ net_domain }}/fullchain1.pem:/certs/cert.pem"
-      - "{{ common_data_dir }}/certbot/data/archive/{{ net_domain }}/privkey1.pem:/certs/privkey.pem"
+      - "{{ common_data_dir }}/certbot/data/live/{{ net_domain }}/fullchain.pem:/certs/cert.pem"
+      - "{{ common_data_dir }}/certbot/data/live/{{ net_domain }}/privkey.pem:/certs/privkey.pem"
     capabilities:
       - ipc_lock
     entrypoint: ["vault", "server", "-config", "/vault/config/config.hcl"]

@@ -23,7 +23,8 @@ _.file = [
   { path = ".private/env.d/opnsense.env", redact = true },
   { path = ".private/env.d/pve.env", redact = true },
   { path = ".private/env.d/tf.env", redact = true },
-  { path = ".private/env.d/vault.env", redact = true }
+  { path = ".private/env.d/vault.env", redact = true },
+  { path = ".private/env.d/cloudflare.env", redact = true }
 ]
 
 # ansible
