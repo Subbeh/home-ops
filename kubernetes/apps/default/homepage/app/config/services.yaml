@@ -35,6 +35,6 @@
         href: https://kopia.sbbh.cloud/snapshots
         widget:
           type: kopia
-          url: http://kopia.volsync-system.svc.cluster.local
+          url: https://kopia.sbbh.cloud
           username: admin
           password: admin
