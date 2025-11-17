@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/owenthereal/upterm/uptermd
-              tag: v0.17.0
+              tag: v0.18.0
             args:
               - "--ssh-addr=:22"
               - "--ws-addr=:80"
