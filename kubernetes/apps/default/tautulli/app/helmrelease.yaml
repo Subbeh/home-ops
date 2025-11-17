@@ -59,7 +59,7 @@ spec:
         ports:
           http:
             port: *port
-    route:
+    route: # TODO: homepage
       app:
         hostnames:
           - "{{ .Release.Name }}.sbbh.cloud"

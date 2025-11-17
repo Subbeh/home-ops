@@ -37,3 +37,4 @@ resources:
   # - ./home-assistant/ks.yaml # TODO
   # - ./profilarr/ks.yaml # TODO
   # - ./pulsarr/ks.yaml # TODO
+  # - ./portainer/ks.yaml # TODO
