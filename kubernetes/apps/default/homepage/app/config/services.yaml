@@ -36,5 +36,5 @@
         widget:
           type: kopia
           url: http://kopia.volsync-system.svc.cluster.local
-          username: admin
-          password: admin
+          # username: admin
+          # password: admin
