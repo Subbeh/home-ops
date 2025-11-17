@@ -81,7 +81,7 @@ spec:
           gethomepage.dev/name: "{{ .Release.Name | title }}"
           gethomepage.dev/widget.type: "{{ .Release.Name }}"
           gethomepage.dev/widget.url: "https://{{ .Release.Name }}.sbbh.cloud"
-          gethomepage.dev/widget.key: "${SONARR__AUTH__APIKEY}"
+          gethomepage.dev/widget.key: "${SONARR__AUTH__APIKEY:-placeholder}"
           gethomepage.dev/pod-selector: "app.kubernetes.io/name={{ .Release.Name }}"
       app-ext:
         annotations:

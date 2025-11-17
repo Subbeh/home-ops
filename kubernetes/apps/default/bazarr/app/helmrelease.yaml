@@ -69,7 +69,7 @@ spec:
           gethomepage.dev/name: "{{ .Release.Name | title }}"
           gethomepage.dev/widget.type: "{{ .Release.Name }}"
           gethomepage.dev/widget.url: "https://{{ .Release.Name }}.sbbh.cloud"
-          gethomepage.dev/widget.key: "${API_KEY}"
+          gethomepage.dev/widget.key: "${API_KEY:-placeholder}"
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"

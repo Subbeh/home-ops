@@ -217,8 +217,8 @@ spec:
           gethomepage.dev/name: "{{ .Release.Name | title }}"
           gethomepage.dev/widget.type: "{{ .Release.Name }}"
           gethomepage.dev/widget.url: "https://{{ .Release.Name }}.sbbh.cloud"
-          gethomepage.dev/widget.username: "${USERNAME}"
-          gethomepage.dev/widget.password: "${PASSWORD}"
+          gethomepage.dev/widget.username: "${USERNAME:-placeholder}"
+          gethomepage.dev/widget.password: "${PASSWORD:-placeholder}"
           gethomepage.dev/widget.enableLeechProgress: "true"
           gethomepage.dev/pod-selector: "app.kubernetes.io/name={{ .Release.Name }}"
       app-ext:
@@ -234,7 +234,7 @@ spec:
           - matches:
               - headers:
                   - name: X-Password
-                    value: "${PASSWORD}"
+                    value: "${PASSWORD:-placeholder}"
             backendRefs:
               - identifier: app
                 port: *port
