@@ -10,7 +10,7 @@ terraform {
     }
     ovh = {
       source  = "ovh/ovh"
-      version = "~> 2.7.0"
+      version = "~> 2.9.0"
     }
   }
   required_version = ">= 1.13.5"
