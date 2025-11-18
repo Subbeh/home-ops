@@ -34,6 +34,7 @@ spec:
               SERVER_CITIES: Melbourne
               UPDATER_PERIOD: 24h
               VPN_SERVICE_PROVIDER: protonvpn
+              UPDATER_PROTONVPN_PASSWORD: dummy
               WIREGUARD_ADDRESSES: 10.2.0.2/32
             envFrom:
               - secretRef:
