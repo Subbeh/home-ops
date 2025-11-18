@@ -125,7 +125,7 @@
 1. Temporarily point api-server to one of the nodes in `.private/kubernetes/kubeconfig`:
 
     ```
-    -      server: https://10.11.10.180:6443
+    -      server: https://10.11.80.80:6443
     +      server: https://10.11.10.81:6443
     ```
 
