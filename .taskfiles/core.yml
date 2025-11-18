@@ -55,7 +55,6 @@ tasks:
     internal: true
     desc: Initialize helm and kubectl krew plugins
     cmds:
-      - helm plugin install https://github.com/databus23/helm-diff
       - kubectl krew update
       - kubectl krew index add netshoot https://github.com/nilic/kubectl-netshoot.git || true
       - kubectl krew install netshoot/netshoot
