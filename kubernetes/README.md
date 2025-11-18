@@ -111,7 +111,7 @@
 4. Bootstrap the cluster
 
     ```sh
-    task k8s:talos:init:bootstrap
+    task k8s:talos:init:bootstrap NODE=10.11.10.81 # pve-nuc
     ```
 
 5. Get the kubeconfig file

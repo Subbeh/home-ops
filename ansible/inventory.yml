@@ -54,7 +54,8 @@ k8s:
   vars:
     cluster_endpoint: k8s.int.sbbh.cloud
     cluster_endpoint_addr: 10.11.80.80
-    cluster_cidr: 10.11.80.0/24
+    cluster_cidr: 10.11.80.0/24  # BGP-routed network for Cilium LoadBalancers/VIPs
+    management_cidr: 10.11.10.0/24  # Physical management network where nodes exist
     gateway_dns: 10.11.80.53/24
     gateway_int: 10.11.80.180/24
     gateway_ext: 10.11.80.181/24

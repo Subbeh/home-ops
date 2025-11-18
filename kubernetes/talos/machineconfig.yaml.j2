@@ -21,7 +21,7 @@ machine:
       serializeImagePulls: false
     nodeIP:
       validSubnets:
-        - {{ hostvars[groups['k8s'][0]].cluster_cidr }}
+        - {{ hostvars[groups['k8s'][0]].management_cidr }}
 
   network:
     nameservers:
@@ -175,7 +175,7 @@ cluster:
       crt: {{ certs.etcd.crt }}
       key: {{ certs.etcd.key }}
     advertisedSubnets:
-      - {{ hostvars[groups['k8s'][0]].cluster_cidr }}
+      - {{ hostvars[groups['k8s'][0]].management_cidr }}
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
 
