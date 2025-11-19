@@ -35,6 +35,7 @@ spec:
               UPDATER_PERIOD: 24h
               VPN_SERVICE_PROVIDER: protonvpn
               UPDATER_PROTONVPN_PASSWORD: dummy
+              UPDATER_PROTONVPN_EMAIL: dummy@dummy.com
               WIREGUARD_ADDRESSES: 10.2.0.2/32
             envFrom:
               - secretRef:
