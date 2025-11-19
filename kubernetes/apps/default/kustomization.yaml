@@ -27,6 +27,7 @@ resources:
   - ./overseerr/ks.yaml
   - ./mealie/ks.yaml
   - ./uptermd/ks.yaml
+  - ./home-assistant/ks.yaml
   # - ./linx/ks.yaml # TODO
   # - ./morphos/ks.yaml # TODO
   # - ./tdarr/ks.yaml # TODO
@@ -34,7 +35,6 @@ resources:
   # - ./wizarr/ks.yaml # TODO
   # - ./jellyfin/ks.yaml # TODO
   # - ./changedetection/ks.yaml # TODO
-  # - ./home-assistant/ks.yaml # TODO
   # - ./profilarr/ks.yaml # TODO
   # - ./pulsarr/ks.yaml # TODO
   # - ./portainer/ks.yaml # TODO
