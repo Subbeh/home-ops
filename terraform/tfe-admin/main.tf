@@ -29,7 +29,7 @@ resource "tfe_workspace" "workspaces" {
   auto_apply            = each.value.auto_apply != null ? each.value.auto_apply : false
   file_triggers_enabled = each.value.file_triggers_enabled != null ? each.value.file_triggers_enabled : true
   queue_all_runs        = each.value.queue_all_runs != null ? each.value.queue_all_runs : true
-  terraform_version     = "~> 1.13.5"
+  terraform_version     = "~> 1.14.0"
   force_delete          = true
 }
 
