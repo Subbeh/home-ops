@@ -33,7 +33,7 @@ spec:
                 memory: 2Gi
     defaultPodOptions:
       annotations:
-        k8s.v1.cni.cncf.io/networks: |-
+        k8s.v1.cni.cncf.io/networks: |- # TODO
           [{
             "name": "iot",
             "namespace": "kube-system",
@@ -61,7 +61,7 @@ spec:
           - "{{ .Release.Name }}.sbbh.cloud"
           - hass.sbbh.cloud
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-external
             namespace: network
     persistence:
       config:

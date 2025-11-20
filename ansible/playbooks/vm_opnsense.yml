@@ -90,6 +90,7 @@
       - { name: host_unifi, desc: Unifi Controller address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       - { name: host_pve_fw, desc: Proxmox VE Firewall Host, type: host, content: "{{ hostvars['pve-fw'].ip_addr | ansible.utils.ipaddr('address') }}" }
       - { name: host_pikvm, desc: PiKVM Host, type: host, content: "{{ hostvars['pikvm'].ip_addr | ansible.utils.ipaddr('address') }}" }
+      - { name: host_openwrt, desc: OpenWrt Router Host, type: host, content: "{{ hostvars['openwrt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       # ports
       - { name: ports_web, desc: HTTP(S) ports, type: port, content: ["80", "443"] }
       - { name: ports_unifi, desc: Unifi Network Server Ports, type: port, content: ["8080", "10001", "3478"] }
