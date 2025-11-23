@@ -53,7 +53,7 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 "aqua:jqlang/jq" = "1.8.1"
 "aqua:mikefarah/yq" = "4.49.1"
 "aqua:go-task/task" = "3.45.5"
-"aqua:hashicorp/vault" = "1.21.0"
+"aqua:hashicorp/vault" = "1.21.1"
 
 # kubernetes
 "aqua:budimanjojo/talhelper" = "3.0.39"
