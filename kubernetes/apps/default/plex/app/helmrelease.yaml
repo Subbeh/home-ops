@@ -63,7 +63,7 @@ spec:
                   - key: kubernetes.io/hostname
                     operator: In
                     values:
-                      - k8s-opti-02
+                      - k8s-nuc
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
