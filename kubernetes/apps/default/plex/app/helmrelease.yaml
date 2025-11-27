@@ -55,6 +55,15 @@ spec:
       resourceClaims:
         - name: gpu
           resourceClaimTemplateName: plex
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - k8s-nuc
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
