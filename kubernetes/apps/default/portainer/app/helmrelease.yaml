@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: portainer/portainer-ce
-              tag: 2.33.5-alpine@sha256:5135ffc483be84b773288c92c80a054a234abcf615975d6122cbe930f5c65d27
+              tag: 2.36.0-alpine@sha256:4ebce6829b16b86d8a0982f89ad03f850341274aa0b9050697e5515ddf56c161
             probes:
               liveness:
                 enabled: true
