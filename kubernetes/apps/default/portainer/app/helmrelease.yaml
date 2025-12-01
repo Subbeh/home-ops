@@ -72,7 +72,7 @@ spec:
           type: ClusterRole
           rules:
             - apiGroups: [""]
-              resources: [nodes, namespaces, pods, pods/log, pods/exec, services, endpoints, persistentvolumeclaims, persistentvolumes, configmaps, secrets, serviceaccounts, events]
+              resources: [nodes, nodes/proxy, namespaces, pods, pods/log, pods/exec, services, endpoints, persistentvolumeclaims, persistentvolumes, configmaps, secrets, serviceaccounts, events]
               verbs: [get, list, watch, create, update, patch, delete]
             - apiGroups: [apps]
               resources: [deployments, daemonsets, replicasets, statefulsets]
