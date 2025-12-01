@@ -1,0 +1,127 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: portainer
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: portainer
+  interval: 1h
+  values:
+    controllers:
+      portainer:
+        containers:
+          app:
+            image:
+              repository: portainer/portainer-ce
+              tag: 2.33.5-alpine@sha256:5135ffc483be84b773288c92c80a054a234abcf615975d6122cbe930f5c65d27
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/system/status
+                    port: 9000
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/system/status
+                    port: 9000
+                  initialDelaySeconds: 15
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop: ["ALL"]
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: portainer
+        ports:
+          http:
+            port: 9000
+    serviceAccount:
+      default:
+        enabled: true
+    rbac:
+      roles:
+        portainer:
+          type: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: [nodes, namespaces, pods, pods/log, pods/exec, services, endpoints, persistentvolumeclaims, persistentvolumes, configmaps, secrets, serviceaccounts, events]
+              verbs: [get, list, watch, create, update, patch, delete]
+            - apiGroups: [apps]
+              resources: [deployments, daemonsets, replicasets, statefulsets]
+              verbs: [get, list, watch, create, update, patch, delete]
+            - apiGroups: [batch]
+              resources: [jobs, cronjobs]
+              verbs: [get, list, watch, create, update, patch, delete]
+            - apiGroups: [networking.k8s.io]
+              resources: [ingresses, networkpolicies]
+              verbs: [get, list, watch, create, update, patch, delete]
+            - apiGroups: [gateway.networking.k8s.io]
+              resources: [gateways, httproutes, grpcroutes, tcproutes]
+              verbs: [get, list, watch, create, update, patch, delete]
+            - apiGroups: [rbac.authorization.k8s.io]
+              resources: [roles, rolebindings, clusterroles, clusterrolebindings]
+              verbs: [get, list, watch]
+            - apiGroups: [storage.k8s.io]
+              resources: [storageclasses]
+              verbs: [get, list, watch]
+            - apiGroups: [metrics.k8s.io]
+              resources: [nodes, pods]
+              verbs: [get, list]
+            - apiGroups: [helm.toolkit.fluxcd.io]
+              resources: [helmreleases]
+              verbs: [get, list, watch]
+            - apiGroups: [kustomize.toolkit.fluxcd.io]
+              resources: [kustomizations]
+              verbs: [get, list, watch]
+      bindings:
+        portainer:
+          type: ClusterRoleBinding
+          subjects:
+            - kind: ServiceAccount
+              name: portainer
+              namespace: default
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: portainer
+    route:
+      app:
+        hostnames:
+          - portainer.sbbh.cloud
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+      tmp:
+        type: emptyDir
