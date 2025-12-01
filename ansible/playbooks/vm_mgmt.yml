@@ -38,6 +38,7 @@
     services:
       - unifi_db
       - unifi_network_application
+      - portainer_agent_mgmt
     borgbase_repo_name: mgmt
     borg_source_directories:
       - "/opt/data"

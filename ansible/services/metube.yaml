@@ -2,7 +2,7 @@
 metube:
   host: services
   container:
-    image: ghcr.io/alexta69/metube:2025.10.23
+    image: ghcr.io/alexta69/metube:latest
     ports:
       - 8081:8081
     env:

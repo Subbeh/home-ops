@@ -57,6 +57,7 @@
       - borg
     services:
       - netbootxyz
+      - portainer_agent_services
 
     borgbase_repo_name: services
     borg_source_directories:

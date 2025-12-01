@@ -2,7 +2,7 @@
 netbootxyz:
   host: services
   container:
-    image: ghcr.io/netbootxyz/netbootxyz:0.7.6-nbxyz4
+    image: ghcr.io/netbootxyz/netbootxyz:latest
     ports:
       - 3000:3000
       - 80:8080
