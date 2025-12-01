@@ -98,3 +98,20 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /.cache
+      local:
+        type: emptyDir
+        globalMounts:
+          - path: /.local
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          portainer:
+            app:
+              - path: /tmp
+                subPath: tmp
+              - path: /.cache
+                subPath: .cache
+              - path: /.config
+                subPath: .config
+              - path: /.local
+                subPath: .local
