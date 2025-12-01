@@ -65,8 +65,7 @@ spec:
           http:
             port: 9000
     serviceAccount:
-      default:
-        enabled: true
+      portainer: {}
     rbac:
       roles:
         portainer:
