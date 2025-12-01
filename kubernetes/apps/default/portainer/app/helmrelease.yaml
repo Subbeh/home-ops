@@ -90,3 +90,7 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /.config
