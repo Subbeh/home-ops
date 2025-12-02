@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: speedtest-tracker
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: speedtest-tracker
+  interval: 1h
+  values:
+    controllers:
+      speedtest-tracker:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: lscr.io/linuxserver/speedtest-tracker
+              tag: 1.10.3@sha256:7a0af49937e7a6003e98582acaa6c647136e2776121e34749dd1f23d74a535e7
+            envFrom:
+              - secretRef:
+                  name: speedtest-tracker-secret
+            env:
+              SPEEDTEST_SCHEDULE: "0 * * * *"
+              SPEEDTEST_SERVERS: "60412,25134,68925,37688"
+              APP_URL: https://speedtracker.sbbh.cloud
+              APP_TIMEZONE: &tz Australia/Melbourne
+              DISPLAY_TIMEZONE: *tz
+              DB_CONNECTION: sqlite
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+    service:
+      app:
+        ports:
+          http:
+            port: 80
+    route: # TODO: homepage
+      app:
+        hostnames:
+          - "speedtracker.sbbh.cloud"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
