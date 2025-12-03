@@ -58,6 +58,7 @@ spec:
           runAsUser: 64535
           runAsGroup: 64535
           fsGroup: 64535
+          fsGroupChangePolicy: "OnRootMismatch"
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
