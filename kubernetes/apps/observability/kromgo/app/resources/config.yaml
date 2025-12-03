@@ -33,7 +33,7 @@ metrics:
     title: Pods
 
   - name: flux_app_count
-    query: count(flux_resource_info{kind="Kustomization", namespace!="flux-system"})
+    query: count(flux_resource_info{kind="Kustomization"})
     colors:
       - { color: "green", min: 0, max: 9999 }
     title: Apps
