@@ -23,32 +23,16 @@
     "prEditedNotification",
     "prIgnoreNotification",
   ],
-  // ignorePaths: [
-  //   "ansible/**",
-  //   "!ansible/services/*.yaml"
-  // ],
   ignorePaths: [
     "**/ansible/**",
   ],
   flux: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
-  // "helm-values": {
-  //   managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-  // },
+  "helm-values": {
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+  },
   kubernetes: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
-  // flux: {
-  //   managerFilePatterns: ["/\\.yaml$/"],
-  // },
-  // "helm-values": {
-  //   managerFilePatterns: ["/\\.yaml$/"],
-  // },
-  // kubernetes: {
-  //   managerFilePatterns: ["/\\.yaml$/"],
-  // },
-  // "docker-compose": {
-  //   managerFilePatterns: ["/\\.yaml$/"],
-  // },
 }

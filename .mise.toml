@@ -17,6 +17,9 @@ _.python.venv = { path = ".venv", create = true }
 MISE_ENV = true
 HISTFILE = "{{config_root}}/.cache/zsh_history"
 
+# path
+_.path = { path = ["{{config_root}}/bin"] }
+
 # vault
 _.file = [
   { path = ".private/env.d/aws.env", redact = true },
@@ -54,6 +57,7 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 "aqua:mikefarah/yq" = "4.49.1"
 "aqua:go-task/task" = "3.45.5"
 "aqua:hashicorp/vault" = "1.21.1"
+"npm:renovate" = "42.30.3"
 
 # kubernetes
 "aqua:budimanjojo/talhelper" = "3.0.39"
