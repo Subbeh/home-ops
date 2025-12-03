@@ -32,6 +32,12 @@ metrics:
       - { color: "green", min: 0, max: 9999 }
     title: Pods
 
+  - name: flux_app_count
+    query: count(flux_resource_info{kind="Kustomization", namespace!="flux-system"})
+    colors:
+      - { color: "green", min: 0, max: 9999 }
+    title: Apps
+
   - name: cluster_cpu_usage
     query: round(avg(instance:node_cpu_utilisation:rate5m{pod!=""}) * 100, 0.1)
     suffix: "%"
