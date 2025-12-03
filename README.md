@@ -41,6 +41,8 @@
 <a href="#"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/tailscale-light.svg" width="40" height="40" alt="Tailscale"/></a>
 <a href="#"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/ovh.svg" width="40" height="40" alt="OVH"/></a>
 
+<sub>Massive thanks to **onedr0p** and the community behind [Home Operations](https://discord.gg/home-operations)</sub>
+
 </div>
 
 <!-- ## 🏠 Overview -->
