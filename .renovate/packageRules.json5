@@ -13,5 +13,12 @@
       matchPackageNames: ["/factory\\.talos\\.dev/"],
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
+    {
+      description: "Reduce Terraform lock file update frequency",
+      matchManagers: ["terraform"],
+      matchUpdateTypes: ["lockFileMaintenance"],
+      schedule: ["* * 1 * *"],
+      commitMessageAction: "Update Terraform lock files"
+    },
   ],
 }
