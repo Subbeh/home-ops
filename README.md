@@ -56,8 +56,6 @@
 
 <sub>Massive thanks to **onedr0p** and the community behind [Home Operations](https://discord.gg/home-operations)</sub>
 
-<sub>Massive thanks to **onedr0p** and the community behind [Home Operations](https://discord.gg/home-operations)</sub>
-
 </div>
 
 <!-- ## 🏠 Overview -->
