@@ -36,6 +36,15 @@ spec:
           osd_heartbeat_interval: "8" # quote - increased from default 6s
           mon_osd_min_down_reporters: "3" # quote - require 3 OSDs before marking down
           mon_osd_reporter_subtree_level: "host" # quote - reports at host level
+          # Scrubbing time restrictions to prevent I/O saturation during business hours
+          osd_scrub_begin_hour: "2" # quote - only scrub between 2-6 AM
+          osd_scrub_end_hour: "6" # quote
+          osd_scrub_during_recovery: "false" # quote - never scrub during recovery
+          # I/O throttling to prevent disk saturation
+          osd_max_scrubs: "1" # quote - reduce from default 3 to limit concurrent scrubs
+          osd_scrub_sleep: "0.1" # quote - add 100ms delay between scrub reads
+          osd_max_backfills: "1" # quote - limit concurrent backfills per OSD
+          osd_recovery_max_active: "1" # quote - limit concurrent recovery operations
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
