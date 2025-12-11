@@ -6,6 +6,7 @@ enter = [
   "mise install --quiet && mise upgrade --quiet",
   "mkdir -p .cache/{ansible,terraform/plugins}"
 ]
+postinstall = ["uv pip install -r {{config_root}}/requirements.txt"]
 
 # remove annoying ansible cache dir created by ansible-lint
 [[watch_files]]

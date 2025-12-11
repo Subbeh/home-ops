@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Flush ARP on all k8s nodes
 for node in k8s-nuc k8s-opti-01 k8s-opti-02; do
   echo "Flushing ARP on $node..."
