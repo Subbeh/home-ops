@@ -138,6 +138,10 @@ cluster:
       enable-aggregator-routing: "true"
       feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
+      oidc-issuer-url: "https://accounts.google.com"
+      oidc-client-id: "{{ google_oauth_client_id }}"
+      oidc-username-claim: "email"
+      oidc-username-prefix: "-"
 
   controllerManager:
     # renovate: datasource=docker depName=registry.k8s.io/kube-controller-manager
