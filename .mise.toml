@@ -6,6 +6,7 @@ enter = [
   "mise install --quiet && mise upgrade --quiet",
   "mkdir -p .cache/{ansible,terraform/plugins}"
 ]
+postinstall = ["uv pip install -r {{config_root}}/requirements.txt"]
 
 # remove annoying ansible cache dir created by ansible-lint
 [[watch_files]]
@@ -49,12 +50,12 @@ TF_LOG_PATH = "{{config_root}}/.cache/terraform/terraform.log"
 TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 
 [tools]
-# "python" = "{{ get_env(name='PYTHON_VERSION', default='3.13') }}"
+"python" = "3.14.2"
 "uv" = "latest"
 "asdf:MetricMike/asdf-awscli" = "2.29.0"
 "aqua:cli/cli" = "2.83.1" # GitHub CLI
 "aqua:jqlang/jq" = "1.8.1"
-"aqua:mikefarah/yq" = "4.49.1"
+"aqua:mikefarah/yq" = "4.49.2"
 "aqua:go-task/task" = "3.45.5"
 "aqua:hashicorp/vault" = "1.21.1"
 "npm:renovate" = "42.32.3"
@@ -63,7 +64,7 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 "aqua:budimanjojo/talhelper" = "3.0.41"
 "aqua:cilium/cilium-cli" = "0.18.9"
 "aqua:cloudflare/cloudflared" = "2025.11.1"
-"aqua:fluxcd/flux2" = "2.7.3"
+"aqua:fluxcd/flux2" = "2.7.5"
 "aqua:helm/helm" = "3.19.2"
 "aqua:helmfile/helmfile" = "1.2.2"
 "aqua:kubernetes-sigs/kustomize" = "5.7.1"
