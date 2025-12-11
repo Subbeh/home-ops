@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/sct/overseerr
-              tag: b1c6e2fdbde49859a661767e9b414555aa7abc31
+              tag: 1.34.0@sha256:4f38f58d68555004d3f487a4c5cbe2823e6a0942d946a25a2d9391d8492240a4
             env:
               PORT: &port 80
             probes:
