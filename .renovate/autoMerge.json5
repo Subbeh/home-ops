@@ -51,8 +51,8 @@
       ignoreTests: true,
     },
     {
-      description: "Auto-merge Mise tools",
-      matchManagers: ["mise"],
+      description: "Auto-merge env dependencies",
+      matchManagers: ["mise", "pip_requirements"],
       automerge: true,
       automergeType: "pr",
       matchUpdateTypes: ["minor", "patch", "digest"],
