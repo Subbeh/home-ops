@@ -40,6 +40,14 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
+  - name: Vault
+    group: servers
+    url: https://vault.sbbh.cloud:8200
+    interval: 60m
+    conditions:
+      - "[CONNECTED] == true"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+
 metrics: true
 
 storage:
@@ -52,10 +60,11 @@ ui:
   header: Status
   logo: https://avatars.githubusercontent.com/u/1278086
   link: https://github.com/Subbeh
+  default-sort-by: group
   buttons:
     - name: Github
       link: https://github.com/Subbeh
-    - name: Homelab
+    - name: HomeOps
       link: https://github.com/Subbeh/home-ops
 
 web:
