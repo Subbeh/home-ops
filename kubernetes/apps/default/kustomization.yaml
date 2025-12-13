@@ -20,6 +20,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
+  - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
   - ./mealie/ks.yaml
   - ./overseerr/ks.yaml
@@ -37,7 +38,6 @@ resources:
   # - ./tdarr/ks.yaml # TODO
   # - ./watchstate/ks.yaml # TODO
   # - ./wizarr/ks.yaml # TODO
-  # - ./jellyfin/ks.yaml # TODO
   # - ./changedetection/ks.yaml # TODO
   # - ./profilarr/ks.yaml # TODO
   # - ./pulsarr/ks.yaml # TODO
