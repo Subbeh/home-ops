@@ -33,10 +33,10 @@ resources:
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./uptermd/ks.yaml
+  - ./watchstate/ks.yaml
   # - ./linx/ks.yaml # TODO
   # - ./morphos/ks.yaml # TODO
   # - ./tdarr/ks.yaml # TODO
-  # - ./watchstate/ks.yaml # TODO
   # - ./wizarr/ks.yaml # TODO
   # - ./changedetection/ks.yaml # TODO
   # - ./profilarr/ks.yaml # TODO
