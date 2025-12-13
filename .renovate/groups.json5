@@ -46,6 +46,7 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 5,
+      changelogUrl: "https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-{{newMajor}}.{{newMinor}}.md#changelog-since-v{{newMajor}}{{newMinor}}{{newPatch}}",
     },
     {
       description: "Rook-Ceph Group",
