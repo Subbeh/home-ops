@@ -31,16 +31,9 @@ spec:
                 enabled: true
             resources:
               requests:
-                cpu: 15m
+                cpu: 10m
               limits:
                 memory: 512Mi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
-    #     fsGroup: 1000
-    #     fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
