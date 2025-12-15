@@ -2,24 +2,26 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      description: "Auto merge packages",
+      description: "Auto merge default apps",
+      matchPaths: ["kubernetes/apps/default/**"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      excludePackageNames: [
+        "/plex/",
+        "/jellyfin/",
+        "/home-assistant/",
+      ],
+      ignoreTests: true,
+    },
+    {
+      description: "Auto merge misc apps",
       matchDatasources: ["docker"],
       automerge: true,
       automergeType: "pr",
       matchUpdateTypes: ["minor", "patch", "digest"],
       matchPackageNames: [
         "/kube-prometheus-stack/",
-        "/speedtest-tracker/",
-      ],
-      ignoreTests: false,
-    },
-    {
-      description: "Auto merge container digests",
-      matchDatasources: ["docker"],
-      automerge: true,
-      matchUpdateTypes: ["digest"],
-      matchPackagePrefixes: [
-        "ghcr.io/home-operations",
       ],
       ignoreTests: false,
     },
