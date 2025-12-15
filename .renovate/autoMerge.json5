@@ -52,6 +52,14 @@
         "npm:renovate"
       ],
       ignoreTests: true,
+    },
+    {
+      description: "Auto merge Terraform providers",
+      matchManagers: ["terraform-provider"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch", "digest"],
+      ignoreTests: true,
     }
   ],
 }
