@@ -61,7 +61,6 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 "npm:renovate" = "42.54.1"
 
 # kubernetes
-"aqua:budimanjojo/talhelper" = "3.0.41"
 "aqua:cilium/cilium-cli" = "0.18.9"
 "aqua:cloudflare/cloudflared" = "2025.11.1"
 "aqua:fluxcd/flux2" = "2.7.5"
@@ -71,5 +70,4 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 "aqua:kubernetes/kubectl" = "1.34.0"
 "aqua:siderolabs/talos" = "1.11.5"
 "aqua:yannh/kubeconform" = "0.7.0"
-"asdf:bjw-s/asdf-talhelper" = "3.0.34"
 "aqua:kubernetes-sigs/krew" = "0.4.5"
