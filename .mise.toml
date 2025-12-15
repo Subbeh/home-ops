@@ -58,7 +58,7 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 "aqua:mikefarah/yq" = "4.50.1"
 "aqua:go-task/task" = "3.45.5"
 "aqua:hashicorp/vault" = "1.21.1"
-"npm:renovate" = "42.54.3"
+"npm:renovate" = "42.55.0"
 
 # kubernetes
 "aqua:cilium/cilium-cli" = "0.18.9"
