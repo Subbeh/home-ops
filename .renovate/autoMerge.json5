@@ -42,5 +42,16 @@
       matchUpdateTypes: ["minor", "patch", "digest"],
       ignoreTests: true,
     },
+    {
+      description: "Auto merge only on minor/major updates",
+      matchManagers: ["mise"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "major"],
+      matchPackageNames: [
+        "npm:renovate"
+      ],
+      ignoreTests: true,
+    }
   ],
 }
