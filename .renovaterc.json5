@@ -26,13 +26,4 @@
   ignorePaths: [
     "**/ansible/**",
   ],
-  flux: {
-    managerFilePatterns: ["/\\.yaml$/"],
-  },
-  "helm-values": {
-    managerFilePatterns: ["/\\.yaml$/"],
-  },
-  kubernetes: {
-    managerFilePatterns: ["/\\.yaml$/"],
-  },
 }
