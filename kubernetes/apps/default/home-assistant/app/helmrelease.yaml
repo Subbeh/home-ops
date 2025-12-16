@@ -22,6 +22,7 @@ spec:
             env:
               HASS_HTTP_TRUSTED_PROXY_1: 10.11.0.0/16
               HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
+              HASS_HTTP_USE_X_FORWARDED_FOR: "true"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -32,14 +33,14 @@ spec:
               limits:
                 memory: 2Gi
     defaultPodOptions:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |- # TODO
-          [{
-            "name": "iot",
-            "namespace": "kube-system",
-            "ips": ["10.11.10.160/24"],
-            "mac": "71:0c:db:e1:09:4f"
-          }]
+      # annotations:
+      #   k8s.v1.cni.cncf.io/networks: |- # TODO
+      #     [{
+      #       "name": "iot",
+      #       "namespace": "kube-system",
+      #       "ips": ["10.11.10.160/24"],
+      #       "mac": "71:0c:db:e1:09:4f"
+      #     }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
