@@ -8,7 +8,7 @@ spec:
   hostnames:
     - headlamp.sbbh.cloud
   parentRefs:
-    - name: envoy-internal
+    - name: envoy-external
       namespace: network
   rules:
     - backendRefs:
