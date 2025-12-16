@@ -17,7 +17,6 @@ resources:
   - ./dispatcharr/ks.yaml
   - ./filebrowser/ks.yaml
   - ./fusion/ks.yaml
-  - ./home-assistant/ks.yaml
   - ./homepage/ks.yaml
   - ./it-tools/ks.yaml
   - ./jellyfin/ks.yaml
