@@ -51,7 +51,7 @@ TF_PLUGIN_CACHE_DIR = "{{config_root}}/.cache/terraform/plugins"
 
 [tools]
 "python" = "3.14.2"
-"uv" = "0.9.17"
+"uv" = "0.9.18"
 "asdf:MetricMike/asdf-awscli" = "2.29.0"
 "aqua:cli/cli" = "2.83.2" # GitHub CLI
 "aqua:jqlang/jq" = "1.8.1"
