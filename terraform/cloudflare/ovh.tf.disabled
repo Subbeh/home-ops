@@ -11,11 +11,11 @@ output "ipv4" {
 }
 
 
-module "cloudflare_dns" {
-  source = "modules/dns"
-
-  domain_name  = var.domain_name
-  subdomain    = var.subdomain
-  ipv4_address = module.ovh_vps.ipv4
-  enable_proxy = false
-}
+# module "cloudflare_dns" {
+#   source = "./modules/dns"
+#
+#   domain_name  = var.domain_name
+#   subdomain    = var.subdomain
+#   ipv4_address = module.ovh_vps.ipv4
+#   enable_proxy = false
+# }
