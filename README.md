@@ -22,33 +22,31 @@
 
 #### _Powered by_
 
-<a href="https://proxmox.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/proxmox-light.svg" width="35" height="35" alt="Proxmox"/></a>
-<a href="https://talos.dev"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/talos.svg" width="35" height="35" alt="Talos"/></a>
-<a href="https://debian.org"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/debian-linux.svg" width="35" height="35" alt="Debian"/></a>
-<a href="https://kubernetes.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kubernetes.svg" width="35" height="35" alt="Kubernetes"/></a>
-<a href="https://docker.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/docker.svg" width="35" height="35" alt="Docker"/></a>
-<a href="https://opnsense.org"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/opnsense.svg" width="35" height="35" alt="OPNsense"/></a>
-<a href="https://ui.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/unifi.svg" width="35" height="35" alt="Unifi"/></a>
-<a href="https://ansible.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/ansible.svg" width="35" height="35" alt="Ansible"/></a>
-<a href="https://terraform.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/terraform.svg" width="35" height="35" alt="Terraform"/></a>
-<a href="https://hashicorp.com/products/vault"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/vault-light.svg" width="35" height="35" alt="Vault"/></a>
-<a href="https://fluxcd.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/flux-cd.svg" width="35" height="35" alt="Flux CD"/></a>
-<a href="https://github.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/github-light.svg" width="35" height="35" alt="Github Actions"/></a>
-<a href="https://renovatebot.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/renovate.svg" width="35" height="35" alt="Renovate"/></a>
-<a href="https://aws.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/aws-light.svg" width="35" height="35" alt="AWS"/></a>
-<a href="https://cloudflare.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cloudflare.svg" width="35" height="35" alt="Cloudflare"/></a>
-<a href="https://tailscale.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/tailscale-light.svg" width="35" height="35" alt="Tailscale"/></a>
-<a href="https://ovhcloud.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/ovh.svg" width="35" height="35" alt="OVH"/></a>
-<a href="https://borgbase.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/borg.svg" width="35" height="35" alt="BorgBase"/></a>
-<a href="https://pushover.net"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/pushover.svg" width="35" height="35" alt="Pushover"/></a>
-<a href="https://uptimerobot.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/uptimerobot.svg" width="35" height="35" alt="UptimeRobot"/></a>
-
-<!-- <a href="https://kopia.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kopia.svg" width="35" height="35" alt="Kopia"/></a> -->
-
-<!-- <a href="https://rook.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/rook.svg" width="35" height="35" alt="Rook Ceph"/></a> -->
-<!-- <a href="https://cilium.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cilium-light.svg" width="35" height="35" alt="Cilium"/></a> -->
-<!-- <a href="https://prometheus.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/alertmanager.svg" width="35" height="35" alt="Prometheus"/></a> -->
-<!-- <a href="https://cert-manager.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cert-manager.svg" width="35" height="35" alt="Cert Manager"/></a> -->
+<a href="https://proxmox.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/proxmox-light.svg" width="25" height="25" alt="Proxmox"/></a>
+<a href="https://talos.dev"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/talos.svg" width="25" height="25" alt="Talos"/></a>
+<a href="https://debian.org"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/debian-linux.svg" width="25" height="25" alt="Debian"/></a>
+<a href="https://kubernetes.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kubernetes.svg" width="25" height="25" alt="Kubernetes"/></a>
+<a href="https://docker.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/docker.svg" width="25" height="25" alt="Docker"/></a>
+<a href="https://opnsense.org"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/opnsense.svg" width="25" height="25" alt="OPNsense"/></a>
+<a href="https://ui.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/unifi.svg" width="25" height="25" alt="Unifi"/></a>
+<a href="https://ansible.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/ansible.svg" width="25" height="25" alt="Ansible"/></a>
+<a href="https://terraform.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/terraform.svg" width="25" height="25" alt="Terraform"/></a>
+<a href="https://hashicorp.com/products/vault"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/vault-light.svg" width="25" height="25" alt="Vault"/></a>
+<a href="https://fluxcd.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/flux-cd.svg" width="25" height="25" alt="Flux CD"/></a>
+<a href="https://github.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/github-light.svg" width="25" height="25" alt="Github Actions"/></a>
+<a href="https://renovatebot.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/renovate.svg" width="25" height="25" alt="Renovate"/></a>
+<a href="https://aws.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/aws-light.svg" width="25" height="25" alt="AWS"/></a>
+<a href="https://cloudflare.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cloudflare.svg" width="25" height="25" alt="Cloudflare"/></a>
+<a href="https://tailscale.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/tailscale-light.svg" width="25" height="25" alt="Tailscale"/></a>
+<a href="https://ovhcloud.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/ovh.svg" width="25" height="25" alt="OVH"/></a>
+<a href="https://borgbase.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/borg.svg" width="25" height="25" alt="BorgBase"/></a>
+<a href="https://pushover.net"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/pushover.svg" width="25" height="25" alt="Pushover"/></a>
+<a href="https://uptimerobot.com"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/uptimerobot.svg" width="25" height="25" alt="UptimeRobot"/></a>
+<a href="https://kopia.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/kopia.svg" width="25" height="25" alt="Kopia"/></a>
+<a href="https://rook.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/rook.svg" width="25" height="25" alt="Rook Ceph"/></a>
+<a href="https://cilium.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cilium-light.svg" width="25" height="25" alt="Cilium"/></a>
+<a href="https://prometheus.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/alertmanager.svg" width="25" height="25" alt="Prometheus"/></a>
+<a href="https://cert-manager.io"><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/cert-manager.svg" width="25" height="25" alt="Cert Manager"/></a>
 
 </div>
 
@@ -66,19 +64,20 @@ A rundown of the core components is listed below, and a more in-depth overview o
 
 <div align="center">
 
-| Device                         | CPU   | Memory | OS Disk     | Data Disk                                   | OS    | Purpose         |
-| ------------------------------ | ----- | ------ | ----------- | ------------------------------------------- | ----- | --------------- |
-| DeskPi RackMate T2             | -     | -      | -           | -                                           | -     | Server rack     |
-| Topton n5105                   | 4/4   | 16 GB  | 256 GB NVMe | -                                           | PVE   | OPNsense / VMs  |
-| Topton n5105                   | 4/4   | 16 GB  | 256 GB SSD  | 2x 1 TB NVMe<br>2x 14 TB HDD<br>2x 6 TB HDD | PVE   | NAS             |
-| Intel NUC 12 Pro i7-1260P      | 12/16 | 64 GB  | 512 GB SSD  | 1x 512 GB NVMe                              | Talos | Kubernetes node |
-| Dell Optiplex 7080 i5-10500T   | 6/12  | 32 GB  | 512 GB SSD  | 1x 512 GB NVMe                              | Talos | Kubernetes node |
-| Dell Optiplex 7060 i5-8500T    | 6/6   | 32 GB  | 512 GB SSD  | 1x 512 GB NVMe                              | Talos | Kubernetes node |
-| Raspberry Pi 4                 | 4/4   | 4 GB   | 32 GB SD    | -                                           | PiKVM | KVM             |
-| Ubiquiti USW Lite 16 PoE       | -     | -      | -           | -                                           | -     | Switch          |
-| Ubiquiti USW Flex Mini         | -     | -      | -           | -                                           | -     | Switch          |
-| Ubiquiti U6 Lite               | -     | -      | -           | -                                           | -     | Access point    |
-| Steetek 8 Port HDMI KVM Switch | -     | -      | -           | -                                           | -     | KVM             |
+| Device                         | CPU   | Memory | OS Disk     | Data Disk                                                     | OS    | Purpose              |
+| ------------------------------ | ----- | ------ | ----------- | ------------------------------------------------------------- | ----- | -------------------- |
+| DeskPi RackMate T2             | -     | -      | -           | -                                                             | -     | Server rack          |
+| Topton n5105                   | 4/4   | 16 GB  | 256 GB NVMe | -                                                             | PVE   | OPNsense / VMs       |
+| Topton n5105                   | 4/4   | 16 GB  | 256 GB SSD  | 1x 1 TB NVMe<br>1x 512 GB NVMe<br>2x 14 TB HDD<br>2x 6 TB HDD | PVE   | NAS                  |
+| Intel NUC 8 i5-8259U           | 4/8   | 16 GB  | 512 GB NVMe | -                                                             | Talos | Home Assistant / VMs |
+| Intel NUC 12 Pro i7-1260P      | 12/16 | 64 GB  | 512 GB SSD  | 1x 1 TB NVMe                                                  | Talos | Kubernetes node      |
+| Dell Optiplex 7080 i5-10500T   | 6/12  | 32 GB  | 512 GB SSD  | 1x 1 TB NVMe                                                  | Talos | Kubernetes node      |
+| Dell Optiplex 7060 i5-8500T    | 6/6   | 32 GB  | 512 GB SSD  | 1x 1 TB NVMe                                                  | Talos | Kubernetes node      |
+| Raspberry Pi 4                 | 4/4   | 4 GB   | 32 GB SD    | -                                                             | PiKVM | KVM                  |
+| Ubiquiti USW Lite 16 PoE       | -     | -      | -           | -                                                             | -     | Switch               |
+| Ubiquiti USW Flex Mini         | -     | -      | -           | -                                                             | -     | Switch               |
+| Ubiquiti U6 Lite               | -     | -      | -           | -                                                             | -     | Access point         |
+| Steetek 8 Port HDMI KVM Switch | -     | -      | -           | -                                                             | -     | KVM                  |
 
 </div>
 
