@@ -53,6 +53,7 @@ spec:
             resources:
               requests:
                 cpu: 50m
+                memory: 512Mi
               limits:
                 memory: 2Gi
       chrome:
@@ -80,6 +81,7 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 256Mi
               limits:
                 memory: 2Gi
       meilisearch:
@@ -118,6 +120,7 @@ spec:
             resources:
               requests:
                 cpu: 50m
+                memory: 256Mi
               limits:
                 memory: 4Gi
     defaultPodOptions:
