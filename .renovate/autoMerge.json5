@@ -10,7 +10,6 @@
       excludePackageNames: [
         "/plex/",
         "/jellyfin/",
-        "/home-assistant/",
       ],
       ignoreTests: true,
     },
