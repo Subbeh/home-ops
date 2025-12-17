@@ -43,15 +43,13 @@
       ignoreTests: true,
     },
     {
-      description: "Auto merge only on major updates",
-      automerge: true,
-      automergeType: "pr",
-      matchUpdateTypes: ["major"],
+      description: "Disable auto-merge for renovate minor/patch updates",
+      automerge: false,
+      matchUpdateTypes: ["minor", "patch"],
       matchDatasources: ["npm"],
       matchPackageNames: [
         "renovate"
       ],
-      ignoreTests: true,
     },
     {
       description: "Auto merge Terraform providers",
