@@ -23,29 +23,12 @@ resource "cloudflare_workers_script" "maintenance" {
 }
 
 resource "cloudflare_workers_route" "maintenance" {
-  count   = var.maintenance_enabled != false ? 1 : 0
-  zone_id = data.cloudflare_zone.default.zone_id
-  pattern = "*.sbbh.cloud/*"
-  script  = cloudflare_workers_script.maintenance.script_name
-}
-
-resource "cloudflare_dns_record" "maintenance_preview" {
-  zone_id = data.cloudflare_zone.default.zone_id
-  name    = "maintenance"
-  content = "192.0.2.1" # dummy record
-  type    = "A"
-  ttl     = 1
-  proxied = true
-  comment = "Placeholder for maintenance worker preview"
-}
-
-resource "cloudflare_workers_route" "maintenance_preview" {
   zone_id = data.cloudflare_zone.default.zone_id
   pattern = "maintenance.sbbh.cloud/*"
   script  = cloudflare_workers_script.maintenance.script_name
 }
 
-output "maintenance_preview_url" {
-  description = "URL for testing the maintenance page (always accessible)"
-  value       = "https://maintenance.sbbh.cloud"
+output "maintenance_route_id" {
+  description = "The maintenance route ID"
+  value       = cloudflare_workers_route.maintenance.id
 }

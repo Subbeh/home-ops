@@ -1,3 +1,8 @@
+variable "schemas_subdomain" {
+  description = "The subdomain for the Kubernetes schemas site"
+  type        = string
+}
+
 resource "cloudflare_pages_project" "kubernetes_schemas" {
   account_id        = var.CLOUDFLARE_ACCOUNT_ID
   name              = var.schemas_subdomain
