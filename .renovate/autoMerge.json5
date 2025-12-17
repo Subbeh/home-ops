@@ -44,12 +44,12 @@
     },
     {
       description: "Auto merge only on major updates",
-      matchManagers: ["mise"],
       automerge: true,
       automergeType: "pr",
       matchUpdateTypes: ["major"],
+      matchDatasources: ["npm"],
       matchPackageNames: [
-        "npm:renovate"
+        "renovate"
       ],
       ignoreTests: true,
     },
