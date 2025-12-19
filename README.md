@@ -76,6 +76,7 @@ A rundown of the core components is listed below, and a more in-depth overview o
 | Raspberry Pi 4                 | 4/4   | 4 GB   | 32 GB SD    | -                                                             | PiKVM | KVM                  |
 | Ubiquiti USW Lite 16 PoE       | -     | -      | -           | -                                                             | -     | Switch               |
 | Ubiquiti USW Flex Mini         | -     | -      | -           | -                                                             | -     | Switch               |
+| Horaco 5 Port 2.5GbE           | -     | -      | -           | -                                                             | -     | Switch               |
 | Ubiquiti U6 Lite               | -     | -      | -           | -                                                             | -     | Access point         |
 | Steetek 8 Port HDMI KVM Switch | -     | -      | -           | -                                                             | -     | KVM                  |
 

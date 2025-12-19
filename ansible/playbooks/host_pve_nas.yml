@@ -44,7 +44,7 @@
     borg_schedule: weekly
     borgbase_alert_days: 7
     borg_source_directories:
-      - "/data/nvme/k8s/volsync"
+      - "/data/nvme/k8s/volsync.kopia"
 
   roles:
     - { role: pve_setup, tags: pve_setup }
