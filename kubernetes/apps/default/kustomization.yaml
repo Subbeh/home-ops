@@ -14,7 +14,7 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
-  - ./dispatcharr/ks.yaml
+  # - ./dispatcharr/ks.yaml # TODO: temp disabled
   - ./filebrowser/ks.yaml
   - ./fusion/ks.yaml
   - ./homepage/ks.yaml
@@ -32,7 +32,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./uptermd/ks.yaml
-  # - ./watchstate/ks.yaml # TODO: remporary
+  - ./watchstate/ks.yaml
   # - ./linx/ks.yaml # TODO
   # - ./morphos/ks.yaml # TODO
   # - ./tdarr/ks.yaml # TODO
