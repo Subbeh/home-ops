@@ -32,7 +32,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./uptermd/ks.yaml
-  - ./watchstate/ks.yaml
+  # - ./watchstate/ks.yaml # TODO: remporary
   # - ./linx/ks.yaml # TODO
   # - ./morphos/ks.yaml # TODO
   # - ./tdarr/ks.yaml # TODO
