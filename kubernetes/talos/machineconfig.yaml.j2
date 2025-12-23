@@ -16,8 +16,6 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
-      featureGates:
-        ImageVolume: true
       serializeImagePulls: false
     nodeIP:
       validSubnets:
@@ -136,7 +134,7 @@ cluster:
         - level: Metadata
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+      feature-gates: MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
       oidc-issuer-url: "https://accounts.google.com"
       oidc-client-id: "{{ google_oauth_client_id }}"
