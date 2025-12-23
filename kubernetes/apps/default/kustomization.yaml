@@ -21,6 +21,7 @@ resources:
   - ./it-tools/ks.yaml
   - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
+  - ./maintainerr/ks.yaml
   - ./mealie/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
