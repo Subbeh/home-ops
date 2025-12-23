@@ -35,9 +35,7 @@ resources:
   - ./tautulli/ks.yaml
   - ./uptermd/ks.yaml
   - ./watchstate/ks.yaml
-  # - ./linx/ks.yaml # TODO
+  - ./wizarr/ks.yaml
   # - ./morphos/ks.yaml # TODO
-  # - ./tdarr/ks.yaml # TODO
-  # - ./wizarr/ks.yaml # TODO
   # - ./profilarr/ks.yaml # TODO
   # - ./pulsarr/ks.yaml # TODO
