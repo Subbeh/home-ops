@@ -15,7 +15,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   - ./changedetection/ks.yaml
-  # - ./dispatcharr/ks.yaml # TODO: temp disabled
+  - ./dispatcharr/ks.yaml
   - ./filebrowser/ks.yaml
   - ./fusion/ks.yaml
   - ./homepage/ks.yaml
