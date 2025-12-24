@@ -15,6 +15,30 @@ spec:
       enableLiveness: true
       serviceMonitor:
         enabled: true
+      csiRBDProvisionerResource:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+      csiRBDPluginResource:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+      csiCephFSProvisionerResource:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+      csiCephFSPluginResource:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
     image:
       repository: ghcr.io/rook/ceph
     monitoring:
