@@ -30,50 +30,6 @@ tasks:
       NAMESPACE: "{{index .MATCH 0}}"
       CLAIM: "{{index .MATCH 1}}"
 
-  debug-pvc:*:*:
-    desc: Debug pod with PVC mounted [NAMESPACE:APP] (scales down app first)
-    silent: true
-    cmd: |
-      echo "Scaling down {{.APP}} to release PVC..."
-      kubectl scale -n {{.NAMESPACE}} deployment {{.APP}} --replicas=0 2>/dev/null || echo "No deployment to scale"
-
-      echo "Waiting for pod to terminate..."
-      kubectl wait --for=delete pod -n {{.NAMESPACE}} -l app.kubernetes.io/name={{.APP}} --timeout=60s 2>/dev/null || true
-
-      echo "Starting debug pod..."
-      kubectl run -n {{.NAMESPACE}} debug-{{.APP}}-$(date +%s) \
-        --rm -it \
-        --image=busybox:latest \
-        --overrides='
-      {
-        "spec": {
-          "containers": [{
-            "name": "debug",
-            "image": "busybox:latest",
-            "command": ["sh"],
-            "stdin": true,
-            "stdinOnce": true,
-            "tty": true,
-            "volumeMounts": [{
-              "name": "data",
-              "mountPath": "/data"
-            }]
-          }],
-          "volumes": [{
-            "name": "data",
-            "persistentVolumeClaim": {
-              "claimName": "{{.APP}}"
-            }
-          }]
-        }
-      }'
-
-      echo "Scaling {{.APP}} back up..."
-      kubectl scale -n {{.NAMESPACE}} deployment {{.APP}} --replicas=1 2>/dev/null || echo "No deployment to scale back"
-    vars:
-      NAMESPACE: "{{index .MATCH 0}}"
-      APP: "{{index .MATCH 1}}"
-
   cleanup:
     desc: Prune pods in Failed, Pending, or Succeeded state
     cmd: |
