@@ -86,7 +86,8 @@
       - { name: host_k8s_int_gw, desc: Kubernetes Internal Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
       # - { name: host_k8s_root_gw, desc: Kubernetes Internal Root Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_int | ansible.utils.ipaddr('address') }}" }
       - { name: host_k8s_dns_gw, desc: Kubernetes DNS Gateway, type: host, content: "{{ hostvars[groups['k8s'][0]].gateway_dns | ansible.utils.ipaddr('address') }}" }
-      - { name: host_nas_k8s, desc: NAS Kubernetes address, type: host, content: "{{ hostvars['pve-nas'].cluster_network.ip_addr | ansible.utils.ipaddr('address') }}" }
+      # - { name: host_nas_k8s, desc: NAS Kubernetes address, type: host, content: "{{ hostvars['pve-nas'].cluster_network.ip_addr | ansible.utils.ipaddr('address') }}" }
+      - { name: host_nas_k8s, desc: NAS Kubernetes address, type: host, content: "{{ hostvars['pve-nas'].ip_addr | ansible.utils.ipaddr('address') }}" } # TODO: temporary
       - { name: host_unifi, desc: Unifi Controller address, type: host, content: "{{ hostvars['mgmt'].ip_addr | ansible.utils.ipaddr('address') }}" }
       - { name: host_pve_fw, desc: Proxmox VE Firewall Host, type: host, content: "{{ hostvars['pve-fw'].ip_addr | ansible.utils.ipaddr('address') }}" }
       - { name: host_pikvm, desc: PiKVM Host, type: host, content: "{{ hostvars['pikvm'].ip_addr | ansible.utils.ipaddr('address') }}" }

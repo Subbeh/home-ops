@@ -1,8 +1,16 @@
 ---
-- name: Set system hostname
-  ansible.builtin.hostname:
-    name: "{{ inventory_hostname }}"
+- name: Set system hostname in /etc/hostname
+  ansible.builtin.copy:
+    content: "{{ inventory_hostname }}\n"
+    dest: /etc/hostname
+    mode: '0644'
   become: true
+
+- name: Apply hostname change
+  ansible.builtin.command:
+    cmd: hostname -F /etc/hostname
+  become: true
+  changed_when: true
 
 - name: Update /etc/hosts
   ansible.builtin.lineinfile:

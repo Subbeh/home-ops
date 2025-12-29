@@ -5,3 +5,4 @@ xmltodict==1.0.2
 bcrypt==5.0.0
 lxml==6.0.2
 httpx==0.28.1
+proxmoxer==2.2.0

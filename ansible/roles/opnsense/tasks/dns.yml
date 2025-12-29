@@ -1,9 +1,11 @@
 ---
 - name: Enable and set up Unbound
   oxlorg.opnsense.unbound_general: "{{ dns.unbound }}"
+  delegate_to: localhost
 
 - name: Enable DNS-over-TLS
   oxlorg.opnsense.unbound_dot: "{{ item }}"
+  delegate_to: localhost
   loop: "{{ dns.unbound_dot }}"
 
 - name: Add hostname overrides
@@ -13,6 +15,7 @@
     value: "{{ hostvars[item].ip_addr | ansible.utils.ipaddr('address') }}"
     match_fields: ['hostname']
     reload: false
+  delegate_to: localhost
   when:
     - hostvars[item].ip_addr is defined
   loop: "{{ groups['all'] }}"
@@ -25,6 +28,7 @@
     description: "{{ item.description | default('') }}"
     match_fields: ['hostname']
     reload: false
+  delegate_to: localhost
   loop: "{{ dns.host_overrides | default([]) }}"
 
 - name: Add domain overrides
@@ -34,6 +38,7 @@
     description: "{{ item.description | default('') }}"
     match_fields: ['domain']
     reload: false
+  delegate_to: localhost
   loop: "{{ dns.domain_overrides | default([]) }}"
 
 - name: Add query forwarding
@@ -41,8 +46,10 @@
     domain: "{{ item.domain }}"
     target: "{{ item.target }}"
     reload: false
+  delegate_to: localhost
   loop: "{{ dns.query_forwarding | default([]) }}"
 
 - name: Reloading host overrides
   oxlorg.opnsense.reload:
     target: unbound
+  delegate_to: localhost

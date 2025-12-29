@@ -36,7 +36,7 @@
 - name: Create VM
   community.proxmox.proxmox_kvm:
     # Connection parameters
-    api_host: "{{ ansible_host }}"
+    api_host: "{{ pve_api_host }}"
     api_user: "{{ pve_api_user }}"
     api_token_id: "{{ pve_api_token_name }}"
     api_token_secret: "{{ pve_token_secret }}"
@@ -95,7 +95,7 @@
 
 - name: Create initial snapshot
   community.proxmox.proxmox_snap:
-    api_host: "{{ ansible_host }}"
+    api_host: "{{ pve_api_host }}"
     api_user: "{{ pve_api_user }}"
     api_token_id: "{{ pve_api_token_name }}"
     api_token_secret: "{{ pve_token_secret }}"

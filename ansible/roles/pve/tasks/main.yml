@@ -1,15 +1,18 @@
 ---
 - name: Set Proxmox API credential facts
   set_fact:
-    pve_token_id: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/proxmox/api-token:token_id validate_certs=False') }}"
-    pve_token_secret: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/proxmox/api-token:token_secret validate_certs=False') }}"
+    pve_user: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=ops/data/infra/pve-iac:user') }}"
+    pve_token_name: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=ops/data/infra/pve-iac:token') }}"
+    pve_token_secret: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=ops/data/infra/pve-iac:token_value') }}"
   no_log: true
 
 - name: Parse Proxmox API credentials
   set_fact:
-    pve_api_user: "{{ pve_token_id.split('!')[0] }}"
-    pve_api_token_name: "{{ pve_token_id.split('!')[1] }}"
-    no_log: true
+    pve_token_id: "{{ pve_user }}!{{ pve_token_name }}"
+    pve_api_user: "{{ pve_user }}"
+    pve_api_token_name: "{{ pve_token_name }}"
+    pve_api_host: "{{ ansible_host }}"
+  no_log: true
 
 - name: Create Proxmox VM
   ansible.builtin.import_tasks: create_vm.yml

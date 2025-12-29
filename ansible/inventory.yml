@@ -29,10 +29,16 @@ vm:
   hosts:
     opnsense:
       ip_addr: 100.87.8.30/24
+      vm_id: 2541
     mgmt:
       ip_addr: 10.11.10.2/24
+      vm_id: 1002
     services:
       ip_addr: 10.11.10.20/24
+      vm_id: 1020
+    dbs:
+      ip_addr: 10.11.10.30/24
+      vm_id: 1030
 k8s:
   hosts:
     k8s-nuc:

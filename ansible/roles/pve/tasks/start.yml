@@ -5,13 +5,14 @@
 
 - name: Check if ID is a VM or LXC
   community.proxmox.proxmox_vm_info:
-    api_host: "{{ ansible_host }}"
+    api_host: "{{ pve_api_host }}"
     api_user: "{{ pve_api_user }}"
     api_token_id: "{{ pve_api_token_name }}"
     api_token_secret: "{{ pve_token_secret }}"
     validate_certs: false
     node: "{{ inventory_hostname_short }}"
     vmid: "{{ vm_lxc_id }}"
+  delegate_to: localhost
   register: vm_lxc_info
 
 - name: Set resource type facts
@@ -21,7 +22,7 @@
 
 - name: Ensure VM is started
   community.proxmox.proxmox_kvm:
-    api_host: "{{ ansible_host }}"
+    api_host: "{{ pve_api_host }}"
     api_user: "{{ pve_api_user }}"
     api_token_id: "{{ pve_api_token_name }}"
     api_token_secret: "{{ pve_token_secret }}"
@@ -29,24 +30,26 @@
     node: "{{ inventory_hostname_short }}"
     vmid: "{{ vm_lxc_id }}"
     state: started
+  delegate_to: localhost
   when: is_vm
   register: vm_start
 
 - name: Ensure LXC is started
   community.proxmox.proxmox:
-    api_host: "{{ ansible_host }}"
+    api_host: "{{ pve_api_host }}"
     api_user: "{{ pve_api_user }}"
     api_token_id: "{{ pve_api_token_name }}"
     api_token_secret: "{{ pve_token_secret }}"
     validate_certs: false
     vmid: "{{ vm_lxc_id }}"
     state: started
+  delegate_to: localhost
   when: is_lxc
   register: lxc_start
 
 - name: Wait for VM to be accessible
   wait_for:
-    host: "{{ hostvars[vm_lxc_info.proxmox_vms[0].name].ip_addr | ipaddr('address') }}"
+    host: "{{ hostvars[vm_lxc_info.proxmox_vms[0].name].ip_addr | ansible.utils.ipaddr('address') }}"
     port: 22
     delay: 5
     timeout: 300

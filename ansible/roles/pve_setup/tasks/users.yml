@@ -51,7 +51,7 @@
 
 - name: Store API token in Vault
   community.hashi_vault.vault_kv2_write:
-    path: proxmox/api-token
+    path: ops/infra/pve-iac
     data:
       token_id: "{{ (pve_api_token.stdout | from_json)['full-tokenid'] }}"
       token_secret: "{{ (pve_api_token.stdout | from_json)['value'] }}"
