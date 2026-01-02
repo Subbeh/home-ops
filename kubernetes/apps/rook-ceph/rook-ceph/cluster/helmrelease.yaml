@@ -73,11 +73,9 @@ spec:
         provider: host
         addressRanges:
           public:
-            # - 192.168.80.0/24
-            - 10.11.10.0/24 # TODO: temporary fix
+            - 192.168.80.0/24
           cluster:
-            # - 192.168.80.0/24
-            - 10.11.10.0/24 # TODO: temporary fix
+            - 192.168.80.0/24
         connections:
           requireMsgr2: true
       resources:

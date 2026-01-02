@@ -1,4 +1,3 @@
-# Cloudflare Variables
 variable "CLOUDFLARE_API_TOKEN" {
   description = "Cloudflare API Token"
   type        = string

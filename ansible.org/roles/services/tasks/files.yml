@@ -1,13 +1,13 @@
 ---
 - name: Copy data to remote host
   become: true
-  delegate_to: "{{ service.host }}"
+  delegate_to: "{{ file.host | default(service.host) }}"
   when: file.src is defined or file.content is defined
   block:
     - name: Check source file
       when: file.src is defined
       block:
-        - name: Set local file facts for {{ item.src }}
+        - name: Set local file facts for {{ file.src }}
           ansible.builtin.set_fact:
             src_file: "{{ ansible_root + '/services/data/' + file.src }}"
             src_ext: "{{ file.src | splitext }}"
@@ -67,7 +67,7 @@
 
 - name: Create empty file or directory
   become: true
-  delegate_to: "{{ file.host }}"
+  delegate_to: "{{ file.host | default(service.host) }}"
   ansible.builtin.file:
     path: "{{ file.dest }}"
     state: "{{ file.state | default('directory') }}"

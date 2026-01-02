@@ -6,13 +6,6 @@
     - apps
     - tailscale
 
-- name: Install and configure Syncthing
-  ansible.builtin.import_tasks: syncthing.yml
-  when: "'syncthing' in apps or 'syncthing' in ansible_run_tags"
-  tags:
-    - apps
-    - syncthing
-
 - name: Install and configure Borg Backup
   ansible.builtin.import_tasks: borg.yml
   when: "'borg' in apps or 'borg' in ansible_run_tags"
