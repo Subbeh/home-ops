@@ -1,0 +1,9 @@
+---
+# Tailscale configuration
+# Leave tailscale_authkey empty to use OAuth (requires manual browser authentication)
+# Or set to a valid auth key for automated deployment
+tailscale_authkey: ""
+tailscale_hostname: "{{ inventory_hostname }}"
+tailscale_exit_node: false
+tailscale_advertise_routes: []
+tailscale_accept_routes: true

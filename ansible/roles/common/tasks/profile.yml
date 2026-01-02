@@ -1,0 +1,33 @@
+---
+- name: Ensure .bashrc exists
+  ansible.builtin.file:
+    path: ~/.bashrc
+    state: touch
+    mode: "0644"
+
+- name: Add common aliases to .bashrc
+  ansible.builtin.blockinfile:
+    path: ~/.bashrc
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - COMMON ALIASES"
+    block: |
+      # Common aliases
+      alias ll='ls -la --color=auto'
+      alias la='ls -A --color=auto'
+      alias lt='ls -ltra --color=auto'
+      alias l='ls -CF --color=auto'
+      alias -- -="cd -"
+      alias ..='cd ..'
+      alias ...='cd ../..'
+      alias grep='grep --color=auto'
+      alias fgrep='fgrep --color=auto'
+      alias egrep='egrep --color=auto'
+      alias ip='ip -c'
+      alias diff='diff --color=auto'
+      alias dmesg='dmesg --color=auto'
+
+- name: Create tmux configuration file
+  ansible.builtin.copy:
+    dest: ~/.tmux.conf
+    content: |
+      bind-key -n C-d detach
+    mode: "0644"

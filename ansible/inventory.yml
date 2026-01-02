@@ -1,4 +1,7 @@
 ---
-vps:
+all:
+  vars:
+    ansible_connection: ssh
   hosts:
-    vps-hetzner:
+    vps:
+      ansible_host: vps.sbbh.cloud

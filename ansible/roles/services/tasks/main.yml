@@ -1,0 +1,5 @@
+---
+- name: Install and configure Tailscale
+  ansible.builtin.import_tasks: tailscale.yml
+  when: "'tailscale' in services or 'tailscale' in ansible_run_tags"
+  tags: [services, tailscale]

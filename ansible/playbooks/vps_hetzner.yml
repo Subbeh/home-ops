@@ -1,6 +1,0 @@
----
-- hosts: vps
-  become: true
-
-  roles:
-    - { role: common, tags: common }

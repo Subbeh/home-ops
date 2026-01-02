@@ -1,0 +1,22 @@
+common_packages:
+  - acl
+  - apt-transport-https
+  - bash-completion
+  - ca-certificates
+  - curl
+  - dnsutils
+  - gnupg
+  - htop
+  - iperf3
+  - iputils-ping
+  - lsb-release
+  - lsof
+  - ncdu
+  - net-tools
+  - netcat-openbsd
+  - sudo
+  - tmux
+  - traceroute
+  - unzip
+  - vim
+  - zip

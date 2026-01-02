@@ -1,0 +1,16 @@
+---
+- name: Update system packages
+  ansible.builtin.import_tasks: update.yml
+  when: "'update' in common_tasks"
+
+- name: Install system packages
+  ansible.builtin.import_tasks: packages.yml
+  when: "'packages' in common_tasks"
+
+- name: Configure SSH server
+  ansible.builtin.import_tasks: ssh.yml
+  when: "'ssh' in common_tasks"
+
+- name: Configure user profile
+  ansible.builtin.import_tasks: profile.yml
+  when: "'profile' in common_tasks"

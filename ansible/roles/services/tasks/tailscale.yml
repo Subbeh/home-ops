@@ -1,0 +1,114 @@
+---
+- name: Check if Tailscale is installed
+  ansible.builtin.command: which tailscale
+  register: tailscale_installed
+  changed_when: false
+  failed_when: false
+
+- name: Install Tailscale
+  when: tailscale_installed.rc != 0
+  block:
+    - name: Download Tailscale installation script
+      ansible.builtin.get_url:
+        url: https://tailscale.com/install.sh
+        dest: /tmp/tailscale-install.sh
+        mode: '0755'
+      become: true
+
+    - name: Run Tailscale installation script
+      ansible.builtin.command: /tmp/tailscale-install.sh
+      become: true
+      changed_when: true
+
+    - name: Remove installation script
+      ansible.builtin.file:
+        path: /tmp/tailscale-install.sh
+        state: absent
+      become: true
+
+- name: Start and enable Tailscale service
+  ansible.builtin.systemd:
+    name: tailscaled
+    state: started
+    enabled: true
+  become: true
+
+- name: Check Tailscale status
+  ansible.builtin.command: tailscale status --json
+  register: tailscale_status
+  changed_when: false
+  failed_when: false
+  become: true
+
+- name: Parse Tailscale status
+  ansible.builtin.set_fact:
+    tailscale_connected: "{{ (tailscale_status.stdout | from_json).BackendState == 'Running' }}"
+  when: tailscale_status.rc == 0
+  failed_when: false
+
+- name: Connect to Tailscale network (with auth key)
+  when:
+    - tailscale_authkey | length > 0
+    - not (tailscale_connected | default(false))
+  ansible.builtin.command:
+    cmd: >-
+      tailscale up
+      --authkey={{ tailscale_authkey }}
+      --hostname={{ tailscale_hostname }}
+      {{ '--accept-routes' if tailscale_accept_routes else '' }}
+      {{ '--advertise-exit-node' if tailscale_exit_node else '' }}
+      {{ '--advertise-routes=' + (tailscale_advertise_routes | join(',')) if tailscale_advertise_routes | length > 0 else '' }}
+  register: tailscale_up
+  changed_when: tailscale_up.rc == 0
+  failed_when: tailscale_up.rc != 0 and 'already logged in' not in tailscale_up.stderr
+  become: true
+  no_log: true
+
+- name: Connect to Tailscale network (OAuth mode)
+  when:
+    - tailscale_authkey | length == 0
+    - not (tailscale_connected | default(false))
+  ansible.builtin.shell: |
+    timeout 5 tailscale up \
+      --hostname={{ tailscale_hostname }} \
+      {{ '--accept-routes' if tailscale_accept_routes else '' }} \
+      {{ '--advertise-exit-node' if tailscale_exit_node else '' }} \
+      {{ '--advertise-routes=' + (tailscale_advertise_routes | join(',')) if tailscale_advertise_routes | length > 0 else '' }} \
+      2>&1 || true
+  register: tailscale_up_oauth
+  changed_when: false
+  failed_when: false
+  become: true
+  async: 10
+  poll: 0
+
+- name: Wait for Tailscale OAuth command to complete
+  when:
+    - tailscale_authkey | length == 0
+    - not (tailscale_connected | default(false))
+    - tailscale_up_oauth is defined
+  ansible.builtin.async_status:
+    jid: "{{ tailscale_up_oauth.ansible_job_id }}"
+  register: tailscale_oauth_result
+  until: tailscale_oauth_result.finished
+  retries: 3
+  delay: 2
+  failed_when: false
+  no_log: true
+
+- name: Display OAuth authentication URL
+  when:
+    - tailscale_authkey | length == 0
+    - not (tailscale_connected | default(false))
+    - tailscale_oauth_result is defined
+  ansible.builtin.debug:
+    msg: |
+
+      ============================================================
+      Tailscale requires authentication!
+
+      Please visit the following URL to authenticate this device:
+      {{ tailscale_oauth_result.stdout | regex_search('https://login.tailscale.com/a/[a-f0-9]+') }}
+
+      After authenticating, the device will be connected.
+      ============================================================

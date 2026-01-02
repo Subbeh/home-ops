@@ -1,0 +1,28 @@
+---
+- hosts: vps
+  become: true
+
+  vars:
+    common_tasks:
+      - update
+      - packages
+      - ssh
+      - profile
+    services:
+      - tailscale
+
+    ssh_config_settings:
+      - { regexp: "^#?PasswordAuthentication", line: "PasswordAuthentication no" }
+      - { regexp: "^#?PermitRootLogin", line: "PermitRootLogin yes" }
+      - { regexp: "^#?PubkeyAuthentication", line: "PubkeyAuthentication yes" }
+      - { regexp: "^#?PermitEmptyPasswords", line: "PermitEmptyPasswords no" }
+      - { regexp: "^#?X11Forwarding", line: "X11Forwarding no" }
+      - { regexp: "^#?ClientAliveInterval", line: "ClientAliveInterval 300" }
+      - { regexp: "^#?Protocol", line: "Protocol 2" }
+    sshd_service_name: ssh
+
+  roles:
+    - { role: common, tags: common }
+    - { role: geerlingguy.pip, tags: pip }
+    - { role: geerlingguy.docker, tags: docker }
+    - { role: services, tags: services }

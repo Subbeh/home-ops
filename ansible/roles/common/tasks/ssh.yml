@@ -1,0 +1,18 @@
+---
+- name: Secure SSH configuration
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  loop: "{{ ssh_config_settings }}"
+  become: true
+  notify: restart sshd
+
+- name: Ensure strong SSH key exchange, ciphers, and MACs are used
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: "{{ ssh_crypto_settings }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - SSH SECURITY SETTINGS"
+  become: true
+  notify: restart sshd
