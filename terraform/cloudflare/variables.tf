@@ -1,10 +1,4 @@
-variable "CLOUDFLARE_API_TOKEN" {
-  description = "Cloudflare API Token"
-  type        = string
-  sensitive   = true
-}
-
-variable "CLOUDFLARE_ACCOUNT_ID" {
+variable "cf_account_id" {
   description = "Cloudflare Account ID"
   type        = string
   sensitive   = true

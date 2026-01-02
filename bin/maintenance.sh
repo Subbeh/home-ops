@@ -14,7 +14,7 @@ case "$1" in
     ;;
 esac
 
-curl -X PUT "https://api.cloudflare.com/client/v4/zones/${CF_API_ZONE_ID:?not set}/workers/routes/${ROUTE_ID:?not set}" \
-  -H "Authorization: Bearer ${CF_API_TOKEN:?not set}" \
+curl -X PUT "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_API_ZONE_ID:?not set}/workers/routes/${ROUTE_ID:?not set}" \
+  -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN:?not set}" \
   -H "Content-Type: application/json" \
   --data '{"pattern":"'"${route_pattern:?not set}"'","script":"'"${WORKER:?not set}"'"}'

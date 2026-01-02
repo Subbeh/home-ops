@@ -8,10 +8,6 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = ">= 5"
     }
-    ovh = {
-      source  = "ovh/ovh"
-      version = "~> 2.10.0"
-    }
   }
   required_version = ">= 1.13.5"
 
@@ -23,13 +19,11 @@ terraform {
   }
 }
 
-provider "cloudflare" {
-  api_token = var.CLOUDFLARE_API_TOKEN
+data "cloudflare_zone" "default" {
+  filter = {
+    account = {
+      id = var.cf_account_id
+    }
+    name = var.cf_zone
+  }
 }
-
-# provider "ovh" {
-#   endpoint           = "ovh-ca"
-#   application_key    = var.OVH_APPLICATION_KEY
-#   application_secret = var.OVH_APPLICATION_SECRET
-#   consumer_key       = var.OVH_CONSUMER_KEY
-# }

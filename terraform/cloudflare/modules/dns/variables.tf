@@ -1,5 +1,5 @@
-variable "domain_name" {
-  description = "The domain name to manage DNS records for"
+variable "zone_id" {
+  description = "The Cloudflare zone ID"
   type        = string
 }
 

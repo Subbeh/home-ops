@@ -4,7 +4,7 @@ variable "schemas_subdomain" {
 }
 
 resource "cloudflare_pages_project" "kubernetes_schemas" {
-  account_id        = var.CLOUDFLARE_ACCOUNT_ID
+  account_id        = var.cf_account_id
   name              = var.schemas_subdomain
   production_branch = "main"
 }

@@ -31,6 +31,7 @@
 
     ```sh
     task secrets:create:env-tf
+    task secrets:create:env-cloudflare
     task secrets:create:env-hetzner
     ```
 

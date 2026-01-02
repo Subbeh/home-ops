@@ -4,7 +4,7 @@ locals {
 }
 
 resource "cloudflare_workers_script" "maintenance" {
-  account_id  = var.CLOUDFLARE_ACCOUNT_ID
+  account_id  = var.cf_account_id
   script_name = format("maintenance-%s", replace(var.cf_zone, ".", "-"))
   content = templatefile("./data/maintenance.js", {
     header        = "Home Operations"

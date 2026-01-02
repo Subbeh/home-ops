@@ -22,9 +22,9 @@
     method: dns01
     dns_service: dns_cf
     dns_cf_email: "{{ common_email }}"
-    dns_cf_account_id: "{{ lookup('ansible.builtin.env', 'CF_ACCOUNT_ID') }}"
-    dns_cf_zone_id: "{{ lookup('ansible.builtin.env', 'CF_ZONE_ID') }}"
-    dns_cf_token: "{{ lookup('ansible.builtin.env', 'CF_API_TOKEN') }}"
+    dns_cf_account_id: "{{ lookup('ansible.builtin.env', 'CLOUDFLARE_ACCOUNT_ID') }}"
+    dns_cf_zone_id: "{{ lookup('ansible.builtin.env', 'CLOUDFLARE_ZONE_ID') }}"
+    dns_cf_token: "{{ lookup('ansible.builtin.env', 'CLOUDFLARE_API_TOKEN') }}"
 
 - name: Add ACME action
   oxlorg.opnsense.acme_action:
@@ -37,15 +37,15 @@
     name: "*.{{ net_domain_loc }}"
     description: "*.{{ net_domain_loc }} (ACME Client)"
     alt_names:
-      - '{{ net_domain_loc }}'  # Include apex domain as well
+      - "{{ net_domain_loc }}" # Include apex domain as well
     account: LE opnsense
     validation: CloudFlare DNS
     restart_actions:
-      - 'Restart GUI'
+      - "Restart GUI"
 
 - name: List jobs
   oxlorg.opnsense.list:
-    target: 'acme_certificate'
+    target: "acme_certificate"
   register: existing_certificates
 
 - name: Print cert data

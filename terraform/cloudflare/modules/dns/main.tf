@@ -8,12 +8,8 @@ terraform {
   required_version = ">= 1.13.5"
 }
 
-data "cloudflare_zone" "domain" {
-  name = var.domain_name
-}
-
-resource "cloudflare_record" "ipv4" {
-  zone_id = data.cloudflare_zone.domain.id
+resource "cloudflare_dns_record" "ipv4" {
+  zone_id = var.zone_id
   name    = var.subdomain
   content = var.ipv4_address
   type    = var.type
