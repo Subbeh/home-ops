@@ -35,9 +35,10 @@
         inherit: defaults
         repository: "{{ restic_repositories.hetzner.url }}"
         env: "{{ restic_repositories.hetzner.env }}"
-        backup_sources:
-          - /opt/data
-        backup_schedule: "*-*-* 03:00:00"
+        backup:
+          source:
+            - /opt/data
+          schedule: "*-*-* 03:00:00"
 
   roles:
     - { role: common, tags: common }
