@@ -11,6 +11,7 @@
       - sysctl
     services:
       - tailscale
+      - restic
     containers:
       - syncthing
 
@@ -27,6 +28,16 @@
       - { regexp: "^#?ClientAliveInterval", line: "ClientAliveInterval 300" }
       - { regexp: "^#?Protocol", line: "Protocol 2" }
     sshd_service_name: ssh
+
+    # Restic configuration
+    restic_profiles:
+      hetzner:
+        inherit: defaults
+        repository: "{{ restic_repositories.hetzner.url }}"
+        env: "{{ restic_repositories.hetzner.env }}"
+        backup_sources:
+          - /opt/data
+        backup_schedule: "*-*-* 03:00:00"
 
   roles:
     - { role: common, tags: common }

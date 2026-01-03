@@ -1,0 +1,154 @@
+---
+# Install and configure Restic with resticprofile for backups
+
+- name: Detect system architecture
+  ansible.builtin.set_fact:
+    restic_arch: "{{ ansible_system | lower }}_{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+
+- name: Install system dependencies
+  ansible.builtin.apt:
+    name:
+      - python3-pip
+      - ca-certificates
+    state: present
+    update_cache: true
+  become: true
+
+- name: Install restic from apt
+  ansible.builtin.apt:
+    name: restic
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Create temporary directory
+  ansible.builtin.file:
+    path: /var/tmp/ansible
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Check if resticprofile is installed
+  ansible.builtin.command: resticprofile version
+  register: resticprofile_installed
+  changed_when: false
+  failed_when: false
+
+- name: Get latest resticprofile version from GitHub
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/creativeprojects/resticprofile/releases/latest
+    return_content: true
+  register: resticprofile_latest
+  when: resticprofile_installed.rc != 0 or restic_upgrade | default(false)
+
+- name: Download and install resticprofile
+  when: resticprofile_installed.rc != 0 or (restic_upgrade | default(false) and resticprofile_latest.json.tag_name not in resticprofile_installed.stdout)
+  block:
+    - name: Download resticprofile archive
+      ansible.builtin.get_url:
+        url: "https://github.com/creativeprojects/resticprofile/releases/download/{{ resticprofile_latest.json.tag_name }}/resticprofile_{{ resticprofile_latest.json.tag_name | regex_replace('^v', '') }}_{{ restic_arch }}.tar.gz"
+        dest: /var/tmp/ansible/resticprofile.tar.gz
+        mode: "0644"
+      become: true
+
+    - name: Extract resticprofile binary
+      ansible.builtin.unarchive:
+        src: /var/tmp/ansible/resticprofile.tar.gz
+        dest: /var/tmp/ansible/
+        remote_src: true
+        creates: /var/tmp/ansible/resticprofile
+      become: true
+
+    - name: Install resticprofile binary
+      ansible.builtin.copy:
+        src: /var/tmp/ansible/resticprofile
+        dest: /usr/local/bin/resticprofile
+        mode: "0755"
+        owner: root
+        group: root
+        remote_src: true
+      become: true
+
+- name: Create resticprofile configuration directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0700"
+    owner: root
+    group: root
+  loop:
+    - /root/resticprofile
+    - /root/resticprofile/excludes
+  become: true
+
+- name: Create password files for profiles with repositories
+  ansible.builtin.copy:
+    content: "{{ restic_repositories[item.repository].password }}"
+    dest: "/root/resticprofile/.restic-password-{{ item.name }}"
+    mode: "0600"
+    owner: root
+    group: root
+  loop: "{{ restic_profiles }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+  when:
+    - restic_profiles is defined
+    - item.repository is defined
+    - item.repository in restic_repositories
+  no_log: true
+
+- name: Deploy resticprofile configuration
+  ansible.builtin.template:
+    src: restic/profiles.yaml.j2
+    dest: /root/resticprofile/profiles.yaml
+    mode: "0600"
+    owner: root
+    group: root
+  become: true
+  when: restic_profiles is defined
+
+- name: Deploy backup exclude lists
+  ansible.builtin.copy:
+    content: "{{ item.value }}"
+    dest: "/root/resticprofile/excludes/{{ item.key }}.txt"
+    mode: "0600"
+    owner: root
+    group: root
+  loop: "{{ restic_excludes | dict2items }}"
+  become: true
+  when: restic_excludes is defined
+
+- name: Initialize restic repositories
+  ansible.builtin.command:
+    cmd: "restic -r {{ restic_repositories[item.repository].url }} init"
+  environment:
+    RESTIC_PASSWORD: "{{ restic_repositories[item.repository].password }}"
+  loop: "{{ restic_profiles }}"
+  loop_control:
+    label: "{{ item.name }}"
+  register: restic_init
+  changed_when: "'created restic repository' in restic_init.stdout"
+  failed_when: restic_init.rc != 0 and 'already exists' not in restic_init.stderr
+  become: true
+  when:
+    - restic_profiles is defined
+    - item.repository is defined
+    - item.repository in restic_repositories
+  no_log: true
+
+- name: Schedule resticprofile backups
+  ansible.builtin.command:
+    cmd: resticprofile --config /root/resticprofile/profiles.yaml schedule --all
+  register: resticprofile_schedule
+  changed_when: "'created' in resticprofile_schedule.stdout or 'updated' in resticprofile_schedule.stdout"
+  become: true
+  when:
+    - restic_profiles is defined
+    - restic_profiles | selectattr('backup_schedule', 'defined') | list | length > 0
+
+- name: Cleanup temporary files
+  ansible.builtin.file:
+    path: /var/tmp/ansible
+    state: absent
+  become: true
