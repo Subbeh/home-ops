@@ -5,7 +5,7 @@ version: "1"
 
 defaults:
   initialize: true
-  password-file: # TODO
+  password-file: "/root/resticprofile/.restic-password"
   retention:
     keep-daily: 7
     keep-weekly: 4
@@ -16,5 +16,7 @@ defaults:
     schedule: "daily"
     one-file-system: true
     schedule-after-network-online: true
+    run-before: echo "### Starting Restic backup ###"
+    run-after: echo "### Restic backup finished ###"
 
 {{ restic_profiles }}

@@ -81,21 +81,15 @@
     - /root/resticprofile/excludes
   become: true
 
-- name: Create password files for profiles with repositories
+- name: Create shared restic password file
   ansible.builtin.copy:
-    content: "{{ restic_repositories[item.repository].password }}"
-    dest: "/root/resticprofile/.restic-password-{{ item.name }}"
+    content: "{{ restic_password }}"
+    dest: "/root/resticprofile/.restic-password"
     mode: "0600"
     owner: root
     group: root
-  loop: "{{ restic_profiles }}"
-  loop_control:
-    label: "{{ item.name }}"
   become: true
-  when:
-    - restic_profiles is defined
-    - item.repository is defined
-    - item.repository in restic_repositories
+  when: restic_profiles is defined
   no_log: true
 
 - name: Deploy resticprofile configuration
@@ -121,20 +115,17 @@
 
 - name: Initialize restic repositories
   ansible.builtin.command:
-    cmd: "restic -r {{ restic_repositories[item.repository].url }} init"
+    cmd: "restic -r {{ item.value.repository }} init"
   environment:
-    RESTIC_PASSWORD: "{{ restic_repositories[item.repository].password }}"
-  loop: "{{ restic_profiles }}"
+    RESTIC_PASSWORD: "{{ restic_password }}"
+  loop: "{{ restic_profiles | dict2items }}"
   loop_control:
-    label: "{{ item.name }}"
+    label: "{{ item.key }}"
   register: restic_init
   changed_when: "'created restic repository' in restic_init.stdout"
   failed_when: restic_init.rc != 0 and 'already exists' not in restic_init.stderr
   become: true
-  when:
-    - restic_profiles is defined
-    - item.repository is defined
-    - item.repository in restic_repositories
+  when: restic_profiles is defined
   no_log: true
 
 - name: Schedule resticprofile backups
@@ -145,7 +136,7 @@
   become: true
   when:
     - restic_profiles is defined
-    - restic_profiles | selectattr('backup_schedule', 'defined') | list | length > 0
+    - restic_profiles | dict2items | selectattr('value.backup_schedule', 'defined') | list | length > 0
 
 - name: Cleanup temporary files
   ansible.builtin.file:
