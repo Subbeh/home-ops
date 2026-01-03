@@ -3,3 +3,8 @@
   ansible.builtin.import_tasks: tailscale.yml
   when: "'tailscale' in services or 'tailscale' in ansible_run_tags"
   tags: [services, tailscale]
+
+- name: Install and configure Restic backups
+  ansible.builtin.import_tasks: restic.yml
+  when: "'restic' in services or 'restic' in ansible_run_tags"
+  tags: [services, restic]

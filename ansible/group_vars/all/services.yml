@@ -23,11 +23,3 @@ restic_password: !vault |
   38663863656334653161653963663335363232663338656538343538353639343636323030376134
   6634386135346262300a373037376438643561386134666131353833393738376138656466623764
   36613333396364303239303132316562663465363261663833653166636137383530
-restic_repositories:
-  hetzner:
-    url: "sftp:{{ hetzner_storage_box_user }}@{{ hetzner_storage_box_url }}:/backups/restic"
-    env:
-      RESTIC_SFTP_COMMAND: "ssh {{ hetzner_storage_box_user }}@{{ hetzner_storage_box_url }} -s sftp"
-  nas:
-    url: "/mnt/nas/backups"
-    password: "{{ restic_password }}"

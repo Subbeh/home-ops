@@ -32,9 +32,7 @@
     # Restic configuration
     restic_profiles:
       hetzner:
-        inherit: defaults
-        repository: "{{ restic_repositories.hetzner.url }}"
-        env: "{{ restic_repositories.hetzner.env }}"
+        inherit: hetzner_defaults
         backup:
           source:
             - /opt/data

@@ -71,14 +71,11 @@
 
 - name: Create resticprofile configuration directory
   ansible.builtin.file:
-    path: "{{ item }}"
+    path: /root/resticprofile
     state: directory
     mode: "0700"
     owner: root
     group: root
-  loop:
-    - /root/resticprofile
-    - /root/resticprofile/excludes
   become: true
 
 - name: Create shared restic password file
@@ -102,31 +99,37 @@
   become: true
   when: restic_profiles is defined
 
-- name: Deploy backup exclude lists
-  ansible.builtin.copy:
-    content: "{{ item.value }}"
-    dest: "/root/resticprofile/excludes/{{ item.key }}.txt"
-    mode: "0600"
-    owner: root
-    group: root
-  loop: "{{ restic_excludes | dict2items }}"
-  become: true
-  when: restic_excludes is defined
+# - name: Deploy backup exclude lists # TODO: remove
+#   ansible.builtin.copy:
+#     content: "{{ item.value }}"
+#     dest: "/root/resticprofile/excludes/{{ item.key }}.txt"
+#     mode: "0600"
+#     owner: root
+#     group: root
+#   loop: "{{ restic_excludes | dict2items }}"
+#   become: true
+#   when: restic_excludes is defined
 
-- name: Initialize restic repositories
-  ansible.builtin.command:
-    cmd: "restic -r {{ item.value.repository }} init"
-  environment:
-    RESTIC_PASSWORD: "{{ restic_password }}"
-  loop: "{{ restic_profiles | dict2items }}"
-  loop_control:
-    label: "{{ item.key }}"
-  register: restic_init
-  changed_when: "'created restic repository' in restic_init.stdout"
-  failed_when: restic_init.rc != 0 and 'already exists' not in restic_init.stderr
-  become: true
-  when: restic_profiles is defined
-  no_log: true
+# - name: Initialize restic repositories # TODO: remove (this is automatically done, right?)
+#   ansible.builtin.command:
+#     cmd: "restic -r {{ item.value.repository }} init"
+#   environment:
+#     RESTIC_PASSWORD: "{{ restic_password }}"
+#   loop: "{{ restic_profiles | dict2items }}"
+#   loop_control:
+#     label: "{{ item.key }}"
+#   register: restic_init
+#   changed_when: "'created restic repository' in restic_init.stdout"
+#   failed_when: restic_init.rc != 0 and 'already exists' not in restic_init.stderr
+#   become: true
+#   when: restic_profiles is defined
+#   no_log: true
+
+- name: Ensure SSH host key is trusted
+  ansible.builtin.known_hosts:
+    path: /root/.ssh/known_hosts
+    name: "{{ hetzner_storage_box_url }}"
+    key: "{{ lookup('pipe', 'ssh-keyscan -H {{ hetzner_storage_box_url }}') }}"
 
 - name: Schedule resticprofile backups
   ansible.builtin.command:
@@ -136,7 +139,7 @@
   become: true
   when:
     - restic_profiles is defined
-    - restic_profiles | dict2items | selectattr('value.backup_schedule', 'defined') | list | length > 0
+    - restic_profiles | dict2items | selectattr('value.backup.schedule', 'defined') | list | length > 0
 
 - name: Cleanup temporary files
   ansible.builtin.file:

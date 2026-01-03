@@ -11,12 +11,18 @@ defaults:
     keep-weekly: 4
     keep-monthly: 12
   tag:
-    - "{{ ansible_host }}"
+    host: "{{ ansible_host }}"
   backup:
     schedule: "daily"
     one-file-system: true
     schedule-after-network-online: true
-    run-before: echo "### Starting Restic backup ###"
-    run-after: echo "### Restic backup finished ###"
+    run-before: 'echo "### Starting Restic backup ###"'
+    run-after: 'echo "### Restic backup finished ###"'
 
-{{ restic_profiles }}
+hetzner_defaults:
+  inherit: defaults
+  repository: "sftp:{{ hetzner_storage_box_user }}@{{ hetzner_storage_box_url }}:/backups/restic"
+  env:
+    RESTIC_SFTP_COMMAND: "ssh {{ hetzner_storage_box_user }}@{{ hetzner_storage_box_url }} -s sftp"
+
+{{ restic_profiles | to_yaml }}
