@@ -1,0 +1,38 @@
+---
+- name: Set container facts
+  ansible.builtin.set_fact:
+    container: "{{ container_defaults | combine(container_item) | combine({'name': container_item.name | default(container_def.name)}) }}"
+
+- name: Create volume mount directories
+  become: true
+  delegate_to: "{{ container_def.host }}"
+  ansible.builtin.file:
+    path: "{{ volume | regex_replace(':.*$', '') }}"
+    state: directory
+    mode: "0755"
+  loop: "{{ container.volumes | default([]) }}"
+  loop_control:
+    loop_var: volume
+    label: "{{ volume | regex_replace(':.*$', '') }}"
+  when:
+    - volume is string
+    - "':' in volume"
+    - volume.startswith('/')
+
+- name: Ensure Docker networks exist
+  become: true
+  delegate_to: "{{ container_def.host }}"
+  community.docker.docker_network:
+    name: "{{ network.name }}"
+    state: present
+  loop: "{{ container.networks | default([]) }}"
+  loop_control:
+    loop_var: network
+  when:
+    - network is mapping
+    - network.name is defined
+
+- name: Create Docker container
+  become: true
+  delegate_to: "{{ container_def.host }}"
+  community.docker.docker_container: "{{ container }}"

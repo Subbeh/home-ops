@@ -1,3 +1,14 @@
+# Common system settings
+common_data_dir: /opt/data
+common_user_id: 1000
+common_group_id: 1000
+common_timezone: Australia/Melbourne
+
+# Network settings
+net_domain: sbbh.cloud
+net_domain_int: int.sbbh.cloud
+
+# Common packages
 common_packages:
   - acl
   - apt-transport-https

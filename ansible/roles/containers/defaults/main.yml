@@ -1,0 +1,2 @@
+---
+# This file intentionally left minimal - container defaults come from group_vars/all/docker.yml

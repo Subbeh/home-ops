@@ -1,0 +1,17 @@
+---
+# Deploy Docker containers defined in ansible/containers/*.yml
+# Usage: ansible-playbook containers.yml --tags <container_name>
+# Example: ansible-playbook containers.yml --tags syncthing,vault
+
+- name: Deploy Docker containers
+  hosts: localhost
+  become: false
+  gather_facts: false
+
+  vars:
+    # Convert run tags to container list, filtering out special tags
+    containers: "{{ ansible_run_tags | difference(['all', 'always', 'never', 'tagged', 'untagged']) }}"
+
+  roles:
+    - role: containers
+      tags: always

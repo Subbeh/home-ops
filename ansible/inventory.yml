@@ -5,3 +5,4 @@ all:
   hosts:
     vps:
       ansible_host: vps.sbbh.cloud
+      ansible_user: root

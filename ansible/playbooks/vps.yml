@@ -10,6 +10,8 @@
       - profile
     services:
       - tailscale
+    containers:
+      - syncthing
 
     ssh_config_settings:
       - { regexp: "^#?PasswordAuthentication", line: "PasswordAuthentication no" }
@@ -26,3 +28,4 @@
     - { role: geerlingguy.pip, tags: pip }
     - { role: geerlingguy.docker, tags: docker }
     - { role: services, tags: services }
+    - { role: containers, tags: containers }

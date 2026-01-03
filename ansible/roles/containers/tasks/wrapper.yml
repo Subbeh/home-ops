@@ -1,0 +1,58 @@
+---
+- name: Set container facts
+  ansible.builtin.set_fact:
+    container_def: "{{ container_configs[item] | combine({'name': item}) }}"
+
+- name: Validate container definition
+  ansible.builtin.assert:
+    that:
+      - container_def.host is defined
+      - container_def.containers is defined
+      - container_def.containers | length > 0
+    fail_msg: "Invalid container definition for {{ item }}: must have 'host' and at least one container"
+    quiet: true
+
+- name: Set container variables
+  ansible.builtin.set_fact:
+    "{{ var_item.key }}": "{{ var_item.value }}"
+  loop: "{{ container_def.vars | default({}) | dict2items }}"
+  loop_control:
+    loop_var: var_item
+  when: container_def.vars is defined
+
+- name: Run pre-tasks
+  tags: [pre-tasks]
+  ansible.builtin.include_tasks:
+    file: "{{ playbook_dir }}/tasks/{{ task_item }}"
+    apply: {tags: [always]}
+  loop: "{{ container_def.tasks.pre | default([]) }}"
+  loop_control:
+    loop_var: task_item
+
+- name: Create files
+  tags: [files]
+  ansible.builtin.include_tasks:
+    file: files.yml
+    apply: {tags: [always]}
+  loop: "{{ container_def.files | default([]) }}"
+  loop_control:
+    loop_var: file
+
+- name: Create Docker container(s)
+  tags: [container]
+  ansible.builtin.include_tasks:
+    file: container.yml
+    apply: {tags: [always]}
+  loop: "{{ container_def.containers }}"
+  loop_control:
+    loop_var: container_item
+    label: "{{ container_item.image }}"
+
+- name: Run post-tasks
+  tags: [post-tasks]
+  ansible.builtin.include_tasks:
+    file: "{{ playbook_dir }}/tasks/{{ task_item }}"
+    apply: {tags: [always]}
+  loop: "{{ container_def.tasks.post | default([]) }}"
+  loop_control:
+    loop_var: task_item

@@ -1,0 +1,85 @@
+---
+- name: Copy data to remote host
+  become: true
+  delegate_to: "{{ container_def.host }}"
+  when: file.src is defined or file.content is defined
+  block:
+    - name: Check source file
+      when: file.src is defined
+      block:
+        - name: Find template file
+          ansible.builtin.set_fact:
+            src_file: "{{ lookup('first_found', template_search_paths, errors='ignore') }}"
+            src_ext: "{{ file.src | splitext }}"
+          vars:
+            template_search_paths:
+              - "{{ playbook_dir }}/templates/{{ container_def.name }}/{{ file.src }}"
+              - "{{ playbook_dir }}/templates/{{ file.src }}"
+              - "{{ playbook_dir }}/../templates/{{ container_def.name }}/{{ file.src }}"
+              - "{{ playbook_dir }}/../templates/{{ file.src }}"
+
+        - name: Fail if template file not found
+          ansible.builtin.fail:
+            msg: "Template file not found: {{ file.src }}"
+          when: src_file is not defined or src_file == ''
+
+        - name: Get local file stats for {{ src_file }}
+          ansible.builtin.stat:
+            path: "{{ src_file }}"
+          become: false
+          register: file_stat
+          delegate_to: localhost
+          no_log: true
+
+    - name: Ensure destination dir exists
+      ansible.builtin.file:
+        path: "{{ file.dest | dirname }}"
+        owner: "{{ file.dir_owner | default(omit) }}"
+        group: "{{ file.dir_group | default(omit) }}"
+        mode: "{{ file.dir_mode | default('0755') }}"
+        state: directory
+
+    - name: Copy file over
+      ansible.builtin.copy:
+        src: "{{ src_file | default(omit) }}"
+        content: "{{ file.content | default(omit) }}"
+        dest: "{{ file.dest }}"
+        owner: "{{ file.owner | default(omit) }}"
+        group: "{{ file.group | default(omit) }}"
+        mode: "{{ file.mode | default(omit) }}"
+        force: "{{ file.force | default(true) }}"
+      when: src_ext[1] != '.j2' and not file_stat.stat.isdir
+
+    - name: Copy directory contents
+      ansible.builtin.copy:
+        src: "{{ src_file }}/"
+        dest: "{{ file.dest }}"
+        owner: "{{ file.owner | default(omit) }}"
+        group: "{{ file.group | default(omit) }}"
+        mode: "{{ file.mode | default(omit) }}"
+        force: "{{ file.force | default(true) }}"
+      when: file_stat.stat.isdir
+
+    - name: Copy template over
+      ansible.builtin.template:
+        src: "{{ src_file }}"
+        dest: "{{ file.dest }}"
+        owner: "{{ file.owner | default(omit) }}"
+        group: "{{ file.group | default(omit) }}"
+        mode: "{{ file.mode | default(omit) }}"
+        force: "{{ file.force | default(true) }}"
+      when: src_ext[1] == '.j2'
+
+- name: Create empty file or directory
+  become: true
+  delegate_to: "{{ container_def.host }}"
+  ansible.builtin.file:
+    path: "{{ file.dest }}"
+    state: "{{ file.state | default('directory') }}"
+    mode: "{{ file.mode | default(omit) }}"
+    owner: "{{ file.owner | default(omit) }}"
+    group: "{{ file.group | default(omit) }}"
+    recurse: "{{ true if (file.state is undefined or file.state == 'directory') else omit }}"
+  when:
+    - file.src is not defined
+    - file.content is not defined
