@@ -8,10 +8,15 @@
       - packages
       - ssh
       - profile
+      - sysctl
     services:
       - tailscale
     containers:
       - syncthing
+
+    # Kernel parameters
+    sysctl_settings:
+      fs.inotify.max_user_watches: 204800
 
     ssh_config_settings:
       - { regexp: "^#?PasswordAuthentication", line: "PasswordAuthentication no" }

@@ -1,9 +1,8 @@
 ---
 - name: Load container configs
   tags: [always]
-  no_log: true
   ansible.builtin.include_vars:
-    dir: "{{ playbook_dir }}/containers"
+    dir: "{{ playbook_dir }}/../containers"
     ignore_unknown_extensions: true
     depth: 1
     name: container_configs

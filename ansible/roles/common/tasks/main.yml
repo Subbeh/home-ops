@@ -14,3 +14,7 @@
 - name: Configure user profile
   ansible.builtin.import_tasks: profile.yml
   when: "'profile' in common_tasks"
+
+- name: Configure kernel parameters
+  ansible.builtin.import_tasks: sysctl.yml
+  when: "'sysctl' in common_tasks"

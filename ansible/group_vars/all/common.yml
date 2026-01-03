@@ -7,6 +7,7 @@ common_timezone: Australia/Melbourne
 # Network settings
 net_domain: sbbh.cloud
 net_domain_int: int.sbbh.cloud
+tailnet_domain: tailnet-7233.ts.net
 
 # Common packages
 common_packages:
