@@ -1,9 +1,11 @@
 ---
 - name: Set container facts
+  tags: [always]
   ansible.builtin.set_fact:
     container_def: "{{ container_configs[item] | combine({'name': item}) }}"
 
 - name: Validate container definition
+  tags: [always]
   ansible.builtin.assert:
     that:
       - container_def.host is defined
@@ -13,6 +15,7 @@
     quiet: true
 
 - name: Set container variables
+  tags: [always]
   ansible.builtin.set_fact:
     "{{ var_item.key }}": "{{ var_item.value }}"
   loop: "{{ container_def.vars | default({}) | dict2items }}"
@@ -24,7 +27,7 @@
   tags: [pre-tasks]
   ansible.builtin.include_tasks:
     file: "{{ playbook_dir }}/tasks/{{ task_item }}"
-    apply: {tags: [always]}
+    apply: { tags: [always] }
   loop: "{{ container_def.tasks.pre | default([]) }}"
   loop_control:
     loop_var: task_item
@@ -33,16 +36,16 @@
   tags: [files]
   ansible.builtin.include_tasks:
     file: files.yml
-    apply: {tags: [always]}
+    apply: { tags: [always] }
   loop: "{{ container_def.files | default([]) }}"
   loop_control:
     loop_var: file
 
 - name: Create Docker container(s)
-  tags: [container]
+  tags: [always]
   ansible.builtin.include_tasks:
     file: container.yml
-    apply: {tags: [always]}
+    apply: { tags: [always] }
   loop: "{{ container_def.containers }}"
   loop_control:
     loop_var: container_item
@@ -52,7 +55,7 @@
   tags: [post-tasks]
   ansible.builtin.include_tasks:
     file: "{{ playbook_dir }}/tasks/{{ task_item }}"
-    apply: {tags: [always]}
+    apply: { tags: [always] }
   loop: "{{ container_def.tasks.post | default([]) }}"
   loop_control:
     loop_var: task_item

@@ -1,0 +1,61 @@
+netbox:
+  host: vps
+  containers:
+    - name: netbox_postgres
+      image: docker.io/library/postgres:17.7
+      env:
+        POSTGRES_USER: netbox
+        POSTGRES_PASSWORD: "{{ netbox_db_password }}"
+        POSTGRES_DB: netbox
+      volumes:
+        - "{{ common_data_dir }}/netbox/postgres:/var/lib/postgresql/data"
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U netbox"]
+        start_period: 30s
+        interval: 10s
+        timeout: 10s
+        retries: 5
+
+    - name: netbox
+      image: docker.io/netboxcommunity/netbox:v4.4.8
+      env: &env
+        ALLOWED_HOSTS: "*"
+        DB_HOST: netbox_postgres
+        DB_NAME: netbox
+        DB_USER: netbox
+        DB_PASSWORD: "{{ netbox_db_password }}"
+        REDIS_HOST: netbox_redis
+        REDIS_PASSWORD: "{{ netbox_redis_password }}"
+        REDIS_CACHE_HOST: netbox_redis-cache
+        REDIS_CACHE_PASSWORD: "{{ netbox_redis_password }}"
+        SECRET_KEY: "{{ netbox_secret_key }}"
+      ports:
+        - 8000:8080
+      volumes: &volumes
+        - "{{ common_data_dir }}/netbox/media:/opt/netbox/netbox/media"
+        - "{{ common_data_dir }}/netbox/reports:/opt/netbox/netbox/reports"
+        - "{{ common_data_dir }}/netbox/scripts:/opt/netbox/netbox/scripts"
+
+    - name: netbox_redis
+      image: docker.io/library/redis:8.4.0-alpine
+      command: &redis_command ["redis-server", "--requirepass", "{{ netbox_redis_password }}"]
+      env: &env_redis
+        REDIS_PASSWORD: "{{ netbox_redis_password }}"
+      volumes:
+        - "{{ common_data_dir }}/netbox/redis:/data"
+
+    - name: netbox_redis-cache
+      image: docker.io/library/redis:8.4.0-alpine
+      command: *redis_command
+      env: *env_redis
+      volumes:
+        - "{{ common_data_dir }}/netbox/redis-cache:/data"
+
+    - name: netbox_worker
+      image: docker.io/netboxcommunity/netbox:v4.4.8
+      command:
+        - /opt/netbox/venv/bin/python
+        - /opt/netbox/netbox/manage.py
+        - rqworker
+      env: *env
+      volumes: *volumes

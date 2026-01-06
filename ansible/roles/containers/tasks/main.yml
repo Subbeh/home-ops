@@ -10,3 +10,8 @@
 - name: Run container tasks
   ansible.builtin.include_tasks: wrapper.yml
   loop: "{{ containers }}"
+  tags: [always]
+  when: >
+    'all' in ansible_run_tags or
+    'containers' in ansible_run_tags or
+    item in ansible_run_tags
