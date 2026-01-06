@@ -21,3 +21,15 @@ variable "vps_os_type" {
   type        = string
   default     = "ubuntu-24.04"
 }
+
+variable "storage_box_password" {
+  description = "Storage Box password"
+  type        = string
+  sensitive   = true
+}
+
+variable "storage_box_type" {
+  description = "Type of Storage Box"
+  type        = string
+  default     = "bx11"
+}

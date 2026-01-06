@@ -21,8 +21,6 @@ defaults:
 
 hetzner_defaults:
   inherit: defaults
-  repository: "sftp:{{ hetzner_storage_box_user }}@{{ hetzner_storage_box_url }}:/backups/restic"
-  env:
-    RESTIC_SFTP_COMMAND: "ssh {{ hetzner_storage_box_user }}@{{ hetzner_storage_box_url }} -s sftp"
+  repository: "sftp:storagebox:/home/backups/restic"
 
 {{ restic_profiles | to_yaml }}

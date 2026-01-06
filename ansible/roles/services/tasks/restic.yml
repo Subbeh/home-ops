@@ -89,6 +89,51 @@
   when: restic_profiles is defined
   no_log: true
 
+- name: Create SSH key for restic on control machine
+  ansible.builtin.command:
+    cmd: ssh-keygen -t ed25519 -f {{ playbook_dir }}/../../.private/core/restic_ssh_key -N "" -C restic
+    creates: "{{ playbook_dir }}/../../.private/core/restic_ssh_key"
+  delegate_to: localhost
+  run_once: true
+  become: false
+
+- name: Ensure .ssh directory exists on restic host
+  ansible.builtin.file:
+    path: /root/.ssh
+    state: directory
+    mode: "0700"
+    owner: root
+    group: root
+  become: true
+
+- name: Deploy restic SSH private key to host
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../.private/core/restic_ssh_key"
+    dest: /root/.ssh/restic_key
+    mode: "0600"
+    owner: root
+    group: root
+  become: true
+
+- name: Create SSH config for restic storage box
+  ansible.builtin.blockinfile:
+    path: /root/.ssh/config
+    create: true
+    mode: "0600"
+    owner: root
+    group: root
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - Restic Storage Box"
+    block: |
+      StrictHostKeyChecking accept-new
+      UserKnownHostsFile /dev/null
+
+      Host storagebox
+        IdentityFile ~/.ssh/restic_key
+        HostName {{ hetzner_storage_box_url }}
+        User {{ hetzner_storage_box_user }}
+        Port 23
+  become: true
+
 - name: Deploy resticprofile configuration
   ansible.builtin.template:
     src: restic/profiles.yaml.j2
@@ -124,12 +169,6 @@
 #   become: true
 #   when: restic_profiles is defined
 #   no_log: true
-
-- name: Ensure SSH host key is trusted
-  ansible.builtin.known_hosts:
-    path: /root/.ssh/known_hosts
-    name: "{{ hetzner_storage_box_url }}"
-    key: "{{ lookup('pipe', 'ssh-keyscan -H {{ hetzner_storage_box_url }}') }}"
 
 - name: Schedule resticprofile backups
   ansible.builtin.command:

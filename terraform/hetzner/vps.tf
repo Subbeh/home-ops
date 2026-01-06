@@ -1,16 +1,11 @@
-resource "hcloud_ssh_key" "default" {
-  name       = "home-ops"
-  public_key = file(pathexpand("~/.ssh/keys/home-ops.pub"))
-}
-
 resource "hcloud_firewall" "default" {
-  name = "VPS Firewall"
+  name = "vps-firewall"
 
   rule {
     description = "Allow ICMP traffic"
     direction   = "in"
     protocol    = "icmp"
-    source_ips  = [
+    source_ips = [
       "0.0.0.0/0",
       "::/0"
     ]
@@ -42,11 +37,11 @@ resource "hcloud_server" "default" {
   server_type = var.vps_server_type
   datacenter  = var.datacenter
 
-  firewall_ids  = [hcloud_firewall.default.id]
-  ssh_keys      = [hcloud_ssh_key.default.id]
+  firewall_ids = [hcloud_firewall.default.id]
+  ssh_keys     = [hcloud_ssh_key.default.id]
 
   public_net {
-    ipv4 = hcloud_primary_ip.default.id
+    ipv4         = hcloud_primary_ip.default.id
     ipv4_enabled = true
     ipv6_enabled = false
   }
