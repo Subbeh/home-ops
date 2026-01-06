@@ -22,5 +22,11 @@ defaults:
 hetzner_defaults:
   inherit: defaults
   repository: "sftp:storagebox:/home/backups/restic"
+{% if restic_healthcheck_urls is defined and restic_healthcheck_urls | length > 0 %}
+  backup:
+    run-before: 'echo "### Starting Restic backup ###" && curl -fsS -m 10 --retry 5 -o /dev/null {{ restic_healthcheck_urls.values() | first }}/start'
+    run-after: 'echo "### Restic backup finished ###" && curl -fsS -m 10 --retry 5 -o /dev/null {{ restic_healthcheck_urls.values() | first }}'
+    run-after-fail: 'curl -fsS -m 10 --retry 5 -o /dev/null {{ restic_healthcheck_urls.values() | first }}/fail'
+{% endif %}
 
 {{ restic_profiles | to_yaml }}

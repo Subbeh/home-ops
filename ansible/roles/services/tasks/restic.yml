@@ -1,6 +1,4 @@
 ---
-# Install and configure Restic with resticprofile for backups
-
 - name: Detect system architecture
   ansible.builtin.set_fact:
     restic_arch: "{{ ansible_system | lower }}_{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
@@ -134,6 +132,40 @@
         Port 23
   become: true
 
+- name: Create healthchecks.io checks for restic profiles
+  ansible.builtin.uri:
+    url: "https://healthchecks.io/api/v3/checks/"
+    method: POST
+    headers:
+      X-Api-Key: "{{ healthchecks_api_key }}"
+    body_format: json
+    body:
+      name: "Restic Backup - {{ item.key }} - {{ inventory_hostname }}"
+      tags: "restic backup {{ inventory_hostname }}"
+      timeout: 86400
+      grace: 3600
+      unique: ["name"]
+    status_code: [200, 201]
+  loop: "{{ restic_profiles | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  register: healthchecks_response
+  when:
+    - healthchecks_api_key is defined
+    - restic_profiles is defined
+  delegate_to: localhost
+  become: false
+
+- name: Set healthcheck URLs fact
+  ansible.builtin.set_fact:
+    restic_healthcheck_urls: "{{ restic_healthcheck_urls | default({}) | combine({item.item.key: item.json.ping_url}) }}"
+  loop: "{{ healthchecks_response.results }}"
+  loop_control:
+    label: "{{ item.item.key }}"
+  when:
+    - healthchecks_response is defined
+    - not healthchecks_response.skipped | default(false)
+
 - name: Deploy resticprofile configuration
   ansible.builtin.template:
     src: restic/profiles.yaml.j2
@@ -143,32 +175,6 @@
     group: root
   become: true
   when: restic_profiles is defined
-
-# - name: Deploy backup exclude lists # TODO: remove
-#   ansible.builtin.copy:
-#     content: "{{ item.value }}"
-#     dest: "/root/resticprofile/excludes/{{ item.key }}.txt"
-#     mode: "0600"
-#     owner: root
-#     group: root
-#   loop: "{{ restic_excludes | dict2items }}"
-#   become: true
-#   when: restic_excludes is defined
-
-# - name: Initialize restic repositories # TODO: remove (this is automatically done, right?)
-#   ansible.builtin.command:
-#     cmd: "restic -r {{ item.value.repository }} init"
-#   environment:
-#     RESTIC_PASSWORD: "{{ restic_password }}"
-#   loop: "{{ restic_profiles | dict2items }}"
-#   loop_control:
-#     label: "{{ item.key }}"
-#   register: restic_init
-#   changed_when: "'created restic repository' in restic_init.stdout"
-#   failed_when: restic_init.rc != 0 and 'already exists' not in restic_init.stderr
-#   become: true
-#   when: restic_profiles is defined
-#   no_log: true
 
 - name: Schedule resticprofile backups
   ansible.builtin.command:
